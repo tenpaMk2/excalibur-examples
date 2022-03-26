@@ -1,0 +1,14 @@
+{
+  "type": "module",
+  "scripts": {
+    "breakout": "cd examples/breakout && npm install && npm run build && npm run start"
+  },
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "excaliburjs",
+    "excalibur",
+    "webpack",
+    "typescript"
+  ]
+}
