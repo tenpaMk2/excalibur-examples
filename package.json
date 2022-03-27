@@ -1,7 +1,9 @@
 {
   "type": "module",
   "scripts": {
-    "breakout": "cd examples/breakout && npm install && npm run build && npm run start"
+    "breakout": "cd examples/breakout && npm install && npm run build && npm run start",
+    "asteroid": "cd examples/asteroid && npm install && npm run build && npm run start",
+    "clocks": "cd examples/clocks && npm install && npm run build && npm run start"
   },
   "author": "",
   "license": "MIT",
