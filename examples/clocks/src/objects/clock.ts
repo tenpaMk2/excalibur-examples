@@ -1,4 +1,12 @@
-import { Actor, CollisionType, Color, Engine, Random, Vector } from "excalibur";
+import {
+  Actor,
+  Canvas,
+  CollisionType,
+  Color,
+  Engine,
+  Random,
+  Vector,
+} from "excalibur";
 
 export class Clock extends Actor {
   shaft: Actor;
@@ -25,19 +33,23 @@ export class Clock extends Actor {
 
   createHourMarkers = (engine: Engine) => {
     for (let hour = 0; hour < 12; hour++) {
-      // const x = 150 * Math.cos((Math.PI * 0) / 6 - Math.PI / 2);
-      const angle = (Math.PI * hour) / 6 - Math.PI / 2;
-      const pos = Vector.fromAngle(angle).scale(150);
-      const child = new Actor({
-        pos: pos,
-        rotation: angle + Math.PI / 2,
-        width: 10,
-        height: 50,
-        color: Color.Black,
-        collisionType: CollisionType.PreventCollision,
+      const canvasWidth = 8; // must be 2^n.
+      const canvasHeight = 512; // must be 2^n.
+
+      const canvas = new Canvas({
+        cache: true,
+        height: canvasHeight,
+        width: canvasWidth,
+        draw: (ctx: CanvasRenderingContext2D) => {
+          ctx.fillStyle = "black";
+          ctx.fillRect(0, 72, canvasWidth, 40);
+        },
       });
-      this.addChild(child);
-      engine.add(child);
+
+      canvas.origin = new Vector(canvasWidth / 2, canvasHeight / 2);
+      canvas.rotation = (Math.PI * hour) / 6;
+
+      this.graphics.show(canvas);
     }
   };
 
