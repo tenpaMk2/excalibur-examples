@@ -1,4 +1,4 @@
-import { Scene, Engine, SpriteSheet, TileMap, Vector, Sprite } from "excalibur";
+import { Scene, Engine, TileMap, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { MapBuilder } from "../objects/map-builder";
 import { Player } from "../objects/player";
