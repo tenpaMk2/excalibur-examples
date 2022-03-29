@@ -9,7 +9,7 @@ export class MapBuilder extends TileMap {
       x: 0,
       y: 0,
       rows: 10,
-      cols: 8,
+      cols: 16,
       cellWidth: unitLength,
       cellHeight: unitLength,
     });
