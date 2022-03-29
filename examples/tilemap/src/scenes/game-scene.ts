@@ -31,6 +31,8 @@ export class GameScene extends Scene {
         this.tryToMoveDown(tilemap, player);
       }
     });
+
+    this.camera.strategy.elasticToActor(player, 0.2, 0.1);
   };
 
   tryToMoveUp = (tilemap: TileMap, player: Player) => {
