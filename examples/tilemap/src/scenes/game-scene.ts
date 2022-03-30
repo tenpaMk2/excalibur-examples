@@ -62,9 +62,8 @@ export class GameScene extends Scene {
 
     this.breakIfNeed(mapBuilder, targetPos);
 
-    const targetCell = mapBuilder.getCellByPoint(targetPos.x, targetPos.y);
-    const isBlocked = targetCell.data.get("isBlocked");
-    if (isBlocked) return;
+    const isBlock = mapBuilder.isBlock(targetPos);
+    if (isBlock) return;
     player.pos = targetPos;
   };
 

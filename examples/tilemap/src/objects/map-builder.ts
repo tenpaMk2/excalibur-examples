@@ -71,19 +71,18 @@ export class MapBuilder extends TileMap {
 
   buildBlock = (row: number, col: number) => {
     const cell = this.getCell(col, row);
-    cell.data.set("isBlocked", true);
+    cell.addTag("block");
     cell.addGraphic(this.blockSprite);
   };
 
   buildGrassland = (row: number, col: number) => {
     const cell = this.getCell(col, row);
-    cell.data.set("isBlocked", false);
     cell.addGraphic(this.grasslandSprite);
   };
 
   buildTree = (row: number, col: number) => {
     const upCell = this.getCell(col, row);
-    upCell.data.set("isBreakable", true);
+    upCell.addTag("breakable");
     upCell.addTag("tree");
     upCell.addGraphic(this.downTreeSprite);
 
@@ -91,9 +90,14 @@ export class MapBuilder extends TileMap {
     downCell.addGraphic(this.upTreeSprite);
   };
 
+  isBlock = (targetPos: Vector) => {
+    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    return targetCell.hasTag("block");
+  };
+
   isBreakable = (targetPos: Vector) => {
     const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
-    return targetCell.data.get("isBreakable");
+    return targetCell.hasTag("breakable");
   };
 
   breakdown = (targetPos: Vector) => {
