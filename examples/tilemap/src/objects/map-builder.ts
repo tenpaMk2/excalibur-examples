@@ -1,4 +1,12 @@
-import { Engine, Sprite, SpriteSheet, TileMap, Vector } from "excalibur";
+import {
+  Engine,
+  Logger,
+  Sprite,
+  SpriteSheet,
+  TileMap,
+  Vector,
+} from "excalibur";
+import { Neighbor8 } from "../neighbor";
 import { Resources } from "../resource";
 
 export class MapBuilder extends TileMap {
@@ -69,9 +77,59 @@ export class MapBuilder extends TileMap {
 
   onInitialize = (engine: Engine) => {};
 
+  registerTag = (pos: Vector, tag: string) => {
+    const cell = this.getCellByPoint(pos.x, pos.y);
+    cell.addTag(tag);
+  };
+
+  hasNeighborTag = (pos: Vector, tag: string, neighbor: Neighbor8): boolean => {
+    let offsetX = 0;
+    let offsetY = 0;
+    switch (neighbor) {
+      case Neighbor8.Up:
+        offsetY = -this.unitLength;
+        break;
+      case Neighbor8.UpperRight:
+        offsetX = this.unitLength;
+        offsetY = -this.unitLength;
+        break;
+      case Neighbor8.Right:
+        offsetX = this.unitLength;
+        break;
+      case Neighbor8.LowerRight:
+        offsetX = this.unitLength;
+        offsetY = this.unitLength;
+        break;
+      case Neighbor8.Down:
+        offsetY = this.unitLength;
+        break;
+      case Neighbor8.LowerLeft:
+        offsetX = -this.unitLength;
+        offsetY = this.unitLength;
+        break;
+      case Neighbor8.Left:
+        offsetX = -this.unitLength;
+        break;
+      case Neighbor8.UpperLeft:
+        offsetX = -this.unitLength;
+        offsetY = -this.unitLength;
+        break;
+      default:
+        Logger.getInstance().warn("invalid neighbor8!!");
+        break;
+    }
+    const targetCell = this.getCellByPoint(pos.x + offsetX, pos.y + offsetY);
+    if (!targetCell) return null;
+
+    return targetCell.hasTag(tag);
+  };
+
   buildBlock = (row: number, col: number) => {
     const cell = this.getCell(col, row);
-    cell.addTag("block");
+    this.registerTag(
+      new Vector(col * this.unitLength, row * this.unitLength),
+      "block"
+    );
     cell.addGraphic(this.blockSprite);
   };
 
@@ -82,8 +140,14 @@ export class MapBuilder extends TileMap {
 
   buildTree = (row: number, col: number) => {
     const upCell = this.getCell(col, row);
-    upCell.addTag("breakable");
-    upCell.addTag("tree");
+    this.registerTag(
+      new Vector(col * this.unitLength, row * this.unitLength),
+      "breakable"
+    );
+    this.registerTag(
+      new Vector(col * this.unitLength, row * this.unitLength),
+      "tree"
+    );
     upCell.addGraphic(this.downTreeSprite);
 
     const downCell = this.getCell(col, row - 1);
