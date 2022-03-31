@@ -204,5 +204,8 @@ export class MapBuilder extends TileMap {
       );
       upCell.removeGraphic(this.upTreeSprite);
     }
+
+    targetCell.removeTag("tree", true);
+    targetCell.removeTag("breakable", true);
   };
 }
