@@ -1,11 +1,13 @@
 import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
 import { Resources } from "../resource";
 import { Creature } from "./creature";
+import { HPBar } from "./hp-bar";
 
 export class Enemy extends Actor implements Creature {
-  HP = 10;
+  private _HP = 10;
   offence = 3;
   defence = 1;
+  HPBar: HPBar;
 
   constructor(pos: Vector, unitLength: number) {
     super({
@@ -38,7 +40,21 @@ export class Enemy extends Actor implements Creature {
     sprite.width = unitLength;
     sprite.height = unitLength;
     this.graphics.use(sprite);
+
+    this.HPBar = new HPBar(this.HP, unitLength);
+    this.addChild(this.HPBar);
   }
 
-  onInitialize = (engine: Engine) => {};
+  onInitialize = (engine: Engine) => {
+    engine.add(this.HPBar);
+  };
+
+  set HP(val: number) {
+    this._HP = val < 0 ? 0 : val;
+    this.HPBar.updateHP(this._HP);
+  }
+
+  get HP() {
+    return this._HP;
+  }
 }
