@@ -19,15 +19,8 @@ export class GameScene extends Scene {
     this.mapBuilder = new MapBuilder(GameScene.UNIT_LENGTH);
     engine.add(this.mapBuilder);
 
-    const cell = this.mapBuilder.getCell(2, 3);
-    this.player = new Player(cell.center, GameScene.UNIT_LENGTH);
-    engine.add(this.player);
-    this.mapBuilder.registerTag(this.player.pos, "player");
-
-    const enemyCell = this.mapBuilder.getCell(7, 8);
-    this.enemy = new Enemy(enemyCell.center, GameScene.UNIT_LENGTH);
-    engine.add(this.enemy);
-    this.mapBuilder.registerTag(this.enemy.pos, "enemy");
+    this.generatePlayer(engine, 3, 2);
+    this.generateEnemy(engine, 8, 7);
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       if (event.screenPos.x < engine.drawWidth / 4) {
@@ -44,6 +37,20 @@ export class GameScene extends Scene {
     });
 
     this.camera.strategy.elasticToActor(this.player, 0.2, 0.1);
+  };
+
+  generatePlayer = (engine: Engine, row: number, col: number) => {
+    const cell = this.mapBuilder.getCell(col, row);
+    this.player = new Player(cell.center, GameScene.UNIT_LENGTH);
+    engine.add(this.player);
+    this.mapBuilder.registerCreature(this.player.pos, this.player);
+  };
+
+  generateEnemy = (engine: Engine, row: number, col: number) => {
+    const cell = this.mapBuilder.getCell(col, row);
+    this.enemy = new Enemy(cell.center, GameScene.UNIT_LENGTH);
+    engine.add(this.enemy);
+    this.mapBuilder.registerCreature(this.enemy.pos, this.enemy);
   };
 
   playerTryToMoveUp = (mapBuilder: MapBuilder, player: Player) => {

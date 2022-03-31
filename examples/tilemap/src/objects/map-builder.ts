@@ -6,8 +6,10 @@ import {
   TileMap,
   Vector,
 } from "excalibur";
-import { Neighbor8 } from "../neighbor";
+import { Neighbor8, neighbor8ToVector } from "../neighbor";
 import { Resources } from "../resource";
+import { Enemy } from "./enemy";
+import { Player } from "./player";
 
 export class MapBuilder extends TileMap {
   mapchipSpriteSheet: SpriteSheet;
@@ -77,9 +79,55 @@ export class MapBuilder extends TileMap {
 
   onInitialize = (engine: Engine) => {};
 
-  registerTag = (pos: Vector, tag: string) => {
+  private registerTag = (pos: Vector, tag: string) => {
     const cell = this.getCellByPoint(pos.x, pos.y);
     cell.addTag(tag);
+  };
+
+  registerCreature = (pos: Vector, creature: Player | Enemy) => {
+    const cell = this.getCellByPoint(pos.x, pos.y);
+    cell.data.set("creature", creature);
+    if (creature instanceof Player) {
+      this.registerTag(cell.center, "player");
+    } else {
+      this.registerTag(cell.center, "enemy");
+    }
+  };
+
+  moveCreature = (creature: Player | Enemy, direction: Neighbor8) => {
+    const cells = this.data.filter(
+      (cell) => cell.data.get("creature") === creature
+    );
+    if (cells.length !== 1) {
+      Logger.getInstance().error("creature is nowhere!!");
+      return;
+    }
+    const cell = cells[0];
+    cell.data.delete("creature");
+
+    if (creature instanceof Player) {
+      cell.removeTag("player");
+    } else {
+      cell.removeTag("enemy");
+    }
+
+    const offset = neighbor8ToVector(direction);
+    const targetCell = this.getCellByPoint(
+      cell.center.x + offset.x,
+      cell.center.y + offset.y
+    );
+    if (!targetCell) {
+      Logger.getInstance().error("No cells!!");
+      return;
+    }
+
+    targetCell.data.set("creature", creature);
+
+    if (creature instanceof Player) {
+      cell.addTag("player");
+    } else {
+      cell.addTag("enemy");
+    }
   };
 
   moveTag = (targetPos: Vector, tag: string) => {
@@ -100,42 +148,8 @@ export class MapBuilder extends TileMap {
     tag: string,
     direction: Neighbor8
   ): boolean => {
-    let offsetX = 0;
-    let offsetY = 0;
-    switch (direction) {
-      case Neighbor8.Up:
-        offsetY = -this.unitLength;
-        break;
-      case Neighbor8.UpperRight:
-        offsetX = this.unitLength;
-        offsetY = -this.unitLength;
-        break;
-      case Neighbor8.Right:
-        offsetX = this.unitLength;
-        break;
-      case Neighbor8.LowerRight:
-        offsetX = this.unitLength;
-        offsetY = this.unitLength;
-        break;
-      case Neighbor8.Down:
-        offsetY = this.unitLength;
-        break;
-      case Neighbor8.LowerLeft:
-        offsetX = -this.unitLength;
-        offsetY = this.unitLength;
-        break;
-      case Neighbor8.Left:
-        offsetX = -this.unitLength;
-        break;
-      case Neighbor8.UpperLeft:
-        offsetX = -this.unitLength;
-        offsetY = -this.unitLength;
-        break;
-      default:
-        Logger.getInstance().warn("invalid neighbor8!!");
-        break;
-    }
-    const targetCell = this.getCellByPoint(pos.x + offsetX, pos.y + offsetY);
+    const offset = neighbor8ToVector(direction);
+    const targetCell = this.getCellByPoint(pos.x + offset.x, pos.y + offset.y);
     if (!targetCell) return null;
 
     return targetCell.hasTag(tag);
