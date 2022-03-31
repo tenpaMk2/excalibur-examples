@@ -109,9 +109,4 @@ export class GameScene extends Scene {
   battle = (attacker: Player | Enemy, defender: Enemy | Player) => {
     defender.kill();
   };
-
-  knockDownIfNeed = (MapBuilder: MapBuilder, targetPos: Vector): boolean => {
-    // const isEnemy
-    return false;
-  };
 }
