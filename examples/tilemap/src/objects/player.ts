@@ -1,4 +1,5 @@
 import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
+import config from "../config";
 import { Resources } from "../resource";
 import { HPBar } from "./hp-bar";
 
@@ -8,11 +9,11 @@ export class Player extends Actor {
   defence = 2;
   HPBar: HPBar;
 
-  constructor(pos: Vector, unitLength: number) {
+  constructor(pos: Vector) {
     super({
       pos: pos,
-      width: unitLength,
-      height: unitLength,
+      width: config.TileWidth,
+      height: config.TileWidth,
     });
 
     const bodySpriteSheet = SpriteSheet.fromImageSource({
@@ -56,21 +57,21 @@ export class Player extends Actor {
     });
 
     const sprite = bodySpriteSheet.getSprite(0, 0);
-    sprite.width = unitLength;
-    sprite.height = unitLength;
+    sprite.width = config.TileWidth;
+    sprite.height = config.TileWidth;
     this.graphics.use(sprite);
 
     const sprite2 = partSpriteSheet.getSprite(0, 0);
-    sprite2.width = unitLength;
-    sprite2.height = unitLength;
+    sprite2.width = config.TileWidth;
+    sprite2.height = config.TileWidth;
     this.graphics.show(sprite2);
 
     const sprite3 = partSpriteSheet.getSprite(3, 0);
-    sprite3.width = unitLength;
-    sprite3.height = unitLength;
+    sprite3.width = config.TileWidth;
+    sprite3.height = config.TileWidth;
     this.graphics.show(sprite3);
 
-    this.HPBar = new HPBar(this._HP, unitLength);
+    this.HPBar = new HPBar(this._HP);
     this.addChild(this.HPBar);
   }
 

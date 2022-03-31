@@ -6,6 +6,7 @@ import {
   TileMap,
   Vector,
 } from "excalibur";
+import config from "../config";
 import { Neighbor8, neighbor8ToVector } from "../neighbor";
 import { Resources } from "../resource";
 import { Enemy } from "./enemy";
@@ -18,14 +19,14 @@ export class MapBuilder extends TileMap {
   upTreeSprite: Sprite;
   downTreeSprite: Sprite;
 
-  constructor(public unitLength: number, numOfRow: number, numOfCol: number) {
+  constructor(numOfRow: number, numOfCol: number) {
     super({
       x: 0,
       y: 0,
       rows: numOfRow,
       cols: numOfCol,
-      cellWidth: unitLength,
-      cellHeight: unitLength,
+      cellWidth: config.TileWidth,
+      cellHeight: config.TileWidth,
     });
 
     this.mapchipSpriteSheet = SpriteSheet.fromImageSource({
@@ -45,17 +46,17 @@ export class MapBuilder extends TileMap {
     });
 
     this.blockSprite = this.mapchipSpriteSheet.getSprite(6, 0);
-    this.blockSprite.width = unitLength;
-    this.blockSprite.height = unitLength;
+    this.blockSprite.width = config.TileWidth;
+    this.blockSprite.height = config.TileWidth;
     this.grasslandSprite = this.mapchipSpriteSheet.getSprite(5, 0);
-    this.grasslandSprite.width = unitLength;
-    this.grasslandSprite.height = unitLength;
+    this.grasslandSprite.width = config.TileWidth;
+    this.grasslandSprite.height = config.TileWidth;
     this.upTreeSprite = this.mapchipSpriteSheet.getSprite(16, 10);
-    this.upTreeSprite.width = unitLength;
-    this.upTreeSprite.height = unitLength;
+    this.upTreeSprite.width = config.TileWidth;
+    this.upTreeSprite.height = config.TileWidth;
     this.downTreeSprite = this.mapchipSpriteSheet.getSprite(16, 11);
-    this.downTreeSprite.width = unitLength;
-    this.downTreeSprite.height = unitLength;
+    this.downTreeSprite.width = config.TileWidth;
+    this.downTreeSprite.height = config.TileWidth;
   }
 
   onInitialize = (engine: Engine) => {};
@@ -146,7 +147,7 @@ export class MapBuilder extends TileMap {
     tag: string,
     direction: Neighbor8
   ): boolean => {
-    const offset = neighbor8ToVector(direction).scale(this.unitLength);
+    const offset = neighbor8ToVector(direction).scale(config.TileWidth);
     const targetCell = this.getCellByPoint(pos.x + offset.x, pos.y + offset.y);
     if (!targetCell) return null;
 
@@ -156,7 +157,7 @@ export class MapBuilder extends TileMap {
   buildBlock = (row: number, col: number) => {
     const cell = this.getCell(col, row);
     this.registerTag(
-      new Vector(col * this.unitLength, row * this.unitLength),
+      new Vector(col * config.TileWidth, row * config.TileWidth),
       "block"
     );
     cell.addGraphic(this.blockSprite);
@@ -170,11 +171,11 @@ export class MapBuilder extends TileMap {
   buildTree = (row: number, col: number) => {
     const upCell = this.getCell(col, row);
     this.registerTag(
-      new Vector(col * this.unitLength, row * this.unitLength),
+      new Vector(col * config.TileWidth, row * config.TileWidth),
       "breakable"
     );
     this.registerTag(
-      new Vector(col * this.unitLength, row * this.unitLength),
+      new Vector(col * config.TileWidth, row * config.TileWidth),
       "tree"
     );
     upCell.addGraphic(this.downTreeSprite);
@@ -199,7 +200,7 @@ export class MapBuilder extends TileMap {
     if (targetCell.hasTag("tree")) {
       const upCell = this.getCellByPoint(
         targetPos.x,
-        targetPos.y - this.unitLength
+        targetPos.y - config.TileWidth
       );
       upCell.removeGraphic(this.upTreeSprite);
     }

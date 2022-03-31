@@ -1,6 +1,7 @@
 import { Scene, Engine, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Battle } from "../battle";
+import config from "../config";
 import { Neighbor8 } from "../neighbor";
 import { Enemy } from "../objects/enemy";
 import { MapBuilder } from "../objects/map-builder";
@@ -10,7 +11,6 @@ export class GameScene extends Scene {
   mapBuilder: MapBuilder;
   player: Player;
   enemy: Enemy;
-  static readonly UNIT_LENGTH = 64;
 
   constructor(public engine: Engine) {
     super();
@@ -39,7 +39,7 @@ export class GameScene extends Scene {
   initMap = (engine: Engine) => {
     const numOfRow = 10;
     const numOfCol = 16;
-    this.mapBuilder = new MapBuilder(GameScene.UNIT_LENGTH, numOfRow, numOfCol);
+    this.mapBuilder = new MapBuilder(numOfRow, numOfCol);
     engine.add(this.mapBuilder);
 
     for (let row = 0; row < numOfRow; row++) {
@@ -67,14 +67,14 @@ export class GameScene extends Scene {
 
   generatePlayer = (engine: Engine, row: number, col: number) => {
     const cell = this.mapBuilder.getCell(col, row);
-    this.player = new Player(cell.center, GameScene.UNIT_LENGTH);
+    this.player = new Player(cell.center);
     engine.add(this.player);
     this.mapBuilder.registerCreature(this.player.pos, this.player);
   };
 
   generateEnemy = (engine: Engine, row: number, col: number) => {
     const cell = this.mapBuilder.getCell(col, row);
-    this.enemy = new Enemy(cell.center, GameScene.UNIT_LENGTH);
+    this.enemy = new Enemy(cell.center);
     engine.add(this.enemy);
     this.mapBuilder.registerCreature(this.enemy.pos, this.enemy);
   };
@@ -101,7 +101,7 @@ export class GameScene extends Scene {
     directionVector: Vector
   ) => {
     const pos = player.pos;
-    const targetPos = pos.add(directionVector.scale(GameScene.UNIT_LENGTH));
+    const targetPos = pos.add(directionVector.scale(config.TileWidth));
 
     const isBlock = mapBuilder.isBlock(targetPos);
     if (isBlock) return;

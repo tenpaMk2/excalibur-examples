@@ -1,9 +1,10 @@
 import { Actor, Canvas, Logger, Vector } from "excalibur";
+import config from "../config";
 
 export class HPBar extends Actor {
-  constructor(public maxHP: number, public unitLength: number) {
+  constructor(public maxHP: number) {
     super({
-      pos: Vector.Down.scale(unitLength / 2),
+      pos: Vector.Down.scale(config.TileWidth / 2),
     });
 
     this.updateHP(maxHP);
@@ -19,8 +20,8 @@ export class HPBar extends Actor {
       return;
     }
 
-    const canvasWidth = this.unitLength; // must be 2^n.
-    const canvasHeight = this.unitLength / 8; // must be 2^n.
+    const canvasWidth = config.TileWidth; // must be 2^n.
+    const canvasHeight = config.TileWidth / 8; // must be 2^n.
 
     const canvas = new Canvas({
       cache: true,

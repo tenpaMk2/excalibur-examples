@@ -1,4 +1,5 @@
 import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
+import config from "../config";
 import { Resources } from "../resource";
 import { Creature } from "./creature";
 import { HPBar } from "./hp-bar";
@@ -9,11 +10,11 @@ export class Enemy extends Actor implements Creature {
   defence = 1;
   HPBar: HPBar;
 
-  constructor(pos: Vector, unitLength: number) {
+  constructor(pos: Vector) {
     super({
       pos: pos,
-      width: unitLength,
-      height: unitLength,
+      width: config.TileWidth,
+      height: config.TileWidth,
     });
 
     const bodySpriteSheet = SpriteSheet.fromImageSource({
@@ -37,11 +38,11 @@ export class Enemy extends Actor implements Creature {
     });
 
     const sprite = bodySpriteSheet.getSprite(0, 10);
-    sprite.width = unitLength;
-    sprite.height = unitLength;
+    sprite.width = config.TileWidth;
+    sprite.height = config.TileWidth;
     this.graphics.use(sprite);
 
-    this.HPBar = new HPBar(this.HP, unitLength);
+    this.HPBar = new HPBar(this.HP);
     this.addChild(this.HPBar);
   }
 
