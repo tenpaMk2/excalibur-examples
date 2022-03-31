@@ -18,12 +18,12 @@ export class MapBuilder extends TileMap {
   upTreeSprite: Sprite;
   downTreeSprite: Sprite;
 
-  constructor(public unitLength: number) {
+  constructor(public unitLength: number, numOfRow: number, numOfCol: number) {
     super({
       x: 0,
       y: 0,
-      rows: 10,
-      cols: 16,
+      rows: numOfRow,
+      cols: numOfCol,
       cellWidth: unitLength,
       cellHeight: unitLength,
     });
@@ -56,25 +56,6 @@ export class MapBuilder extends TileMap {
     this.downTreeSprite = this.mapchipSpriteSheet.getSprite(16, 11);
     this.downTreeSprite.width = unitLength;
     this.downTreeSprite.height = unitLength;
-
-    for (let row = 0; row < this.rows; row++) {
-      for (let col = 0; col < this.cols; col++) {
-        if (
-          row === 0 ||
-          row === this.rows - 1 ||
-          col === 0 ||
-          col === this.cols - 1
-        ) {
-          this.buildBlock(row, col);
-        } else {
-          this.buildGrassland(row, col);
-        }
-      }
-    }
-
-    this.buildTree(3, 4);
-    this.buildTree(4, 3);
-    this.buildTree(4, 4);
   }
 
   onInitialize = (engine: Engine) => {};

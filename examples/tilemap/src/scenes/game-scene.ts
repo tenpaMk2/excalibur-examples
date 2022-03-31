@@ -17,11 +17,7 @@ export class GameScene extends Scene {
   }
 
   onInitialize = (engine: Engine) => {
-    this.mapBuilder = new MapBuilder(GameScene.UNIT_LENGTH);
-    engine.add(this.mapBuilder);
-
-    this.generatePlayer(engine, 3, 2);
-    this.generateEnemy(engine, 8, 7);
+    this.initMap(engine);
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       if (event.screenPos.x < engine.drawWidth / 4) {
@@ -38,6 +34,35 @@ export class GameScene extends Scene {
     });
 
     this.camera.strategy.elasticToActor(this.player, 0.2, 0.1);
+  };
+
+  initMap = (engine: Engine) => {
+    const numOfRow = 10;
+    const numOfCol = 16;
+    this.mapBuilder = new MapBuilder(GameScene.UNIT_LENGTH, numOfRow, numOfCol);
+    engine.add(this.mapBuilder);
+
+    for (let row = 0; row < numOfRow; row++) {
+      for (let col = 0; col < numOfCol; col++) {
+        if (
+          row === 0 ||
+          row === numOfRow - 1 ||
+          col === 0 ||
+          col === numOfCol - 1
+        ) {
+          this.mapBuilder.buildBlock(row, col);
+        } else {
+          this.mapBuilder.buildGrassland(row, col);
+        }
+      }
+    }
+
+    this.mapBuilder.buildTree(3, 4);
+    this.mapBuilder.buildTree(4, 3);
+    this.mapBuilder.buildTree(4, 4);
+
+    this.generatePlayer(engine, 3, 2);
+    this.generateEnemy(engine, 8, 7);
   };
 
   generatePlayer = (engine: Engine, row: number, col: number) => {
