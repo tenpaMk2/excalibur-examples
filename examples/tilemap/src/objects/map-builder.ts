@@ -208,4 +208,12 @@ export class MapBuilder extends TileMap {
     targetCell.removeTag("tree", true);
     targetCell.removeTag("breakable", true);
   };
+
+  _debugTag = (tag: string) => {
+    const cell2d = this.getRows();
+    const result = cell2d.map((cells) =>
+      cells.map((cell) => (cell.hasTag(tag) ? "⭕" : "➖"))
+    );
+    result.forEach((rows) => console.log(rows));
+  };
 }
