@@ -1,8 +1,12 @@
 import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
 import { Resources } from "../resource";
+import { Creature } from "./creature";
 
-export class Enemy extends Actor {
-  shaft: Actor;
+export class Enemy extends Actor implements Creature {
+  HP = 10;
+  offence = 3;
+  defence = 1;
+
   constructor(pos: Vector, unitLength: number) {
     super({
       pos: pos,

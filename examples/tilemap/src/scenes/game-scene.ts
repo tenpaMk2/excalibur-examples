@@ -1,5 +1,6 @@
 import { Scene, Engine, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
+import { Battle } from "../battle";
 import { Neighbor8 } from "../neighbor";
 import { Enemy } from "../objects/enemy";
 import { MapBuilder } from "../objects/map-builder";
@@ -95,7 +96,12 @@ export class GameScene extends Scene {
 
     const existEnemy = mapBuilder.hasTagInNeighbor8(pos, "enemy", direction);
     if (existEnemy) {
-      this.battle(player, this.enemy);
+      const battle = new Battle(player, this.enemy);
+      if (battle.isDead) {
+        this.killCreature(this.enemy, mapBuilder);
+        this.playerMove(mapBuilder, player, targetPos);
+      }
+      return;
     }
 
     this.playerMove(mapBuilder, player, targetPos);
@@ -113,7 +119,8 @@ export class GameScene extends Scene {
     return true;
   };
 
-  battle = (attacker: Player | Enemy, defender: Enemy | Player) => {
-    defender.kill();
+  killCreature = (creature: Player | Enemy, mapBuilder: MapBuilder) => {
+    mapBuilder.unregisterCreature(creature);
+    creature.kill();
   };
 }

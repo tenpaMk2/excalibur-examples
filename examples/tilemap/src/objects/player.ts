@@ -2,7 +2,10 @@ import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
 import { Resources } from "../resource";
 
 export class Player extends Actor {
-  shaft: Actor;
+  HP = 10;
+  offence = 4;
+  defence = 2;
+
   constructor(pos: Vector, unitLength: number) {
     super({
       pos: pos,

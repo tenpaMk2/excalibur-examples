@@ -94,6 +94,23 @@ export class MapBuilder extends TileMap {
     }
   };
 
+  unregisterCreature = (creature: Player | Enemy) => {
+    const cells = this.data.filter(
+      (cell) => cell.data.get("creature") === creature
+    );
+    if (cells.length !== 1) {
+      Logger.getInstance().error("can not unregister because no creature.");
+      return;
+    }
+    const cell = cells[0];
+    cell.data.delete("creature");
+    if (creature instanceof Player) {
+      cell.removeTag("player", true);
+    } else {
+      cell.removeTag("enemy", true);
+    }
+  };
+
   moveCreature = (creature: Player | Enemy, direction: Neighbor8) => {
     const cells = this.data.filter(
       (cell) => cell.data.get("creature") === creature
@@ -148,7 +165,7 @@ export class MapBuilder extends TileMap {
     tag: string,
     direction: Neighbor8
   ): boolean => {
-    const offset = neighbor8ToVector(direction);
+    const offset = neighbor8ToVector(direction).scale(this.unitLength);
     const targetCell = this.getCellByPoint(pos.x + offset.x, pos.y + offset.y);
     if (!targetCell) return null;
 
