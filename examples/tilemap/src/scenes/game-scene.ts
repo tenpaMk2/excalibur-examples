@@ -31,38 +31,38 @@ export class GameScene extends Scene {
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       if (event.screenPos.x < engine.drawWidth / 4) {
-        this.tryToMoveLeft(this.mapBuilder, this.player);
+        this.playerTryToMoveLeft(this.mapBuilder, this.player);
       } else if ((engine.drawWidth * 3) / 4 < event.screenPos.x) {
-        this.tryToMoveRight(this.mapBuilder, this.player);
+        this.playerTryToMoveRight(this.mapBuilder, this.player);
       }
 
       if (event.screenPos.y < engine.drawHeight / 4) {
-        this.tryToMoveUp(this.mapBuilder, this.player);
+        this.playerTryToMoveUp(this.mapBuilder, this.player);
       } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
-        this.tryToMoveDown(this.mapBuilder, this.player);
+        this.playerTryToMoveDown(this.mapBuilder, this.player);
       }
     });
 
     this.camera.strategy.elasticToActor(this.player, 0.2, 0.1);
   };
 
-  tryToMoveUp = (mapBuilder: MapBuilder, player: Player) => {
-    this.tryToMove(mapBuilder, player, Vector.Up);
+  playerTryToMoveUp = (mapBuilder: MapBuilder, player: Player) => {
+    this.playerTryToMove(mapBuilder, player, Vector.Up);
   };
 
-  tryToMoveRight = (mapBuilder: MapBuilder, player: Player) => {
-    this.tryToMove(mapBuilder, player, Vector.Right);
+  playerTryToMoveRight = (mapBuilder: MapBuilder, player: Player) => {
+    this.playerTryToMove(mapBuilder, player, Vector.Right);
   };
 
-  tryToMoveDown = (mapBuilder: MapBuilder, player: Player) => {
-    this.tryToMove(mapBuilder, player, Vector.Down);
+  playerTryToMoveDown = (mapBuilder: MapBuilder, player: Player) => {
+    this.playerTryToMove(mapBuilder, player, Vector.Down);
   };
 
-  tryToMoveLeft = (mapBuilder: MapBuilder, player: Player) => {
-    this.tryToMove(mapBuilder, player, Vector.Left);
+  playerTryToMoveLeft = (mapBuilder: MapBuilder, player: Player) => {
+    this.playerTryToMove(mapBuilder, player, Vector.Left);
   };
 
-  tryToMove = (
+  playerTryToMove = (
     mapBuilder: MapBuilder,
     player: Player,
     directionVector: Vector
@@ -75,23 +75,28 @@ export class GameScene extends Scene {
 
     this.breakIfNeed(mapBuilder, targetPos);
 
-    let neighbor;
+    let direction;
     if (Vector.Up.equals(directionVector)) {
-      neighbor = Neighbor8.Up;
+      direction = Neighbor8.Up;
     } else if (Vector.Right.equals(directionVector)) {
-      neighbor = Neighbor8.Right;
+      direction = Neighbor8.Right;
     } else if (Vector.Down.equals(directionVector)) {
-      neighbor = Neighbor8.Down;
+      direction = Neighbor8.Down;
     } else if (Vector.Left.equals(directionVector)) {
-      neighbor = Neighbor8.Left;
+      direction = Neighbor8.Left;
     }
 
-    const existEnemy = mapBuilder.hasNeighborTag(pos, "enemy", neighbor);
+    const existEnemy = mapBuilder.hasTagInNeighbor8(pos, "enemy", direction);
     if (existEnemy) {
       this.battle(player, this.enemy);
     }
 
+    this.playerMove(mapBuilder, player, targetPos);
+  };
+
+  playerMove = (mapBuilder: MapBuilder, player: Player, targetPos: Vector) => {
     player.pos = targetPos;
+    mapBuilder.moveTag(targetPos, "player");
   };
 
   breakIfNeed = (mapBuilder: MapBuilder, targetPos: Vector): boolean => {

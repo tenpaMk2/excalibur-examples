@@ -82,10 +82,27 @@ export class MapBuilder extends TileMap {
     cell.addTag(tag);
   };
 
-  hasNeighborTag = (pos: Vector, tag: string, neighbor: Neighbor8): boolean => {
+  moveTag = (targetPos: Vector, tag: string) => {
+    const taggedCells = this.data.filter((cell) => cell.hasTag(tag));
+    if (taggedCells.length !== 1) {
+      Logger.getInstance().error("invalid tag number!!");
+      return;
+    }
+    const taggedCell = taggedCells[0];
+    taggedCell.removeTag(tag, true);
+
+    const newCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    newCell.addTag(tag);
+  };
+
+  hasTagInNeighbor8 = (
+    pos: Vector,
+    tag: string,
+    direction: Neighbor8
+  ): boolean => {
     let offsetX = 0;
     let offsetY = 0;
-    switch (neighbor) {
+    switch (direction) {
       case Neighbor8.Up:
         offsetY = -this.unitLength;
         break;
