@@ -9,8 +9,7 @@ import {
 import config from "../config";
 import { Neighbor8, neighbor8ToVector } from "../neighbor";
 import { Resources } from "../resource";
-import { Enemy } from "./enemy";
-import { Player } from "./player";
+import { Creature } from "./creature";
 
 export class MapBuilder extends TileMap {
   mapchipSpriteSheet: SpriteSheet;
@@ -66,80 +65,55 @@ export class MapBuilder extends TileMap {
     cell.addTag(tag);
   };
 
-  registerCreature = (pos: Vector, creature: Player | Enemy) => {
+  registerCreature = (pos: Vector, creature: Creature) => {
     const cell = this.getCellByPoint(pos.x, pos.y);
     cell.data.set("creature", creature);
-    if (creature instanceof Player) {
-      this.registerTag(cell.center, "player");
-    } else {
-      this.registerTag(cell.center, "enemy");
-    }
+    this.registerTag(cell.center, "creature");
   };
 
-  unregisterCreature = (creature: Player | Enemy) => {
+  unregisterCreature = (creature: Creature) => {
     const cells = this.data.filter(
       (cell) => cell.data.get("creature") === creature
     );
-    if (cells.length !== 1) {
-      Logger.getInstance().error("can not unregister because no creature.");
+    if (cells.length <= 0) {
+      Logger.getInstance().error("can not unregister because no creatures.");
+      return;
+    }
+    if (2 <= cells.length) {
+      Logger.getInstance().error(
+        "can not unregister because multiple creatures."
+      );
       return;
     }
     const cell = cells[0];
     cell.data.delete("creature");
-    if (creature instanceof Player) {
-      cell.removeTag("player", true);
-    } else {
-      cell.removeTag("enemy", true);
-    }
+    cell.removeTag("creature", true);
   };
 
-  moveCreature = (creature: Player | Enemy, direction: Neighbor8) => {
+  moveCreature = (creature: Creature, targetPos: Vector) => {
     const cells = this.data.filter(
       (cell) => cell.data.get("creature") === creature
     );
-    if (cells.length !== 1) {
-      Logger.getInstance().error("creature is nowhere!!");
+    if (cells.length <= 0) {
+      Logger.getInstance().error("can not move because no creatures.");
+      return;
+    }
+    if (2 <= cells.length) {
+      Logger.getInstance().error("can not move because multiple creatures.");
       return;
     }
     const cell = cells[0];
     cell.data.delete("creature");
+    cell.removeTag("creature", true);
 
-    if (creature instanceof Player) {
-      cell.removeTag("player");
-    } else {
-      cell.removeTag("enemy");
-    }
-
-    const offset = neighbor8ToVector(direction);
-    const targetCell = this.getCellByPoint(
-      cell.center.x + offset.x,
-      cell.center.y + offset.y
-    );
+    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
     if (!targetCell) {
       Logger.getInstance().error("No cells!!");
       return;
     }
 
     targetCell.data.set("creature", creature);
-
-    if (creature instanceof Player) {
-      cell.addTag("player");
-    } else {
-      cell.addTag("enemy");
-    }
-  };
-
-  moveTag = (targetPos: Vector, tag: string) => {
-    const taggedCells = this.data.filter((cell) => cell.hasTag(tag));
-    if (taggedCells.length !== 1) {
-      Logger.getInstance().error("invalid tag number!!");
-      return;
-    }
-    const taggedCell = taggedCells[0];
-    taggedCell.removeTag(tag, true);
-
-    const newCell = this.getCellByPoint(targetPos.x, targetPos.y);
-    newCell.addTag(tag);
+    targetCell.addTag("creature");
   };
 
   hasTagInNeighbor8 = (
@@ -182,6 +156,11 @@ export class MapBuilder extends TileMap {
 
     const downCell = this.getCell(col, row - 1);
     downCell.addGraphic(this.upTreeSprite);
+  };
+
+  buildCreature = (row: number, col: number, creature: Creature) => {
+    const cell = this.getCell(col, row);
+    this.registerCreature(creature.pos, creature);
   };
 
   isBlock = (targetPos: Vector) => {

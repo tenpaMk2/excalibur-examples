@@ -68,15 +68,15 @@ export class GameScene extends Scene {
   generatePlayer = (engine: Engine, row: number, col: number) => {
     const cell = this.mapBuilder.getCell(col, row);
     this.player = new Player(cell.center);
+    this.mapBuilder.buildCreature(row, col, this.player);
     engine.add(this.player);
-    this.mapBuilder.registerCreature(this.player.pos, this.player);
   };
 
   generateEnemy = (engine: Engine, row: number, col: number) => {
     const cell = this.mapBuilder.getCell(col, row);
     this.enemy = new Enemy(cell.center);
+    this.mapBuilder.buildCreature(row, col, this.enemy);
     engine.add(this.enemy);
-    this.mapBuilder.registerCreature(this.enemy.pos, this.enemy);
   };
 
   playerTryToMoveUp = (mapBuilder: MapBuilder, player: Player) => {
@@ -119,8 +119,12 @@ export class GameScene extends Scene {
       direction = Neighbor8.Left;
     }
 
-    const existEnemy = mapBuilder.hasTagInNeighbor8(pos, "enemy", direction);
-    if (existEnemy) {
+    const creatureExist = mapBuilder.hasTagInNeighbor8(
+      pos,
+      "creature",
+      direction
+    );
+    if (creatureExist) {
       const battle = new Battle(player, this.enemy);
       if (battle.isDead) {
         this.killCreature(this.enemy, mapBuilder);
@@ -134,7 +138,7 @@ export class GameScene extends Scene {
 
   playerMove = (mapBuilder: MapBuilder, player: Player, targetPos: Vector) => {
     player.pos = targetPos;
-    mapBuilder.moveTag(targetPos, "player");
+    mapBuilder.moveCreature(player, targetPos);
   };
 
   breakIfNeed = (mapBuilder: MapBuilder, targetPos: Vector): boolean => {
