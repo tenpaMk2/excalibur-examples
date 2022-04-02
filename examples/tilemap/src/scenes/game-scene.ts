@@ -7,18 +7,35 @@ import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
 import { MapBuilder } from "../objects/map-builder";
 import { Player } from "../objects/player";
+import { TurnQueue } from "../objects/turn-stack";
 
 export class GameScene extends Scene {
   mapBuilder: MapBuilder;
   player: Player;
   enemy: Enemy;
+  turnQueue: TurnQueue;
 
   constructor(public engine: Engine) {
     super();
+    this.turnQueue = new TurnQueue();
   }
 
   onInitialize = (engine: Engine) => {
     this.initMap(engine);
+
+    while (this.turnQueue[0] !== this.player) {
+      const creature = this.turnQueue.dequeueCreature();
+      const action = creature.decideAction();
+      switch (action) {
+        case "ComeClose":
+          this.tryToMoveLeft(this.mapBuilder, creature);
+          break;
+
+        default:
+          break;
+      }
+      this.turnQueue.enqueueCreature(creature);
+    }
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       // Player
@@ -33,16 +50,22 @@ export class GameScene extends Scene {
       } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
         this.tryToMoveDown(this.mapBuilder, this.player);
       }
+      this.turnQueue.dequeueCreature();
+      this.turnQueue.enqueueCreature(this.player);
 
       // Enemy
-      const action = this.enemy.decideAction();
-      switch (action) {
-        case Action.ComeClose:
-          this.tryToMoveUp(this.mapBuilder, this.enemy);
-          break;
+      while (this.turnQueue[0] !== this.player) {
+        const creature = this.turnQueue.dequeueCreature();
+        const action = creature.decideAction();
+        switch (action) {
+          case "ComeClose":
+            this.tryToMoveUp(this.mapBuilder, creature);
+            break;
 
-        default:
-          break;
+          default:
+            break;
+        }
+        this.turnQueue.enqueueCreature(creature);
       }
     });
 
@@ -83,6 +106,7 @@ export class GameScene extends Scene {
     this.player = new Player(cell.center);
     this.mapBuilder.buildCreature(row, col, this.player);
     engine.add(this.player);
+    this.turnQueue.enqueueCreature(this.player);
   };
 
   generateEnemy = (engine: Engine, row: number, col: number) => {
@@ -90,6 +114,7 @@ export class GameScene extends Scene {
     this.enemy = new Enemy(cell.center);
     this.mapBuilder.buildCreature(row, col, this.enemy);
     engine.add(this.enemy);
+    this.turnQueue.enqueueCreature(this.enemy);
   };
 
   tryToMoveUp = (mapBuilder: MapBuilder, creature: Creature) => {

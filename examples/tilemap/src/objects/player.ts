@@ -8,6 +8,8 @@ export class Player extends Actor implements Creature {
   private _HP = 10;
   offence = 4;
   defence = 2;
+  slowness = 100;
+  timeUntilNextTurn = this.slowness;
   relationship: "friend";
   HPBar: HPBar;
 

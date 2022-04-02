@@ -8,6 +8,8 @@ export class Enemy extends Actor implements Creature {
   private _HP = 10;
   offence = 3;
   defence = 1;
+  slowness = 150;
+  timeUntilNextTurn = this.slowness;
   relationship: "hostile";
   HPBar: HPBar;
 
