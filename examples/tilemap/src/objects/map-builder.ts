@@ -116,6 +116,12 @@ export class MapBuilder extends TileMap {
     targetCell.addTag("creature");
   };
 
+  getCreatureInNeighbor8 = (targetPos: Vector): Creature => {
+    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    if (!targetCell) return null;
+    return targetCell.data.get("creature");
+  };
+
   hasTagInNeighbor8 = (
     pos: Vector,
     tag: string,

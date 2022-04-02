@@ -3,6 +3,7 @@ import { PointerEvent } from "excalibur/build/dist/Input";
 import { Battle } from "../battle";
 import config from "../config";
 import { Neighbor8 } from "../neighbor";
+import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
 import { MapBuilder } from "../objects/map-builder";
 import { Player } from "../objects/player";
@@ -20,16 +21,28 @@ export class GameScene extends Scene {
     this.initMap(engine);
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
+      // Player
       if (event.screenPos.x < engine.drawWidth / 4) {
-        this.playerTryToMoveLeft(this.mapBuilder, this.player);
+        this.tryToMoveLeft(this.mapBuilder, this.player);
       } else if ((engine.drawWidth * 3) / 4 < event.screenPos.x) {
-        this.playerTryToMoveRight(this.mapBuilder, this.player);
+        this.tryToMoveRight(this.mapBuilder, this.player);
       }
 
       if (event.screenPos.y < engine.drawHeight / 4) {
-        this.playerTryToMoveUp(this.mapBuilder, this.player);
+        this.tryToMoveUp(this.mapBuilder, this.player);
       } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
-        this.playerTryToMoveDown(this.mapBuilder, this.player);
+        this.tryToMoveDown(this.mapBuilder, this.player);
+      }
+
+      // Enemy
+      const action = this.enemy.decideAction();
+      switch (action) {
+        case Action.ComeClose:
+          this.tryToMoveUp(this.mapBuilder, this.enemy);
+          break;
+
+        default:
+          break;
       }
     });
 
@@ -79,28 +92,28 @@ export class GameScene extends Scene {
     engine.add(this.enemy);
   };
 
-  playerTryToMoveUp = (mapBuilder: MapBuilder, player: Player) => {
-    this.playerTryToMove(mapBuilder, player, Vector.Up);
+  tryToMoveUp = (mapBuilder: MapBuilder, creature: Creature) => {
+    this.tryToMove(mapBuilder, creature, Vector.Up);
   };
 
-  playerTryToMoveRight = (mapBuilder: MapBuilder, player: Player) => {
-    this.playerTryToMove(mapBuilder, player, Vector.Right);
+  tryToMoveRight = (mapBuilder: MapBuilder, creature: Creature) => {
+    this.tryToMove(mapBuilder, creature, Vector.Right);
   };
 
-  playerTryToMoveDown = (mapBuilder: MapBuilder, player: Player) => {
-    this.playerTryToMove(mapBuilder, player, Vector.Down);
+  tryToMoveDown = (mapBuilder: MapBuilder, creature: Creature) => {
+    this.tryToMove(mapBuilder, creature, Vector.Down);
   };
 
-  playerTryToMoveLeft = (mapBuilder: MapBuilder, player: Player) => {
-    this.playerTryToMove(mapBuilder, player, Vector.Left);
+  tryToMoveLeft = (mapBuilder: MapBuilder, creature: Creature) => {
+    this.tryToMove(mapBuilder, creature, Vector.Left);
   };
 
-  playerTryToMove = (
+  tryToMove = (
     mapBuilder: MapBuilder,
-    player: Player,
+    creature: Creature,
     directionVector: Vector
   ) => {
-    const pos = player.pos;
+    const pos = creature.pos;
     const targetPos = pos.add(directionVector.scale(config.TileWidth));
 
     const isBlock = mapBuilder.isBlock(targetPos);
@@ -119,26 +132,26 @@ export class GameScene extends Scene {
       direction = Neighbor8.Left;
     }
 
-    const creatureExist = mapBuilder.hasTagInNeighbor8(
-      pos,
-      "creature",
-      direction
-    );
-    if (creatureExist) {
-      const battle = new Battle(player, this.enemy);
+    const counterCreature = mapBuilder.getCreatureInNeighbor8(targetPos);
+    if (counterCreature) {
+      const battle = new Battle(creature, counterCreature);
       if (battle.isDead) {
-        this.killCreature(this.enemy, mapBuilder);
-        this.playerMove(mapBuilder, player, targetPos);
+        this.killCreature(counterCreature, mapBuilder);
+        this.creatureMove(mapBuilder, creature, targetPos);
       }
       return;
     }
 
-    this.playerMove(mapBuilder, player, targetPos);
+    this.creatureMove(mapBuilder, creature, targetPos);
   };
 
-  playerMove = (mapBuilder: MapBuilder, player: Player, targetPos: Vector) => {
-    player.pos = targetPos;
-    mapBuilder.moveCreature(player, targetPos);
+  creatureMove = (
+    mapBuilder: MapBuilder,
+    creature: Creature,
+    targetPos: Vector
+  ) => {
+    creature.pos = targetPos;
+    mapBuilder.moveCreature(creature, targetPos);
   };
 
   breakIfNeed = (mapBuilder: MapBuilder, targetPos: Vector): boolean => {
@@ -148,7 +161,7 @@ export class GameScene extends Scene {
     return true;
   };
 
-  killCreature = (creature: Player | Enemy, mapBuilder: MapBuilder) => {
+  killCreature = (creature: Creature, mapBuilder: MapBuilder) => {
     mapBuilder.unregisterCreature(creature);
     creature.kill();
   };

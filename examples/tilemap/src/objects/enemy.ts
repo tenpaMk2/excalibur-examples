@@ -1,13 +1,14 @@
 import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
 import config from "../config";
 import { Resources } from "../resource";
-import { Creature } from "./creature";
+import { Action, Creature } from "./creature";
 import { HPBar } from "./hp-bar";
 
 export class Enemy extends Actor implements Creature {
   private _HP = 10;
   offence = 3;
   defence = 1;
+  relationship: "hostile";
   HPBar: HPBar;
 
   constructor(pos: Vector) {
@@ -58,4 +59,8 @@ export class Enemy extends Actor implements Creature {
   get HP() {
     return this._HP;
   }
+
+  decideAction = (): Action => {
+    return Action.ComeClose;
+  };
 }
