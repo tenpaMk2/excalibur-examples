@@ -10,7 +10,7 @@ export class Player extends Actor implements Creature {
   defence = 2;
   slowness = 100;
   timeUntilNextTurn = this.slowness;
-  relationship: "friend";
+  relationship: "friend" | "hostile" = "friend";
   HPBar: HPBar;
 
   constructor(pos: Vector) {
