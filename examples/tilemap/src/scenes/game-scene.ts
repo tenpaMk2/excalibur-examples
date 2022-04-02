@@ -12,7 +12,6 @@ import { TurnQueue } from "../objects/turn-stack";
 export class GameScene extends Scene {
   mapBuilder: MapBuilder;
   player: Player;
-  enemy: Enemy;
   turnQueue: TurnQueue;
 
   constructor(public engine: Engine) {
@@ -111,10 +110,10 @@ export class GameScene extends Scene {
 
   generateEnemy = (engine: Engine, row: number, col: number) => {
     const cell = this.mapBuilder.getCell(col, row);
-    this.enemy = new Enemy(cell.center);
-    this.mapBuilder.buildCreature(row, col, this.enemy);
-    engine.add(this.enemy);
-    this.turnQueue.enqueueCreature(this.enemy);
+    const enemy = new Enemy(cell.center);
+    this.mapBuilder.buildCreature(row, col, enemy);
+    engine.add(enemy);
+    this.turnQueue.enqueueCreature(enemy);
   };
 
   tryToMoveUp = (mapBuilder: MapBuilder, creature: Creature) => {
