@@ -7,7 +7,6 @@ import {
   Vector,
 } from "excalibur";
 import config from "../config";
-import { Neighbor8, neighbor8ToVector } from "../neighbor";
 import { Resources } from "../resource";
 import { Creature } from "./creature";
 
@@ -116,22 +115,10 @@ export class MapBuilder extends TileMap {
     targetCell.addTag("creature");
   };
 
-  getCreatureInNeighbor8 = (targetPos: Vector): Creature => {
+  getCreatureByPos = (targetPos: Vector): Creature => {
     const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
     if (!targetCell) return null;
     return targetCell.data.get("creature");
-  };
-
-  hasTagInNeighbor8 = (
-    pos: Vector,
-    tag: string,
-    direction: Neighbor8
-  ): boolean => {
-    const offset = neighbor8ToVector(direction).scale(config.TileWidth);
-    const targetCell = this.getCellByPoint(pos.x + offset.x, pos.y + offset.y);
-    if (!targetCell) return null;
-
-    return targetCell.hasTag(tag);
   };
 
   buildBlock = (row: number, col: number) => {

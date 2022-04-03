@@ -1,8 +1,7 @@
-import { Scene, Engine, Vector } from "excalibur";
+import { Scene, Engine, Vector, Logger } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Battle } from "../battle";
 import config from "../config";
-import { Neighbor8 } from "../neighbor";
 import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
 import { MapBuilder } from "../objects/map-builder";
@@ -22,19 +21,7 @@ export class GameScene extends Scene {
   onInitialize = (engine: Engine) => {
     this.initMap(engine);
 
-    while (this.turnQueue[0] !== this.player) {
-      const creature = this.turnQueue.dequeueCreature();
-      const action = creature.decideAction();
-      switch (action) {
-        case "ComeClose":
-          this.tryToMoveLeft(this.mapBuilder, creature);
-          break;
-
-        default:
-          break;
-      }
-      this.turnQueue.enqueueCreature(creature);
-    }
+    this.processOthersTurns();
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       // Player
@@ -53,19 +40,7 @@ export class GameScene extends Scene {
       this.turnQueue.enqueueCreature(this.player);
 
       // Enemy
-      while (this.turnQueue[0] !== this.player) {
-        const creature = this.turnQueue.dequeueCreature();
-        const action = creature.decideAction();
-        switch (action) {
-          case "ComeClose":
-            this.tryToMoveUp(this.mapBuilder, creature);
-            break;
-
-          default:
-            break;
-        }
-        this.turnQueue.enqueueCreature(creature);
-      }
+      this.processOthersTurns();
     });
 
     this.camera.strategy.elasticToActor(this.player, 0.2, 0.1);
@@ -100,6 +75,25 @@ export class GameScene extends Scene {
     this.generateEnemy(engine, 8, 7);
   };
 
+  processOthersTurns = () => {
+    while (this.turnQueue[0] !== this.player) {
+      const creature = this.turnQueue.dequeueCreature();
+      const action = creature.decideAction();
+      switch (action) {
+        case Action.ComeClose:
+          this.actComeClose(creature);
+          break;
+        case Action.Leave:
+          this.actLeave(creature);
+          break;
+        default:
+          Logger.getInstance().error("unknown action!!");
+          break;
+      }
+      this.turnQueue.enqueueCreature(creature);
+    }
+  };
+
   generatePlayer = (engine: Engine, row: number, col: number) => {
     const cell = this.mapBuilder.getCell(col, row);
     this.player = new Player(cell.center);
@@ -116,47 +110,79 @@ export class GameScene extends Scene {
     this.turnQueue.enqueueCreature(enemy);
   };
 
+  actComeClose = (creature: Creature) => {
+    const candidatePoss = [
+      creature.pos.add(Vector.Up.scale(config.TileWidth)),
+      creature.pos.add(Vector.Right.scale(config.TileWidth)),
+      creature.pos.add(Vector.Down.scale(config.TileWidth)),
+      creature.pos.add(Vector.Left.scale(config.TileWidth)),
+    ];
+    const targetPos = candidatePoss.reduce((prev, current) => {
+      return prev.distance(this.player.pos) < current.distance(this.player.pos)
+        ? prev
+        : current;
+    });
+    this.tryToMove(this.mapBuilder, creature, targetPos);
+  };
+
+  actLeave = (creature: Creature) => {
+    const candidatePoss = [
+      creature.pos.add(Vector.Up.scale(config.TileWidth)),
+      creature.pos.add(Vector.Right.scale(config.TileWidth)),
+      creature.pos.add(Vector.Down.scale(config.TileWidth)),
+      creature.pos.add(Vector.Left.scale(config.TileWidth)),
+    ];
+    const targetPos = candidatePoss.reduce((prev, current) => {
+      return current.distance(this.player.pos) < prev.distance(this.player.pos)
+        ? prev
+        : current;
+    });
+    this.tryToMove(this.mapBuilder, creature, targetPos);
+  };
+
   tryToMoveUp = (mapBuilder: MapBuilder, creature: Creature) => {
-    this.tryToMove(mapBuilder, creature, Vector.Up);
+    this.tryToMove(
+      mapBuilder,
+      creature,
+      creature.pos.add(Vector.Up.scale(config.TileWidth))
+    );
   };
 
   tryToMoveRight = (mapBuilder: MapBuilder, creature: Creature) => {
-    this.tryToMove(mapBuilder, creature, Vector.Right);
+    this.tryToMove(
+      mapBuilder,
+      creature,
+      creature.pos.add(Vector.Right.scale(config.TileWidth))
+    );
   };
 
   tryToMoveDown = (mapBuilder: MapBuilder, creature: Creature) => {
-    this.tryToMove(mapBuilder, creature, Vector.Down);
+    this.tryToMove(
+      mapBuilder,
+      creature,
+      creature.pos.add(Vector.Down.scale(config.TileWidth))
+    );
   };
 
   tryToMoveLeft = (mapBuilder: MapBuilder, creature: Creature) => {
-    this.tryToMove(mapBuilder, creature, Vector.Left);
+    this.tryToMove(
+      mapBuilder,
+      creature,
+      creature.pos.add(Vector.Left.scale(config.TileWidth))
+    );
   };
 
   tryToMove = (
     mapBuilder: MapBuilder,
     creature: Creature,
-    directionVector: Vector
+    targetPos: Vector
   ) => {
-    const pos = creature.pos;
-    const targetPos = pos.add(directionVector.scale(config.TileWidth));
-
     const isBlock = mapBuilder.isBlock(targetPos);
     if (isBlock) return;
 
     this.breakIfNeed(mapBuilder, targetPos);
 
-    let direction;
-    if (Vector.Up.equals(directionVector)) {
-      direction = Neighbor8.Up;
-    } else if (Vector.Right.equals(directionVector)) {
-      direction = Neighbor8.Right;
-    } else if (Vector.Down.equals(directionVector)) {
-      direction = Neighbor8.Down;
-    } else if (Vector.Left.equals(directionVector)) {
-      direction = Neighbor8.Left;
-    }
-
-    const counterCreature = mapBuilder.getCreatureInNeighbor8(targetPos);
+    const counterCreature = mapBuilder.getCreatureByPos(targetPos);
     if (counterCreature) {
       const battle = new Battle(creature, counterCreature);
       if (battle.isDead) {

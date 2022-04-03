@@ -10,7 +10,7 @@ export class TurnQueue extends Array {
     );
   };
 
-  dequeueCreature = () => {
+  dequeueCreature = (): Creature => {
     const creature = this.shift();
     this.elapseTime(creature.timeUntilNextTurn);
     return creature;

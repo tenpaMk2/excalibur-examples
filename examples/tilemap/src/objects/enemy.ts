@@ -6,6 +6,7 @@ import { HPBar } from "./hp-bar";
 
 export class Enemy extends Actor implements Creature {
   private _HP = 10;
+  readonly maxHP = this._HP;
   offence = 3;
   defence = 1;
   slowness = 150;
@@ -63,6 +64,6 @@ export class Enemy extends Actor implements Creature {
   }
 
   decideAction = (): Action => {
-    return Action.ComeClose;
+    return this.HP < this.maxHP / 5 ? Action.Leave : Action.ComeClose;
   };
 }
