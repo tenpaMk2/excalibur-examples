@@ -106,3 +106,7 @@ dist
 # custom
 .DS_Store
 .vscode
+cache/
+.parcel-cache/
+dist/
+publish/

@@ -1,7 +1,8 @@
 import { ImageSource, Loader } from "excalibur";
+import charaPng from "./assets/roguelikeChar_transparent.png";
 
 const Resources = {
-  chara: new ImageSource("./assets/roguelikeChar_transparent.png"),
+  chara: new ImageSource(charaPng),
 };
 
 const loader = new Loader();
