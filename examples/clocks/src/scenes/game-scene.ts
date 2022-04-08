@@ -1,4 +1,5 @@
 import { Scene, Engine, CollisionStartEvent, Logger } from "excalibur";
+import { PointerEvent } from "excalibur/build/dist/Input";
 import { Bullet } from "../objects/bullet";
 import { Clock } from "../objects/clock";
 
@@ -15,7 +16,6 @@ export class GameScene extends Scene {
     this.initStage1(engine);
 
     // Input
-    // @ts-ignore
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       this.shoot(engine);
     });
