@@ -1,6 +1,9 @@
-import { Loader } from "excalibur";
+import { ImageSource, Loader } from "excalibur";
+import ballPng from "./assets/tenpamk2-ball.png";
 
-const Resources = {};
+const Resources = {
+  ball: new ImageSource(ballPng),
+};
 
 const loader = new Loader();
 
