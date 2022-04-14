@@ -4,7 +4,6 @@
 }
 
 canvas {
-  max-height: 80vh;
   -webkit-touch-callout: none !important;
   -webkit-user-select: none !important;
 }
