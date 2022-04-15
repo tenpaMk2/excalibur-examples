@@ -10,7 +10,8 @@
     "mass-physics": "cd examples/mass-physics && npm install && npm run build && npm run start",
     "no-bounce-at-0.25.3": "cd examples/no-bounce-at-0.25.3 && npm install && npm run build && npm run start",
     "slingshot": "cd examples/slingshot && npm install && npm run build && npm run start",
-    "click-reactions": "cd examples/click-reactions && npm install && npm run build && npm run start"
+    "click-reactions": "cd examples/click-reactions && npm install && npm run build && npm run start",
+    "sprite-animations": "cd examples/sprite-animations && npm install && npm run start"
   },
   "author": "",
   "license": "MIT",
