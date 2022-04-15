@@ -1,14 +1,7 @@
-import {
-  Scene,
-  Engine,
-  Actor,
-  Color,
-  CollisionType,
-  Vector,
-  Logger,
-} from "excalibur";
+import { Scene, Engine, Vector, Logger } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Ball } from "../objects/ball";
+import { Box } from "../objects/box";
 import { Ground } from "../objects/ground";
 
 export class GameScene extends Scene {
@@ -76,14 +69,7 @@ export class GameScene extends Scene {
     const edge = engine.drawHeight / 10;
     for (let row = 0; row < 5; row++) {
       for (let col = 0; col < 5; col++) {
-        const box = new Actor({
-          x: offsetX + row * edge,
-          y: col * edge,
-          width: edge,
-          height: edge,
-          color: Color.Vermilion,
-          collisionType: CollisionType.Active,
-        });
+        const box = new Box(offsetX + row * edge, col * edge, edge);
         engine.add(box);
       }
     }
