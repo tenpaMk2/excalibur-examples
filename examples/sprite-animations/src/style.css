@@ -1,0 +1,9 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+canvas {
+  -webkit-touch-callout: none !important;
+  -webkit-user-select: none !important;
+}
