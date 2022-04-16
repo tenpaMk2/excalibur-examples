@@ -1,8 +1,6 @@
-import { ImageSource, Loader } from "excalibur";
+import { Loader } from "excalibur";
 
-const Resources = {
-  // hoge: new ImageSource("./assets/hoge.png"),
-};
+const Resources = {};
 
 const loader = new Loader();
 

@@ -20,10 +20,6 @@ export class Level extends Scene {
   ball: Ball;
   gameOverScreen: GameOverScreen;
 
-  constructor(engine: Engine) {
-    super();
-  }
-
   setupBlocks = (width: number, height: number) => {
     const numOfRow = 12;
     const numOfColumn = 18;
