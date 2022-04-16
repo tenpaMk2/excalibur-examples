@@ -6,9 +6,8 @@ import { Clock } from "../objects/clock";
 export class GameScene extends Scene {
   clocks: Clock[];
 
-  constructor(public engine: Engine) {
+  constructor() {
     super();
-
     this.clocks = [];
   }
 

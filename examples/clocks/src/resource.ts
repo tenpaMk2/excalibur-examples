@@ -1,8 +1,6 @@
 import { Loader } from "excalibur";
 
-const Resources = {
-  // pipo: new ImageSource("./assets/[Base]BaseChip_pipo.png"),
-};
+const Resources = {};
 
 const loader = new Loader();
 
