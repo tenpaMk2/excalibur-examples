@@ -14,7 +14,7 @@ export class GameScene extends Scene {
   ship: Ship;
   asteroids: Asteroid[];
 
-  constructor(public engine: Engine) {
+  constructor() {
     super();
     this.asteroids = [];
   }
