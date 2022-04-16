@@ -9,10 +9,6 @@ export class GameScene extends Scene {
   score: Score;
   hasClicked: Boolean = false;
 
-  constructor(public engine: Engine) {
-    super();
-  }
-
   onInitialize = (engine: Engine) => {};
 
   initialize = () => {
