@@ -15,10 +15,6 @@ import {
 export class GameScene extends Scene {
   scoreText: Text;
 
-  constructor(public engine: Engine) {
-    super();
-  }
-
   onInitialize = (engine: Engine) => {
     const centerText = new Text({
       text: "center is here!!",
