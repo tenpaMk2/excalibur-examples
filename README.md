@@ -126,9 +126,9 @@ Demo for `Physics` .
 
 Credits are as follows.
 
-| item (description) | author | URL                   |
-| :----------------: | :----- | :-------------------- |
-|    box graphics    | ぴぽや | <https://pipoya.net/> |
+| item (description) | author   | URL                      |
+| :----------------: | :------- | :----------------------- |
+|    box graphics    | kenny.nl | <https://www.kenney.nl/> |
 
 ### sprite-animations
 
