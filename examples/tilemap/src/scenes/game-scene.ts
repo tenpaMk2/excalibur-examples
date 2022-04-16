@@ -13,7 +13,7 @@ export class GameScene extends Scene {
   player: Player;
   turnQueue: TurnQueue;
 
-  constructor(public engine: Engine) {
+  constructor() {
     super();
     this.turnQueue = new TurnQueue();
   }
