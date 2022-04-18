@@ -1,5 +1,5 @@
 import { Actor, CollisionGroupManager, CollisionType, Color } from "excalibur";
-import { Resources } from "../resources";
+import { ballSprite } from "../resources";
 
 export class Base extends Actor {
   constructor(x: number, y: number, radius: number) {
@@ -19,7 +19,7 @@ export class Base extends Actor {
   }
 
   initGraphics = (length: number) => {
-    const sprite = Resources.ball.toSprite();
+    const sprite = ballSprite;
     sprite.width = length;
     sprite.height = length;
     this.graphics.use(sprite);
