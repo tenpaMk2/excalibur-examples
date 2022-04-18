@@ -17,9 +17,8 @@ export class GameScene extends Scene {
 
   onInitialize = (engine: Engine) => {
     // Create collision groups for the game
-    CollisionGroupManager.create("base");
+    CollisionGroupManager.create("friend");
     CollisionGroupManager.create("enemy");
-    CollisionGroupManager.create("missile");
 
     this.base = new Base(
       engine.halfDrawWidth,

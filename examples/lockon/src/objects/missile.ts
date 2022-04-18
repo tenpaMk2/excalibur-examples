@@ -16,7 +16,7 @@ export class Missile extends Actor {
       height: 32,
       color: Color.Rose,
       collisionType: CollisionType.Active,
-      collisionGroup: CollisionGroupManager.groupByName("missile"),
+      collisionGroup: CollisionGroupManager.groupByName("friend"),
     });
   }
 

@@ -9,7 +9,7 @@ export class Base extends Actor {
       radius: radius,
       color: Color.Orange,
       collisionType: CollisionType.Fixed,
-      collisionGroup: CollisionGroupManager.groupByName("base"),
+      collisionGroup: CollisionGroupManager.groupByName("friend"),
     });
     this.body.useGravity = false;
 
