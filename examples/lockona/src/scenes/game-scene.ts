@@ -1,10 +1,4 @@
-import {
-  Scene,
-  Engine,
-  Random,
-  CollisionGroup,
-  CollisionGroupManager,
-} from "excalibur";
+import { Scene, Engine, Random, CollisionGroupManager } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
 import { Missile } from "../objects/missile";
@@ -22,6 +16,11 @@ export class GameScene extends Scene {
   }
 
   onInitialize = (engine: Engine) => {
+    // Create collision groups for the game
+    CollisionGroupManager.create("base");
+    CollisionGroupManager.create("enemy");
+    CollisionGroupManager.create("missile");
+
     this.base = new Base(
       engine.halfDrawWidth,
       (engine.drawHeight * 19) / 20,

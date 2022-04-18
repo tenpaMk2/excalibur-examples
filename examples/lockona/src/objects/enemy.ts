@@ -1,4 +1,10 @@
-import { Actor, CollisionGroup, CollisionType, Color, Engine } from "excalibur";
+import {
+  Actor,
+  CollisionGroupManager,
+  CollisionType,
+  Color,
+  Engine,
+} from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Resources } from "../resource";
 
@@ -12,7 +18,8 @@ export class Enemy extends Actor {
       width: 100,
       height: 100,
       color: Color.Orange,
-      collisionType: CollisionType.Passive,
+      collisionType: CollisionType.Active,
+      collisionGroup: CollisionGroupManager.groupByName("enemy"),
     });
 
     this.initGraphics(100);

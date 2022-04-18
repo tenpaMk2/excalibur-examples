@@ -1,4 +1,4 @@
-import { Actor, CollisionGroup, CollisionType, Color, Vector } from "excalibur";
+import { Actor, CollisionGroupManager, CollisionType, Color } from "excalibur";
 import { Resources } from "../resource";
 
 export class Base extends Actor {
@@ -8,7 +8,8 @@ export class Base extends Actor {
       y: y,
       radius: radius,
       color: Color.Orange,
-      collisionType: CollisionType.Passive,
+      collisionType: CollisionType.Fixed,
+      collisionGroup: CollisionGroupManager.groupByName("base"),
     });
     this.body.useGravity = false;
 

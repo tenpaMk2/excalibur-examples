@@ -2,7 +2,7 @@ import {
   Actor,
   Animation,
   AnimationStrategy,
-  CollisionGroup,
+  CollisionGroupManager,
   CollisionType,
   Color,
   Engine,
@@ -19,6 +19,7 @@ export class Missile extends Actor {
       height: 32,
       color: Color.Rose,
       collisionType: CollisionType.Active,
+      collisionGroup: CollisionGroupManager.groupByName("missile"),
     });
   }
 
