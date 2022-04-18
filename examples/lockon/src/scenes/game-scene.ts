@@ -1,4 +1,10 @@
-import { Scene, Engine, Random, CollisionGroupManager } from "excalibur";
+import {
+  Scene,
+  Engine,
+  Random,
+  CollisionGroupManager,
+  CollisionStartEvent,
+} from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
 import { Missile } from "../objects/missile";
@@ -35,8 +41,7 @@ export class GameScene extends Scene {
       if (lockedOnEnemies.length === 0) return;
 
       lockedOnEnemies.forEach((enemy) => {
-        const missile = new Missile(this.base.pos, enemy);
-        engine.add(missile);
+        this.generateMissile(engine, enemy);
       });
     });
   };
@@ -53,11 +58,24 @@ export class GameScene extends Scene {
       this.rnd.floating(-engine.drawHeight / 20, engine.drawHeight / 20) +
       (engine.drawHeight * 2) / 20;
 
-    const enemy = new Enemy(x, y);
+    const enemy = new Enemy(engine, x, y);
     engine.add(enemy);
 
     enemy.actions.meet(this.base, 10);
 
     return enemy;
+  };
+
+  generateMissile = (engine: Engine, target: Enemy): Missile => {
+    const missile = new Missile(this.base.pos, target);
+    engine.add(missile);
+
+    missile.on("collisionstart", (event: CollisionStartEvent) => {
+      event.other.kill();
+      missile.kill();
+      this.enemies = this.enemies.filter((enemy) => !enemy.isKilled());
+    });
+
+    return missile;
   };
 }

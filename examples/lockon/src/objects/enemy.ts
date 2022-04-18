@@ -12,7 +12,7 @@ import { Lockon } from "./lockon";
 export class Enemy extends Actor {
   public isLockOn: Boolean = false;
 
-  constructor(x: number, y: number) {
+  constructor(private engine: Engine, x: number, y: number) {
     super({
       x: x,
       y: y,
@@ -51,5 +51,6 @@ export class Enemy extends Actor {
 
     const lockon = new Lockon();
     this.addChild(lockon);
+    this.engine.add(lockon);
   };
 }

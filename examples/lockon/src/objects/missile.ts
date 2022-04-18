@@ -9,6 +9,7 @@ import {
 import { missileAnimation } from "../resources";
 
 export class Missile extends Actor {
+  fuga = 123;
   constructor(pos: Vector, private target: Actor) {
     super({
       pos: pos,
