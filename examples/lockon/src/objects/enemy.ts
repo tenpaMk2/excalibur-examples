@@ -4,9 +4,11 @@ import {
   CollisionType,
   Color,
   Engine,
+  Scene,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Resources } from "../resources";
+import { Boom } from "./boom";
 import { Lockon } from "./lockon";
 
 export class Enemy extends Actor {
@@ -52,5 +54,9 @@ export class Enemy extends Actor {
     const lockon = new Lockon();
     this.addChild(lockon);
     this.engine.add(lockon);
+  };
+
+  onPreKill = (scene: Scene) => {
+    const boom = new Boom(this.engine, this.pos);
   };
 }

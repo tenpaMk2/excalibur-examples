@@ -8,11 +8,13 @@ import {
 import ballPng from "./assets/tenpamk2-ball.png";
 import missilePng from "./assets/tenpamk2-missile.png";
 import lockonPng from "./assets/tenpamk2-lockon.png";
+import boomPng from "./assets/tenpamk2-boom.png";
 
 const Resources = {
   ball: new ImageSource(ballPng),
   missile: new ImageSource(missilePng),
   lockon: new ImageSource(lockonPng),
+  boom: new ImageSource(boomPng),
 };
 
 const loader = new Loader();
@@ -34,6 +36,7 @@ const missileAnimation = Animation.fromSpriteSheet(
   AnimationStrategy.Loop
 );
 const lockonSprite = Resources.lockon.toSprite();
+const boomSprite = Resources.boom.toSprite();
 
 for (const res in Resources) {
   loader.addResource((Resources as any)[res]);
@@ -48,4 +51,5 @@ export {
   missileSpriteSheet,
   missileAnimation,
   lockonSprite,
+  boomSprite,
 };
