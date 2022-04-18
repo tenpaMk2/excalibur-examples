@@ -9,7 +9,7 @@ import {
   SpriteSheet,
   Vector,
 } from "excalibur";
-import { Resources } from "../resource";
+import { Resources } from "../resources";
 
 export class Missile extends Actor {
   constructor(pos: Vector, private target: Actor) {

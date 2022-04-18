@@ -6,7 +6,7 @@ import {
   Engine,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
-import { Resources } from "../resource";
+import { Resources } from "../resources";
 
 export class Enemy extends Actor {
   public isLockOn: Boolean = false;

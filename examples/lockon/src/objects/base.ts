@@ -1,5 +1,5 @@
 import { Actor, CollisionGroupManager, CollisionType, Color } from "excalibur";
-import { Resources } from "../resource";
+import { Resources } from "../resources";
 
 export class Base extends Actor {
   constructor(x: number, y: number, radius: number) {
