@@ -7,6 +7,7 @@ import {
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Resources } from "../resources";
+import { Lockon } from "./lockon";
 
 export class Enemy extends Actor {
   public isLockOn: Boolean = false;
@@ -47,5 +48,8 @@ export class Enemy extends Actor {
 
     this.off("pointerdragenter");
     this.off("pointerdown");
+
+    const lockon = new Lockon();
+    this.addChild(lockon);
   };
 }
