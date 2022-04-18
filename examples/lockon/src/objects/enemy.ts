@@ -38,6 +38,10 @@ export class Enemy extends Actor {
     });
   };
 
+  onPreUpdate = (engine: Engine, delta: number) => {
+    this.rotation = this.vel.toAngle();
+  };
+
   initGraphics = () => {
     this.graphics.use(enemyAnimation);
   };

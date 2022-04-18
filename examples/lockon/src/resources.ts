@@ -52,6 +52,7 @@ const enemySpriteSheet = SpriteSheet.fromImageSource({
 enemySpriteSheet.sprites.forEach((sprite) => {
   sprite.width = config.enemyLength;
   sprite.height = config.enemyLength;
+  sprite.rotation = -Math.PI / 2;
 });
 const enemyAnimation = Animation.fromSpriteSheet(
   enemySpriteSheet,
