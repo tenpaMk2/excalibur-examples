@@ -7,7 +7,8 @@ import {
   Scene,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
-import { Resources } from "../resources";
+import config from "../config";
+import { enemyAnimation, Resources } from "../resources";
 import { Boom } from "./boom";
 import { Lockon } from "./lockon";
 
@@ -18,14 +19,14 @@ export class Enemy extends Actor {
     super({
       x: x,
       y: y,
-      width: 100,
-      height: 100,
+      width: config.enemyLength,
+      height: config.enemyLength,
       color: Color.Orange,
       collisionType: CollisionType.Active,
       collisionGroup: CollisionGroupManager.groupByName("enemy"),
     });
 
-    this.initGraphics(100);
+    this.initGraphics();
   }
 
   onInitialize = (engine: Engine) => {
@@ -37,11 +38,8 @@ export class Enemy extends Actor {
     });
   };
 
-  initGraphics = (length: number) => {
-    const sprite = Resources.ball.toSprite();
-    sprite.width = length;
-    sprite.height = length;
-    this.graphics.use(sprite);
+  initGraphics = () => {
+    this.graphics.use(enemyAnimation);
   };
 
   lockOn = () => {
