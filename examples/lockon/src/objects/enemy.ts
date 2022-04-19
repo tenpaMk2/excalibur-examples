@@ -19,8 +19,7 @@ export class Enemy extends Actor {
     super({
       x: x,
       y: y,
-      width: config.enemyLength,
-      height: config.enemyLength,
+      radius: config.enemyLength / 2,
       collisionType: CollisionType.Active,
       collisionGroup: CollisionGroupManager.groupByName("enemy"),
     });
