@@ -88,7 +88,7 @@ export class GameScene extends Scene {
     const enemy = new Enemy(engine, x, y);
     engine.add(enemy);
 
-    enemy.actions.meet(this.base, 10);
+    enemy.acc.x = this.base.pos.x - enemy.pos.x;
 
     return enemy;
   };

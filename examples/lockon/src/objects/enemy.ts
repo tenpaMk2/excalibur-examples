@@ -21,7 +21,6 @@ export class Enemy extends Actor {
       y: y,
       width: config.enemyLength,
       height: config.enemyLength,
-      color: Color.Orange,
       collisionType: CollisionType.Active,
       collisionGroup: CollisionGroupManager.groupByName("enemy"),
     });
