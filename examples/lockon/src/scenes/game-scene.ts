@@ -4,12 +4,14 @@ import {
   Random,
   CollisionGroupManager,
   CollisionStartEvent,
+  Timer,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
 import { Missile } from "../objects/missile";
 import { Enemy } from "../objects/enemy";
 import { Cloud } from "../objects/cloud";
+import config from "../config";
 
 export class GameScene extends Scene {
   private rnd: Random;
@@ -34,18 +36,15 @@ export class GameScene extends Scene {
     );
     engine.add(this.base);
 
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
-    this.enemies.push(this.generateEnemy(engine));
+    const timer = new Timer({
+      fcn: () => {
+        this.enemies.push(this.generateEnemy(engine));
+      },
+      repeats: true,
+      interval: 1000,
+    });
+    this.add(timer);
+    timer.start();
 
     this.generateClouds(engine);
 
@@ -84,9 +83,7 @@ export class GameScene extends Scene {
 
   generateEnemy = (engine: Engine) => {
     const x = this.rnd.floating(1, engine.drawWidth);
-    const y =
-      this.rnd.floating(-engine.drawHeight / 20, engine.drawHeight / 20) +
-      (engine.drawHeight * 2) / 20;
+    const y = -config.enemyLength / 2;
 
     const enemy = new Enemy(engine, x, y);
     engine.add(enemy);
