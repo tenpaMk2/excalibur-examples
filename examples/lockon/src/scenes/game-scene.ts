@@ -36,6 +36,16 @@ export class GameScene extends Scene {
 
     this.enemies.push(this.generateEnemy(engine));
     this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
+    this.enemies.push(this.generateEnemy(engine));
 
     this.generateClouds(engine);
 
