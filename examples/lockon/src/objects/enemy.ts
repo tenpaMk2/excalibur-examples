@@ -2,20 +2,25 @@ import {
   Actor,
   CollisionGroupManager,
   CollisionType,
-  Color,
   Engine,
   Scene,
+  Vector,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import config from "../config";
-import { enemyAnimation, Resources } from "../resources";
+import { enemyAnimation } from "../resources";
 import { Boom } from "./boom";
 import { Lockon } from "./lockon";
 
 export class Enemy extends Actor {
   public isLockOn: Boolean = false;
 
-  constructor(private engine: Engine, x: number, y: number) {
+  constructor(
+    private engine: Engine,
+    x: number,
+    y: number,
+    private targetPos: Vector
+  ) {
     super({
       x: x,
       y: y,
@@ -38,6 +43,8 @@ export class Enemy extends Actor {
 
   onPreUpdate = (engine: Engine, delta: number) => {
     this.rotation = this.vel.toAngle();
+
+    this.acc.x = (this.targetPos.x - this.pos.x) * config.enemyAccXMultiplier;
   };
 
   initGraphics = () => {

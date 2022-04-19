@@ -85,10 +85,8 @@ export class GameScene extends Scene {
     const x = this.rnd.floating(1, engine.drawWidth);
     const y = -config.enemyLength / 2;
 
-    const enemy = new Enemy(engine, x, y);
+    const enemy = new Enemy(engine, x, y, this.base.pos);
     engine.add(enemy);
-
-    enemy.acc.x = this.base.pos.x - enemy.pos.x;
 
     return enemy;
   };
