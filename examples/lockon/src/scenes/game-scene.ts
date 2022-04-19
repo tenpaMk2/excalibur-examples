@@ -9,6 +9,7 @@ import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
 import { Missile } from "../objects/missile";
 import { Enemy } from "../objects/enemy";
+import { Cloud } from "../objects/cloud";
 
 export class GameScene extends Scene {
   private rnd: Random;
@@ -36,6 +37,8 @@ export class GameScene extends Scene {
     this.enemies.push(this.generateEnemy(engine));
     this.enemies.push(this.generateEnemy(engine));
 
+    this.generateClouds(engine);
+
     engine.input.pointers.primary.on("up", (event: PointerEvent) => {
       const lockedOnEnemies = this.enemies.filter((enemy) => enemy.isLockOn);
       if (lockedOnEnemies.length === 0) return;
@@ -44,6 +47,23 @@ export class GameScene extends Scene {
         this.generateMissile(engine, enemy);
       });
     });
+  };
+
+  generateClouds = (engine: Engine) => {
+    engine.clock.schedule(() => {
+      const cloud = new Cloud((engine.drawHeight * 1) / 20);
+      engine.add(cloud);
+    }, 0);
+
+    engine.clock.schedule(() => {
+      const cloud = new Cloud((engine.drawHeight * 2) / 20);
+      engine.add(cloud);
+    }, 4000);
+
+    engine.clock.schedule(() => {
+      const cloud = new Cloud((engine.drawHeight * 3) / 20);
+      engine.add(cloud);
+    }, 2000);
   };
 
   onPreUpdate = (engine: Engine, delta: number): void => {

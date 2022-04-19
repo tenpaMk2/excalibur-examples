@@ -10,6 +10,7 @@ import missilePng from "./assets/tenpamk2-missile.png";
 import lockonPng from "./assets/tenpamk2-lockon.png";
 import boomPng from "./assets/tenpamk2-boom.png";
 import enemyPng from "./assets/tenpamk2-enemy.png";
+import cloudPng from "./assets/tenpamk2-cloud.png";
 import config from "./config";
 
 const Resources = {
@@ -18,6 +19,7 @@ const Resources = {
   lockon: new ImageSource(lockonPng),
   boom: new ImageSource(boomPng),
   enemy: new ImageSource(enemyPng),
+  cloud: new ImageSource(cloudPng),
 };
 
 const loader = new Loader();
@@ -60,6 +62,9 @@ const enemyAnimation = Animation.fromSpriteSheet(
   (1000 * 6) / 60,
   AnimationStrategy.Loop
 );
+const cloudSprite = Resources.cloud.toSprite();
+cloudSprite.height = config.cloudHeigh;
+cloudSprite.width = config.cloudWidth;
 
 for (const res in Resources) {
   loader.addResource((Resources as any)[res]);
@@ -77,4 +82,5 @@ export {
   boomSprite,
   enemySpriteSheet,
   enemyAnimation,
+  cloudSprite,
 };
