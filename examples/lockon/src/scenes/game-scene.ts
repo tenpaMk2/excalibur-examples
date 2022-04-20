@@ -12,6 +12,7 @@ import { Missile } from "../objects/missile";
 import { Enemy } from "../objects/enemy";
 import { Cloud } from "../objects/cloud";
 import config from "../config";
+import { Sky } from "../objects/sky";
 
 export class GameScene extends Scene {
   private rnd: Random;
@@ -28,6 +29,8 @@ export class GameScene extends Scene {
     // Create collision groups for the game
     CollisionGroupManager.create("friend");
     CollisionGroupManager.create("enemy");
+
+    new Sky(engine);
 
     this.base = new Base(
       engine.halfDrawWidth,
