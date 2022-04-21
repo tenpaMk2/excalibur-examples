@@ -45,6 +45,7 @@ export class Enemy extends Actor {
     this.rotation = this.vel.toAngle();
 
     this.acc.x = (this.targetPos.x - this.pos.x) * config.enemyAccXMultiplier;
+    this.acc.y = -900;
   };
 
   initGraphics = () => {
