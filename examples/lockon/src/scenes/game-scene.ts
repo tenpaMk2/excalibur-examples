@@ -5,6 +5,7 @@ import {
   CollisionGroupManager,
   CollisionStartEvent,
   Timer,
+  PostKillEvent,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
@@ -95,6 +96,8 @@ export class GameScene extends Scene {
       if (event.other !== target) return;
       // target.hit();
       enemy.kill();
+    });
+    enemy.on("postkill", (event: PostKillEvent) => {
       this.enemies = this.enemies.filter((enemy) => !enemy.isKilled());
     });
 
@@ -108,7 +111,6 @@ export class GameScene extends Scene {
     missile.on("collisionstart", (event: CollisionStartEvent) => {
       event.other.kill();
       missile.kill();
-      this.enemies = this.enemies.filter((enemy) => !enemy.isKilled());
     });
 
     return missile;

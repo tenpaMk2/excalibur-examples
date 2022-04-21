@@ -3,6 +3,7 @@ import {
   CollisionGroupManager,
   CollisionType,
   Engine,
+  ExitViewPortEvent,
   Scene,
   Vector,
 } from "excalibur";
@@ -38,6 +39,10 @@ export class Enemy extends Actor {
     });
     this.on("pointerdown", (event: PointerEvent) => {
       this.lockOn();
+    });
+    this.on("exitviewport", (event: ExitViewPortEvent) => {
+      if (this.pos.y < 0) return;
+      this.kill();
     });
   };
 
