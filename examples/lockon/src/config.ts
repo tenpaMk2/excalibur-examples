@@ -6,4 +6,7 @@ export default {
   cloudWidth: 200,
   cloudHeigh: 100,
   cloudFlowSpeed: 100,
+  missileInitialSpeed: 300,
+  missileLaunchTimeMS: 300,
+  missileAcc: 3000,
 };

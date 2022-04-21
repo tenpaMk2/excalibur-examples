@@ -6,6 +6,7 @@ import {
   CollisionStartEvent,
   Timer,
   PreKillEvent,
+  Vector,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
@@ -124,7 +125,13 @@ export class GameScene extends Scene {
   };
 
   generateMissile = (engine: Engine, target: Lockon): Missile => {
-    const missile = new Missile(this.base.pos, target.pos);
+    const missile = new Missile(
+      this.base.pos,
+      Vector.fromAngle(this.rnd.floating(-Math.PI, 0)).scale(
+        config.missileInitialSpeed
+      ),
+      target.pos
+    );
     engine.add(missile);
     target.islaunched = true;
 

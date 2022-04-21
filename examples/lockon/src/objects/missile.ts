@@ -8,12 +8,16 @@ import {
   ExitViewPortEvent,
   Vector,
 } from "excalibur";
+import config from "../config";
 import { missileAnimation } from "../resources";
 
 export class Missile extends Actor {
-  constructor(pos: Vector, private targetPos: Vector) {
+  private allowAcc = false;
+
+  constructor(pos: Vector, vel: Vector, private targetPos: Vector) {
     super({
       pos: pos,
+      vel: vel,
       width: 64,
       height: 32,
       color: Color.Rose,
@@ -32,11 +36,16 @@ export class Missile extends Actor {
     this.on("exitviewport", (event: ExitViewPortEvent) => {
       this.kill();
     });
+
+    engine.clock.schedule(() => {
+      this.allowAcc = true;
+    }, config.missileLaunchTimeMS);
   };
 
   onPreUpdate = (engine: Engine, delta: number) => {
+    if (!this.allowAcc) return;
     this.acc = this.targetPos.sub(this.pos);
-    this.acc.size = 3000;
+    this.acc.size = config.missileAcc;
 
     this.rotation = this.acc.toAngle();
   };
