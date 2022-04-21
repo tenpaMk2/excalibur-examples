@@ -34,15 +34,20 @@ export class Enemy extends Actor {
   }
 
   onInitialize = (engine: Engine) => {
+    this.initLockOnEvent();
+
+    this.on("exitviewport", (event: ExitViewPortEvent) => {
+      if (this.pos.y < 0) return;
+      this.kill();
+    });
+  };
+
+  initLockOnEvent = () => {
     this.on("pointerdragenter", (event: PointerEvent) => {
       this.lockOn();
     });
     this.on("pointerdown", (event: PointerEvent) => {
       this.lockOn();
-    });
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
-      if (this.pos.y < 0) return;
-      this.kill();
     });
   };
 
@@ -59,14 +64,17 @@ export class Enemy extends Actor {
 
   lockOn = () => {
     this.isLockOn = true;
-    this.graphics.opacity -= 0.1;
 
     this.off("pointerdragenter");
     this.off("pointerdown");
 
-    const lockon = new Lockon();
-    this.addChild(lockon);
-    this.engine.add(lockon);
+    this.emit("lockon", {});
+  };
+
+  cancelLockOn = () => {
+    this.isLockOn = false;
+
+    this.initLockOnEvent();
   };
 
   onPreKill = (scene: Scene) => {

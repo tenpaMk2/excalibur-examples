@@ -2,9 +2,11 @@ import { Actor, CollisionType, Engine, Vector } from "excalibur";
 import { lockonSprite } from "../resources";
 
 export class Lockon extends Actor {
-  constructor() {
+  public islaunched: Boolean = false;
+
+  constructor(private targetPos: Vector) {
     super({
-      pos: Vector.Zero,
+      pos: targetPos,
       collisionType: CollisionType.PreventCollision,
     });
 
@@ -25,7 +27,6 @@ export class Lockon extends Actor {
   };
 
   onPreUpdate = (engine: Engine, delta: number) => {
-    const globalRotation = this.getGlobalRotation();
-    this.rotation -= globalRotation;
+    this.pos = this.targetPos;
   };
 }

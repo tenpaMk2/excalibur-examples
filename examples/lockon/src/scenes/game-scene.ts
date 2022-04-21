@@ -5,7 +5,7 @@ import {
   CollisionGroupManager,
   CollisionStartEvent,
   Timer,
-  PostKillEvent,
+  PreKillEvent,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
@@ -14,16 +14,19 @@ import { Enemy } from "../objects/enemy";
 import { Cloud } from "../objects/cloud";
 import config from "../config";
 import { Sky } from "../objects/sky";
+import { Lockon } from "../objects/lockon";
 
 export class GameScene extends Scene {
   private rnd: Random;
   private base!: Base;
   private enemies: Enemy[];
+  private lockons: Lockon[];
 
   constructor() {
     super();
     this.rnd = new Random(1145141919);
     this.enemies = [];
+    this.lockons = [];
   }
 
   onInitialize = (engine: Engine) => {
@@ -53,11 +56,13 @@ export class GameScene extends Scene {
     this.generateClouds(engine);
 
     engine.input.pointers.primary.on("up", (event: PointerEvent) => {
-      const lockedOnEnemies = this.enemies.filter((enemy) => enemy.isLockOn);
-      if (lockedOnEnemies.length === 0) return;
+      const unlaunchedLockons = this.lockons.filter(
+        (lockon) => !lockon.islaunched
+      );
+      if (unlaunchedLockons.length === 0) return;
 
-      lockedOnEnemies.forEach((enemy) => {
-        this.generateMissile(engine, enemy);
+      unlaunchedLockons.forEach((lockon) => {
+        this.generateMissile(engine, lockon);
       });
     });
   };
@@ -92,25 +97,39 @@ export class GameScene extends Scene {
     const enemy = new Enemy(engine, x, y, target.pos);
     engine.add(enemy);
 
+    enemy.on("lockon", (event: any) => {
+      this.generateLockon(engine, enemy);
+    });
     enemy.on("collisionstart", (event: CollisionStartEvent) => {
       if (event.other !== target) return;
       // target.hit();
       enemy.kill();
     });
-    enemy.on("postkill", (event: PostKillEvent) => {
+    enemy.on("prekill", (event: PreKillEvent) => {
       this.enemies = this.enemies.filter((enemy) => !enemy.isKilled());
     });
 
     return enemy;
   };
 
-  generateMissile = (engine: Engine, target: Enemy): Missile => {
-    const missile = new Missile(this.base.pos, target);
-    engine.add(missile);
+  generateLockon = (engine: Engine, enemy: Enemy) => {
+    const lockon = new Lockon(enemy.pos);
+    engine.add(lockon);
+    this.lockons.push(lockon);
 
-    missile.on("collisionstart", (event: CollisionStartEvent) => {
-      event.other.kill();
-      missile.kill();
+    lockon.on("prekill", (event: PreKillEvent) => {
+      this.lockons = this.lockons.filter((lockon) => !lockon.isKilled());
+      enemy.cancelLockOn();
+    });
+  };
+
+  generateMissile = (engine: Engine, target: Lockon): Missile => {
+    const missile = new Missile(this.base.pos, target.pos);
+    engine.add(missile);
+    target.islaunched = true;
+
+    missile.on("prekill", (event: PreKillEvent) => {
+      target.kill();
     });
 
     return missile;
