@@ -41,7 +41,7 @@ export class GameScene extends Scene {
 
     const timer = new Timer({
       fcn: () => {
-        this.enemies.push(this.generateEnemy(engine));
+        this.enemies.push(this.generateEnemy(engine, this.base));
       },
       repeats: true,
       interval: 1000,
@@ -84,12 +84,19 @@ export class GameScene extends Scene {
     // }
   };
 
-  generateEnemy = (engine: Engine) => {
+  generateEnemy = (engine: Engine, target: Base) => {
     const x = this.rnd.floating(1, engine.drawWidth);
     const y = -config.enemyLength / 2;
 
-    const enemy = new Enemy(engine, x, y, this.base.pos);
+    const enemy = new Enemy(engine, x, y, target.pos);
     engine.add(enemy);
+
+    enemy.on("collisionstart", (event: CollisionStartEvent) => {
+      if (event.other !== target) return;
+      // target.hit();
+      enemy.kill();
+      this.enemies = this.enemies.filter((enemy) => !enemy.isKilled());
+    });
 
     return enemy;
   };
