@@ -6,6 +6,7 @@
     "breakout": "cd examples/breakout && npm install && npm run start",
     "click-reactions": "cd examples/click-reactions && npm install && npm run start",
     "clocks": "cd examples/clocks && npm install && npm run start",
+    "lockon": "cd examples/lockon && npm install && npm run start",
     "mass-physics": "cd examples/mass-physics && npm install && npm run start",
     "no-bounce-at-0.25.3": "cd examples/no-bounce-at-0.25.3 && npm install && npm run start",
     "scroll-and-score-text": "cd examples/scroll-and-score-text && npm install && npm run start",

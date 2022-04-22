@@ -94,6 +94,13 @@ Credits are as follows.
 | :----------------: | :------------- | :----------------------------------------------------- |
 | original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
 
+### lockon
+
+![sample](./imgs/sample-lockon.png)
+
+The simple tapping game.
+After tapping or dragging on enemies, you can launch missiles!!
+
 ### mass-physics
 
 ![sample](./imgs/sample-mass-physics.png)
