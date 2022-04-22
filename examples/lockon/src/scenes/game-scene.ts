@@ -7,6 +7,7 @@ import {
   Timer,
   PreKillEvent,
   Vector,
+  PostKillEvent,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
@@ -85,12 +86,6 @@ export class GameScene extends Scene {
     }, 2000);
   };
 
-  onPreUpdate = (engine: Engine, delta: number): void => {
-    // if (this.springEnable) {
-    //   this.processSpring(engine, this.base, this.startPos);
-    // }
-  };
-
   generateEnemy = (engine: Engine, target: Base) => {
     const x = this.rnd.floating(1, engine.drawWidth);
     const y = -config.enemyLength / 2;
@@ -122,6 +117,9 @@ export class GameScene extends Scene {
       this.lockons = this.lockons.filter((lockon) => !lockon.isKilled());
       enemy.cancelLockOn();
     });
+    enemy.on("prekill", (event: PreKillEvent) => {
+      lockon.kill();
+    });
   };
 
   generateMissile = (engine: Engine, target: Lockon): Missile => {
@@ -135,8 +133,13 @@ export class GameScene extends Scene {
     engine.add(missile);
     target.islaunched = true;
 
-    missile.on("prekill", (event: PreKillEvent) => {
+    missile.on("postKill", (event: PostKillEvent) => {
+      if (target.isKilled()) return;
       target.kill();
+    });
+    target.on("postKill", (event: PostKillEvent) => {
+      if (missile.isKilled()) return;
+      missile.kill();
     });
 
     return missile;
