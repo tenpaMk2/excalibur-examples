@@ -10,9 +10,10 @@ const engine = new Engine({
   canvasElementId: "game",
 });
 
-engine.showDebug(true);
+// engine.showDebug(true);
 
 Physics.useRealisticPhysics();
+Physics.checkForFastBodies = true;
 Physics.acc = new Vector(0, 980);
 
 engine.add("game-scene", new GameScene());
