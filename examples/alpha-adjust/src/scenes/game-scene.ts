@@ -1,12 +1,13 @@
 import { Scene, Engine, Random } from "excalibur";
+import { PointerEvent } from "excalibur/build/dist/Input";
 import { Clone } from "../objects/clone";
 import { Original } from "../objects/original";
 import { Score } from "../objects/score";
 
 export class GameScene extends Scene {
-  original: Original;
-  clone: Clone;
-  score: Score;
+  original!: Original;
+  clone!: Clone;
+  score!: Score;
   hasClicked: Boolean = false;
 
   onInitialize = (engine: Engine) => {};
