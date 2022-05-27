@@ -8,6 +8,7 @@ import {
   Font,
   TextAlign,
   PreCollisionEvent,
+  Side,
 } from "excalibur";
 
 import { Ball } from "../objects/ball";
@@ -83,18 +84,28 @@ export class Level extends Scene {
     });
 
     this.ball.on("preCollision", (event: PreCollisionEvent) => {
-      const intersection = event.intersection.normalize();
-
-      if (Math.abs(intersection.x) > Math.abs(intersection.y)) {
-        this.ball.vel.x *= -1;
-      } else {
-        this.ball.vel.y *= -1;
+      switch (event.side) {
+        case Side.Top:
+          this.ball.vel.y = Math.abs(this.ball.vel.y);
+          break;
+        case Side.Right:
+          this.ball.vel.x = -Math.abs(this.ball.vel.x);
+          break;
+        case Side.Bottom:
+          this.ball.vel.y = -Math.abs(this.ball.vel.y);
+          break;
+        case Side.Left:
+          this.ball.vel.x = Math.abs(this.ball.vel.x);
+          break;
+        default:
+          throw Error("invalid `Side`.");
       }
     });
 
     blocks.forEach((block) => {
       block.on("preCollision", (event: PreCollisionEvent) => {
         if (event.other !== this.ball) return;
+
         block.kill();
       });
     });
