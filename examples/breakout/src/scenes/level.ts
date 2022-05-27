@@ -17,8 +17,8 @@ import { Paddle } from "../objects/paddle";
 import { VectorUtil } from "../utilities/vector_util";
 
 export class Level extends Scene {
-  ball: Ball;
-  gameOverScreen: GameOverScreen;
+  ball!: Ball;
+  gameOverScreen!: GameOverScreen;
 
   setupBlocks = (width: number, height: number) => {
     const numOfRow = 12;
