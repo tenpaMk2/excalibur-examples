@@ -9,7 +9,7 @@ const engine = new Engine({
   canvasElementId: "game",
 });
 
-engine.showDebug(true);
+engine.showDebug(false);
 
 Physics.useRealisticPhysics();
 
