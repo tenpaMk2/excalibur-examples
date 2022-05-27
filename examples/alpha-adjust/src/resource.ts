@@ -1,5 +1,5 @@
 import { ImageSource, Loader } from "excalibur";
-import pipoPng from "./assets/[Base]BaseChip_pipo.png"
+import pipoPng from "./assets/[Base]BaseChip_pipo.png";
 
 const Resources = {
   pipo: new ImageSource(pipoPng),
