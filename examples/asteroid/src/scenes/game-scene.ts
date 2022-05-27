@@ -11,7 +11,7 @@ import { Bullet } from "../objects/bullet";
 import { Ship } from "../objects/ship";
 
 export class GameScene extends Scene {
-  ship: Ship;
+  ship!: Ship;
   asteroids: Asteroid[];
 
   constructor() {

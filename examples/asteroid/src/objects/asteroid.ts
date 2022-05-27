@@ -78,10 +78,10 @@ export class Asteroid extends Actor {
       collisionType: CollisionType.Active,
     });
 
-    let polygonCollider: PolygonCollider;
-    let polygon: Polygon;
-    let xOffset: Vector;
-    let scale: number;
+    let polygonCollider!: PolygonCollider;
+    let polygon!: Polygon;
+    let xOffset!: Vector;
+    let scale!: number;
 
     switch (type) {
       case "square":
