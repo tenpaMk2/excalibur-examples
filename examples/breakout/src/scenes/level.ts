@@ -15,7 +15,6 @@ import { Ball } from "../objects/ball";
 import { Block } from "../objects/block";
 import { GameOverScreen } from "../objects/gameover_screen";
 import { Paddle } from "../objects/paddle";
-import { VectorUtil } from "../utilities/vector_util";
 
 export class Level extends Scene {
   ball!: Ball;
@@ -75,12 +74,11 @@ export class Level extends Scene {
       if (this.ball !== event.other) {
         return;
       }
-      const velPolar = VectorUtil.toPolar(this.ball.vel);
-      const diffX = this.ball.pos.x - paddle.pos.x;
-      const diffY = this.ball.pos.y - (paddle.pos.y + paddle.height * 4);
-      const diffPolar = VectorUtil.toPolar(new Vector(diffX, diffY));
-      velPolar.radian = diffPolar.radian;
-      this.ball.vel = VectorUtil.fromPolar(velPolar);
+
+      const velSize = this.ball.vel.size;
+      const angle = this.ball.pos.sub(paddle.pos).toAngle();
+      this.ball.vel = Vector.fromAngle(angle);
+      this.ball.vel.size = velSize;
     });
 
     this.ball.on("preCollision", (event: PreCollisionEvent) => {
