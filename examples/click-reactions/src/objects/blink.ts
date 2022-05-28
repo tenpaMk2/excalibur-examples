@@ -1,11 +1,4 @@
-import {
-  Actor,
-  CollisionType,
-  Color,
-  EasingFunctions,
-  SpriteSheet,
-  Vector,
-} from "excalibur";
+import { Actor, CollisionType, Color, SpriteSheet } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
 import config from "../config";
 import { Resources } from "../resource";
