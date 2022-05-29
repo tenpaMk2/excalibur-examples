@@ -7,7 +7,7 @@
   "author": "tenpaMk2",
   "license": "MIT",
   "dependencies": {
-    "excalibur": "^0.25.3"
+    "excalibur": "^0.26.0"
   },
   "devDependencies": {
     "parcel": "^2.4.1",
