@@ -9,12 +9,11 @@ import {
 } from "excalibur";
 
 export class Ground extends Actor {
-  // must be CONVEX!!
   static readonly TRIANGLE_POINTS = [
     new Vector(0, 0),
     new Vector(0, -20),
     new Vector(100, -90),
-    new Vector(200, -120),
+    new Vector(200, -80),
     new Vector(300, -110),
     new Vector(400, -80),
     new Vector(540, -10),
@@ -28,7 +27,7 @@ export class Ground extends Actor {
       collisionType: CollisionType.Fixed,
       collider: new PolygonCollider({
         points: Ground.TRIANGLE_POINTS,
-      }),
+      }).triangulate(),
     });
 
     const triangle = new Polygon({
