@@ -95,7 +95,7 @@ export class GameScene extends Scene {
   };
 
   generatePlayer = (engine: Engine, row: number, col: number) => {
-    const cell = this.mapBuilder.getCell(col, row);
+    const cell = this.mapBuilder.getTile(col, row);
     this.player = new Player(cell.center);
     this.mapBuilder.buildCreature(row, col, this.player);
     engine.add(this.player);
@@ -103,7 +103,7 @@ export class GameScene extends Scene {
   };
 
   generateEnemy = (engine: Engine, row: number, col: number) => {
-    const cell = this.mapBuilder.getCell(col, row);
+    const cell = this.mapBuilder.getTile(col, row);
     const enemy = new Enemy(cell.center);
     this.mapBuilder.buildCreature(row, col, enemy);
     engine.add(enemy);

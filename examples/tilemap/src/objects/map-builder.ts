@@ -19,12 +19,11 @@ export class MapBuilder extends TileMap {
 
   constructor(numOfRow: number, numOfCol: number) {
     super({
-      x: 0,
-      y: 0,
+      pos: Vector.Zero,
       rows: numOfRow,
-      cols: numOfCol,
-      cellWidth: config.TileWidth,
-      cellHeight: config.TileWidth,
+      columns: numOfCol,
+      tileWidth: config.TileWidth,
+      tileHeight: config.TileWidth,
     });
 
     this.mapchipSpriteSheet = SpriteSheet.fromImageSource({
@@ -59,20 +58,20 @@ export class MapBuilder extends TileMap {
 
   onInitialize = (engine: Engine) => {};
 
-  private registerTag = (pos: Vector, tag: string) => {
-    const cell = this.getCellByPoint(pos.x, pos.y);
+  private registerTag = (point: Vector, tag: string) => {
+    const cell = this.getTileByPoint(point);
     cell.addTag(tag);
   };
 
-  registerCreature = (pos: Vector, creature: Creature) => {
-    const cell = this.getCellByPoint(pos.x, pos.y);
+  registerCreature = (point: Vector, creature: Creature) => {
+    const cell = this.getTileByPoint(point);
     cell.data.set("creature", creature);
     this.registerTag(cell.center, "creature");
   };
 
   unregisterCreature = (creature: Creature) => {
-    const cells = this.data.filter(
-      (cell) => cell.data.get("creature") === creature
+    const cells = this.tiles.filter(
+      (tile) => tile.data.get("creature") === creature
     );
     if (cells.length <= 0) {
       Logger.getInstance().error("can not unregister because no creatures.");
@@ -90,8 +89,8 @@ export class MapBuilder extends TileMap {
   };
 
   moveCreature = (creature: Creature, targetPos: Vector) => {
-    const cells = this.data.filter(
-      (cell) => cell.data.get("creature") === creature
+    const cells = this.tiles.filter(
+      (tile) => tile.data.get("creature") === creature
     );
     if (cells.length <= 0) {
       Logger.getInstance().error("can not move because no creatures.");
@@ -105,7 +104,7 @@ export class MapBuilder extends TileMap {
     cell.data.delete("creature");
     cell.removeTag("creature", true);
 
-    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    const targetCell = this.getTileByPoint(targetPos);
     if (!targetCell) {
       Logger.getInstance().error("No cells!!");
       return;
@@ -116,13 +115,13 @@ export class MapBuilder extends TileMap {
   };
 
   getCreatureByPos = (targetPos: Vector): Creature => {
-    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    const targetCell = this.getTileByPoint(targetPos);
     if (!targetCell) return null;
     return targetCell.data.get("creature");
   };
 
   buildBlock = (row: number, col: number) => {
-    const cell = this.getCell(col, row);
+    const cell = this.getTile(col, row);
     this.registerTag(
       new Vector(col * config.TileWidth, row * config.TileWidth),
       "block"
@@ -131,12 +130,12 @@ export class MapBuilder extends TileMap {
   };
 
   buildGrassland = (row: number, col: number) => {
-    const cell = this.getCell(col, row);
+    const cell = this.getTile(col, row);
     cell.addGraphic(this.grasslandSprite);
   };
 
   buildTree = (row: number, col: number) => {
-    const upCell = this.getCell(col, row);
+    const upCell = this.getTile(col, row);
     this.registerTag(
       new Vector(col * config.TileWidth, row * config.TileWidth),
       "breakable"
@@ -147,32 +146,31 @@ export class MapBuilder extends TileMap {
     );
     upCell.addGraphic(this.downTreeSprite);
 
-    const downCell = this.getCell(col, row - 1);
+    const downCell = this.getTile(col, row - 1);
     downCell.addGraphic(this.upTreeSprite);
   };
 
   buildCreature = (row: number, col: number, creature: Creature) => {
-    const cell = this.getCell(col, row);
+    const cell = this.getTile(col, row);
     this.registerCreature(creature.pos, creature);
   };
 
   isBlock = (targetPos: Vector) => {
-    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    const targetCell = this.getTileByPoint(targetPos);
     return targetCell.hasTag("block");
   };
 
   isBreakable = (targetPos: Vector) => {
-    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    const targetCell = this.getTileByPoint(targetPos);
     return targetCell.hasTag("breakable");
   };
 
   breakdown = (targetPos: Vector) => {
-    const targetCell = this.getCellByPoint(targetPos.x, targetPos.y);
+    const targetCell = this.getTileByPoint(targetPos);
     targetCell.removeGraphic(this.downTreeSprite);
     if (targetCell.hasTag("tree")) {
-      const upCell = this.getCellByPoint(
-        targetPos.x,
-        targetPos.y - config.TileWidth
+      const upCell = this.getTileByPoint(
+        targetPos.sub(Vector.Down.scale(config.TileWidth))
       );
       upCell.removeGraphic(this.upTreeSprite);
     }
