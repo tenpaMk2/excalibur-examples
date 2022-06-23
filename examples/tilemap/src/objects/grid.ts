@@ -163,7 +163,7 @@ export class Grid {
     cell2.data.set("isTree", true);
   };
 
-  buildCreature = (row: number, col: number, creature: Creature) => {
+  buildCreature = (creature: Creature) => {
     this.registerCreature(creature.pos, creature);
   };
 

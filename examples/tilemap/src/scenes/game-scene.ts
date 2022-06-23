@@ -96,7 +96,7 @@ export class GameScene extends Scene {
   generatePlayer = (engine: Engine, row: number, col: number) => {
     const center = this.grid.getTileCenter(col, row);
     this.player = new Player(center);
-    this.grid.buildCreature(row, col, this.player);
+    this.grid.buildCreature(this.player);
     engine.add(this.player);
     this.turnQueue.enqueueCreature(this.player);
   };
@@ -104,7 +104,7 @@ export class GameScene extends Scene {
   generateEnemy = (engine: Engine, row: number, col: number) => {
     const center = this.grid.getTileCenter(col, row);
     const enemy = new Enemy(center);
-    this.grid.buildCreature(row, col, enemy);
+    this.grid.buildCreature(enemy);
     engine.add(enemy);
     this.turnQueue.enqueueCreature(enemy);
   };
