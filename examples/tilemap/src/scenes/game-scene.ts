@@ -24,18 +24,8 @@ export class GameScene extends Scene {
     this.processOthersTurns();
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
-      // Player
-      if (event.screenPos.x < engine.drawWidth / 4) {
-        this.tryToMoveLeft(this.grid, this.player);
-      } else if ((engine.drawWidth * 3) / 4 < event.screenPos.x) {
-        this.tryToMoveRight(this.grid, this.player);
-      }
+      this.processPlayerTurn(engine, event);
 
-      if (event.screenPos.y < engine.drawHeight / 4) {
-        this.tryToMoveUp(this.grid, this.player);
-      } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
-        this.tryToMoveDown(this.grid, this.player);
-      }
       this.turnQueue.dequeueCreature();
       this.turnQueue.enqueueCreature(this.player);
 
@@ -139,35 +129,48 @@ export class GameScene extends Scene {
     this.tryToMove(this.grid, creature, targetPos);
   };
 
-  tryToMoveUp = (grid: Grid, creature: Creature) => {
-    this.tryToMove(
-      grid,
-      creature,
-      creature.pos.add(Vector.Up.scale(config.TileWidth))
-    );
-  };
+  processPlayerTurn = (engine: Engine, event: PointerEvent) => {
+    // Player
+    let leftRight: "left" | "center" | "right" = "center";
+    let upDown: "up" | "center" | "down" = "center";
 
-  tryToMoveRight = (grid: Grid, creature: Creature) => {
-    this.tryToMove(
-      grid,
-      creature,
-      creature.pos.add(Vector.Right.scale(config.TileWidth))
-    );
-  };
+    if (event.screenPos.x < engine.drawWidth / 4) {
+      leftRight = "left";
+    } else if ((engine.drawWidth * 3) / 4 < event.screenPos.x) {
+      leftRight = "right";
+    }
 
-  tryToMoveDown = (grid: Grid, creature: Creature) => {
-    this.tryToMove(
-      grid,
-      creature,
-      creature.pos.add(Vector.Down.scale(config.TileWidth))
-    );
-  };
+    if (event.screenPos.y < engine.drawHeight / 4) {
+      upDown = "up";
+    } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
+      upDown = "down";
+    }
 
-  tryToMoveLeft = (grid: Grid, creature: Creature) => {
+    let unitVector8: Vector = Vector.Zero;
+    if (leftRight === "center" && upDown === "up") {
+      unitVector8 = Vector.Up;
+    } else if (leftRight === "right" && upDown === "up") {
+      unitVector8 = Vector.Right.add(Vector.Up);
+    } else if (leftRight === "right" && upDown === "center") {
+      unitVector8 = Vector.Right;
+    } else if (leftRight === "right" && upDown === "down") {
+      unitVector8 = Vector.Right.add(Vector.Down);
+    } else if (leftRight === "center" && upDown === "down") {
+      unitVector8 = Vector.Down;
+    } else if (leftRight === "left" && upDown === "down") {
+      unitVector8 = Vector.Left.add(Vector.Down);
+    } else if (leftRight === "left" && upDown === "center") {
+      unitVector8 = Vector.Left;
+    } else if (leftRight === "left" && upDown === "up") {
+      unitVector8 = Vector.Left.add(Vector.Up);
+    } else {
+      return; // do nothing
+    }
+
     this.tryToMove(
-      grid,
-      creature,
-      creature.pos.add(Vector.Left.scale(config.TileWidth))
+      this.grid,
+      this.player,
+      this.player.pos.add(unitVector8.scale(config.TileWidth))
     );
   };
 
