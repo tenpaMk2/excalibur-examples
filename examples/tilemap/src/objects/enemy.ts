@@ -42,6 +42,7 @@ export class Enemy extends Actor implements Creature {
     });
 
     const sprite = bodySpriteSheet.getSprite(0, 10);
+    if (!sprite) throw Error("can not get sprite!!");
     sprite.width = config.TileWidth;
     sprite.height = config.TileWidth;
     this.graphics.use(sprite);

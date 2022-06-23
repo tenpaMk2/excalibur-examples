@@ -62,16 +62,19 @@ export class Player extends Actor implements Creature {
     });
 
     const sprite = bodySpriteSheet.getSprite(0, 0);
+    if (!sprite) throw Error("can not get sprite!!");
     sprite.width = config.TileWidth;
     sprite.height = config.TileWidth;
     this.graphics.use(sprite);
 
     const sprite2 = partSpriteSheet.getSprite(0, 0);
+    if (!sprite2) throw Error("can not get sprite!!");
     sprite2.width = config.TileWidth;
     sprite2.height = config.TileWidth;
     this.graphics.show(sprite2);
 
     const sprite3 = partSpriteSheet.getSprite(3, 0);
+    if (!sprite3) throw Error("can not get sprite!!");
     sprite3.width = config.TileWidth;
     sprite3.height = config.TileWidth;
     this.graphics.show(sprite3);
