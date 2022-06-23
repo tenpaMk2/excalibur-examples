@@ -4,13 +4,13 @@ import { Battle } from "../battle";
 import config from "../config";
 import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
-import { MapBuilder } from "../objects/map-builder";
+import { Grid } from "../objects/grid";
 import { Player } from "../objects/player";
 import { TurnQueue } from "../objects/turn-stack";
 
 export class GameScene extends Scene {
-  mapBuilder: MapBuilder;
-  player: Player;
+  grid!: Grid;
+  player!: Player;
   turnQueue: TurnQueue;
 
   constructor() {
@@ -26,15 +26,15 @@ export class GameScene extends Scene {
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
       // Player
       if (event.screenPos.x < engine.drawWidth / 4) {
-        this.tryToMoveLeft(this.mapBuilder, this.player);
+        this.tryToMoveLeft(this.grid, this.player);
       } else if ((engine.drawWidth * 3) / 4 < event.screenPos.x) {
-        this.tryToMoveRight(this.mapBuilder, this.player);
+        this.tryToMoveRight(this.grid, this.player);
       }
 
       if (event.screenPos.y < engine.drawHeight / 4) {
-        this.tryToMoveUp(this.mapBuilder, this.player);
+        this.tryToMoveUp(this.grid, this.player);
       } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
-        this.tryToMoveDown(this.mapBuilder, this.player);
+        this.tryToMoveDown(this.grid, this.player);
       }
       this.turnQueue.dequeueCreature();
       this.turnQueue.enqueueCreature(this.player);
@@ -49,8 +49,7 @@ export class GameScene extends Scene {
   initMap = (engine: Engine) => {
     const numOfRow = 10;
     const numOfCol = 16;
-    this.mapBuilder = new MapBuilder(numOfRow, numOfCol);
-    engine.add(this.mapBuilder);
+    this.grid = new Grid(engine, numOfRow, numOfCol);
 
     for (let row = 0; row < numOfRow; row++) {
       for (let col = 0; col < numOfCol; col++) {
@@ -60,16 +59,16 @@ export class GameScene extends Scene {
           col === 0 ||
           col === numOfCol - 1
         ) {
-          this.mapBuilder.buildBlock(row, col);
+          this.grid.buildBlock(row, col);
         } else {
-          this.mapBuilder.buildGrassland(row, col);
+          this.grid.buildGrassland(row, col);
         }
       }
     }
 
-    this.mapBuilder.buildTree(3, 4);
-    this.mapBuilder.buildTree(4, 3);
-    this.mapBuilder.buildTree(4, 4);
+    this.grid.buildTree(3, 4);
+    this.grid.buildTree(4, 3);
+    this.grid.buildTree(4, 4);
 
     this.generatePlayer(engine, 3, 2);
     this.generateEnemy(engine, 8, 7);
@@ -95,17 +94,17 @@ export class GameScene extends Scene {
   };
 
   generatePlayer = (engine: Engine, row: number, col: number) => {
-    const cell = this.mapBuilder.getTile(col, row);
-    this.player = new Player(cell.center);
-    this.mapBuilder.buildCreature(row, col, this.player);
+    const center = this.grid.getTileCenter(col, row);
+    this.player = new Player(center);
+    this.grid.buildCreature(row, col, this.player);
     engine.add(this.player);
     this.turnQueue.enqueueCreature(this.player);
   };
 
   generateEnemy = (engine: Engine, row: number, col: number) => {
-    const cell = this.mapBuilder.getTile(col, row);
-    const enemy = new Enemy(cell.center);
-    this.mapBuilder.buildCreature(row, col, enemy);
+    const center = this.grid.getTileCenter(col, row);
+    const enemy = new Enemy(center);
+    this.grid.buildCreature(row, col, enemy);
     engine.add(enemy);
     this.turnQueue.enqueueCreature(enemy);
   };
@@ -122,7 +121,7 @@ export class GameScene extends Scene {
         ? prev
         : current;
     });
-    this.tryToMove(this.mapBuilder, creature, targetPos);
+    this.tryToMove(this.grid, creature, targetPos);
   };
 
   actLeave = (creature: Creature) => {
@@ -137,82 +136,74 @@ export class GameScene extends Scene {
         ? prev
         : current;
     });
-    this.tryToMove(this.mapBuilder, creature, targetPos);
+    this.tryToMove(this.grid, creature, targetPos);
   };
 
-  tryToMoveUp = (mapBuilder: MapBuilder, creature: Creature) => {
+  tryToMoveUp = (grid: Grid, creature: Creature) => {
     this.tryToMove(
-      mapBuilder,
+      grid,
       creature,
       creature.pos.add(Vector.Up.scale(config.TileWidth))
     );
   };
 
-  tryToMoveRight = (mapBuilder: MapBuilder, creature: Creature) => {
+  tryToMoveRight = (grid: Grid, creature: Creature) => {
     this.tryToMove(
-      mapBuilder,
+      grid,
       creature,
       creature.pos.add(Vector.Right.scale(config.TileWidth))
     );
   };
 
-  tryToMoveDown = (mapBuilder: MapBuilder, creature: Creature) => {
+  tryToMoveDown = (grid: Grid, creature: Creature) => {
     this.tryToMove(
-      mapBuilder,
+      grid,
       creature,
       creature.pos.add(Vector.Down.scale(config.TileWidth))
     );
   };
 
-  tryToMoveLeft = (mapBuilder: MapBuilder, creature: Creature) => {
+  tryToMoveLeft = (grid: Grid, creature: Creature) => {
     this.tryToMove(
-      mapBuilder,
+      grid,
       creature,
       creature.pos.add(Vector.Left.scale(config.TileWidth))
     );
   };
 
-  tryToMove = (
-    mapBuilder: MapBuilder,
-    creature: Creature,
-    targetPos: Vector
-  ) => {
-    const isBlock = mapBuilder.isBlock(targetPos);
+  tryToMove = (grid: Grid, creature: Creature, targetPos: Vector) => {
+    const isBlock = grid.isBlock(targetPos);
     if (isBlock) return;
 
-    this.breakIfNeed(mapBuilder, targetPos);
+    this.breakIfNeed(grid, targetPos);
 
-    const counterCreature = mapBuilder.getCreatureByPos(targetPos);
+    const counterCreature = grid.getCreatureByPos(targetPos);
     if (counterCreature) {
       const battle = new Battle(creature, counterCreature);
       if (battle.isDead) {
-        this.killCreature(counterCreature, mapBuilder);
-        this.creatureMove(mapBuilder, creature, targetPos);
+        this.killCreature(counterCreature, grid);
+        this.creatureMove(grid, creature, targetPos);
       }
       return;
     }
 
-    this.creatureMove(mapBuilder, creature, targetPos);
+    this.creatureMove(grid, creature, targetPos);
   };
 
-  creatureMove = (
-    mapBuilder: MapBuilder,
-    creature: Creature,
-    targetPos: Vector
-  ) => {
+  creatureMove = (grid: Grid, creature: Creature, targetPos: Vector) => {
     creature.pos = targetPos;
-    mapBuilder.moveCreature(creature, targetPos);
+    grid.moveCreature(creature, targetPos);
   };
 
-  breakIfNeed = (mapBuilder: MapBuilder, targetPos: Vector): boolean => {
-    const isBreakable = mapBuilder.isBreakable(targetPos);
+  breakIfNeed = (grid: Grid, targetPos: Vector): boolean => {
+    const isBreakable = grid.isBreakable(targetPos);
     if (!isBreakable) return false;
-    this.mapBuilder.breakdown(targetPos);
+    this.grid.breakdown(targetPos);
     return true;
   };
 
-  killCreature = (creature: Creature, mapBuilder: MapBuilder) => {
-    mapBuilder.unregisterCreature(creature);
+  killCreature = (creature: Creature, grid: Grid) => {
+    grid.unregisterCreature(creature);
     creature.kill();
   };
 }
