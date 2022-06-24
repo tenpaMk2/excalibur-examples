@@ -2,6 +2,18 @@ import { Canvas, Color, Engine, ScreenElement, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 import config from "../config";
 
+export type direction9 =
+  | "up"
+  | "upRight"
+  | "right"
+  | "downRight"
+  | "down"
+  | "downLeft"
+  | "left"
+  | "upLeft"
+  | "center";
+export type tapdownEvent = { direction9: direction9 };
+
 export class TapArea extends ScreenElement {
   constructor(engine: Engine) {
     super({
@@ -52,51 +64,66 @@ export class TapArea extends ScreenElement {
     const subAreas: ScreenElement[] = [];
     subAreas.push(
       new ScreenElement({
+        name: "up",
         pos: new Vector(config.tapAreaX1, 0),
         width: config.tapAreaX2 - config.tapAreaX1,
         height: config.tapAreaY1,
         color: Color.Yellow,
       }),
       new ScreenElement({
+        name: "upRight",
         pos: new Vector(config.tapAreaX2, 0),
         width: config.gameWidth - config.tapAreaX2,
         height: config.tapAreaY1,
         color: Color.Yellow,
       }),
       new ScreenElement({
+        name: "right",
         pos: new Vector(config.tapAreaX2, config.tapAreaY1),
         width: config.gameWidth - config.tapAreaX2,
         height: config.tapAreaY2 - config.tapAreaY1,
         color: Color.Yellow,
       }),
       new ScreenElement({
+        name: "downRight",
         pos: new Vector(config.tapAreaX2, config.tapAreaY2),
         width: config.gameWidth - config.tapAreaX2,
         height: config.gameHeight - config.tapAreaY2,
         color: Color.Yellow,
       }),
       new ScreenElement({
+        name: "down",
         pos: new Vector(config.tapAreaX1, config.tapAreaY2),
         width: config.tapAreaX2 - config.tapAreaX1,
         height: config.gameHeight - config.tapAreaY2,
         color: Color.Yellow,
       }),
       new ScreenElement({
+        name: "downLeft",
         pos: new Vector(0, config.tapAreaY2),
         width: config.tapAreaX1,
         height: config.gameHeight - config.tapAreaY2,
         color: Color.Yellow,
       }),
       new ScreenElement({
+        name: "left",
         pos: new Vector(0, config.tapAreaY1),
         width: config.tapAreaX1,
         height: config.tapAreaY2 - config.tapAreaY1,
         color: Color.Yellow,
       }),
       new ScreenElement({
-        pos: Vector.Zero,
+        name: "upLeft",
+        pos: new Vector(0, 0),
         width: config.tapAreaX1,
         height: config.tapAreaY1,
+        color: Color.Yellow,
+      }),
+      new ScreenElement({
+        name: "center",
+        pos: new Vector(config.tapAreaX1, config.tapAreaY1),
+        width: config.tapAreaX2 - config.tapAreaX1,
+        height: config.tapAreaY2 - config.tapAreaY1,
         color: Color.Yellow,
       })
     );
@@ -110,8 +137,14 @@ export class TapArea extends ScreenElement {
       subArea.on("pointerleave", (event: PointerEvent): void => {
         subArea.graphics.opacity = 0;
       });
+      subArea.on("pointerdown", (event: PointerEvent): void => {
+        // ??? how to use events ???
+        const ev: tapdownEvent = { direction9: subArea.name as direction9 };
+        this.emit("tapdown", ev);
+      });
 
       engine.add(subArea);
+      this.addChild(subArea);
     });
   }
 }

@@ -1,15 +1,15 @@
 import { Scene, Engine, Vector, Logger } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import { Battle } from "../battle";
 import config from "../config";
 import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
 import { Grid } from "../objects/grid";
 import { Player } from "../objects/player";
-import { TapArea } from "../objects/tap-area";
+import { direction9, TapArea, tapdownEvent } from "../objects/tap-area";
 import { TurnQueue } from "../objects/turn-stack";
 
 export class GameScene extends Scene {
+  tapArea!: TapArea;
   grid!: Grid;
   player!: Player;
   turnQueue: TurnQueue;
@@ -21,14 +21,17 @@ export class GameScene extends Scene {
 
   onInitialize = (engine: Engine) => {
     this.initMap(engine);
-    engine.add(new TapArea(engine));
+
+    this.tapArea = new TapArea(engine);
+    engine.add(this.tapArea);
 
     this.processOthersTurns();
 
-    engine.input.pointers.primary.on("down", (event: PointerEvent) => {
+    // ??? how to use events ???
+    this.tapArea.on("tapdown", (event: tapdownEvent): void => {
       const player = this.turnQueue.dequeueCreature();
 
-      this.processPlayerTurn(engine, event);
+      this.processPlayerTurn(engine, event.direction9);
 
       this.turnQueue.enqueueCreature(this.player);
 
@@ -131,42 +134,37 @@ export class GameScene extends Scene {
     this.tryToMove(this.grid, creature, targetPos);
   };
 
-  processPlayerTurn = (engine: Engine, event: PointerEvent) => {
-    // Player
-    let leftRight: "left" | "center" | "right" = "center";
-    let upDown: "up" | "center" | "down" = "center";
-
-    if (event.screenPos.x < config.tapAreaX1) {
-      leftRight = "left";
-    } else if (config.tapAreaX2 < event.screenPos.x) {
-      leftRight = "right";
-    }
-
-    if (event.screenPos.y < config.tapAreaY1) {
-      upDown = "up";
-    } else if (config.tapAreaY2 < event.screenPos.y) {
-      upDown = "down";
-    }
-
+  processPlayerTurn = (engine: Engine, direction: direction9) => {
     let unitVector8: Vector = Vector.Zero;
-    if (leftRight === "center" && upDown === "up") {
-      unitVector8 = Vector.Up;
-    } else if (leftRight === "right" && upDown === "up") {
-      unitVector8 = Vector.Right.add(Vector.Up);
-    } else if (leftRight === "right" && upDown === "center") {
-      unitVector8 = Vector.Right;
-    } else if (leftRight === "right" && upDown === "down") {
-      unitVector8 = Vector.Right.add(Vector.Down);
-    } else if (leftRight === "center" && upDown === "down") {
-      unitVector8 = Vector.Down;
-    } else if (leftRight === "left" && upDown === "down") {
-      unitVector8 = Vector.Left.add(Vector.Down);
-    } else if (leftRight === "left" && upDown === "center") {
-      unitVector8 = Vector.Left;
-    } else if (leftRight === "left" && upDown === "up") {
-      unitVector8 = Vector.Left.add(Vector.Up);
-    } else {
-      return; // do nothing
+    switch (direction) {
+      case "up":
+        unitVector8 = Vector.Up;
+        break;
+      case "upRight":
+        unitVector8 = Vector.Right.add(Vector.Up);
+        break;
+      case "right":
+        unitVector8 = Vector.Right;
+        break;
+      case "downRight":
+        unitVector8 = Vector.Right.add(Vector.Down);
+        break;
+      case "down":
+        unitVector8 = Vector.Down;
+        break;
+      case "downLeft":
+        unitVector8 = Vector.Left.add(Vector.Down);
+        break;
+      case "left":
+        unitVector8 = Vector.Left;
+        break;
+      case "upLeft":
+        unitVector8 = Vector.Left.add(Vector.Up);
+        break;
+      case "center":
+        return;
+      default:
+        throw new Error("Invalid direction");
     }
 
     this.tryToMove(
