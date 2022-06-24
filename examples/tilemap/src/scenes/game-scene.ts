@@ -84,7 +84,7 @@ export class GameScene extends Scene {
           Logger.getInstance().error("unknown action!!");
           break;
       }
-      this.turnQueue.enqueueCreature(creature);
+      if (!creature.isKilled()) this.turnQueue.enqueueCreature(creature);
     }
   };
 
@@ -207,6 +207,7 @@ export class GameScene extends Scene {
 
   killCreature = (creature: Creature, grid: Grid) => {
     grid.unregisterCreature(creature);
+    this.turnQueue.removeCreature(creature);
     creature.kill();
   };
 }

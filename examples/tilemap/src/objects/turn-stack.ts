@@ -16,6 +16,11 @@ export class TurnQueue extends Array {
     return creature;
   };
 
+  removeCreature = (targetCreature: Creature): void => {
+    const index = this.indexOf(targetCreature);
+    this.splice(index, 1);
+  };
+
   elapseTime = (time: number) => {
     this.forEach((creature) => {
       creature.timeUntilNextTurn -= time;
