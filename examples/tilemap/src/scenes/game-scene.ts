@@ -6,6 +6,7 @@ import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
 import { Grid } from "../objects/grid";
 import { Player } from "../objects/player";
+import { TapArea } from "../objects/tap-area";
 import { TurnQueue } from "../objects/turn-stack";
 
 export class GameScene extends Scene {
@@ -20,16 +21,17 @@ export class GameScene extends Scene {
 
   onInitialize = (engine: Engine) => {
     this.initMap(engine);
+    engine.add(new TapArea(engine));
 
     this.processOthersTurns();
 
     engine.input.pointers.primary.on("down", (event: PointerEvent) => {
+      const player = this.turnQueue.dequeueCreature();
+
       this.processPlayerTurn(engine, event);
 
-      this.turnQueue.dequeueCreature();
       this.turnQueue.enqueueCreature(this.player);
 
-      // Enemy
       this.processOthersTurns();
     });
 
@@ -134,15 +136,15 @@ export class GameScene extends Scene {
     let leftRight: "left" | "center" | "right" = "center";
     let upDown: "up" | "center" | "down" = "center";
 
-    if (event.screenPos.x < engine.drawWidth / 4) {
+    if (event.screenPos.x < config.tapAreaX1) {
       leftRight = "left";
-    } else if ((engine.drawWidth * 3) / 4 < event.screenPos.x) {
+    } else if (config.tapAreaX2 < event.screenPos.x) {
       leftRight = "right";
     }
 
-    if (event.screenPos.y < engine.drawHeight / 4) {
+    if (event.screenPos.y < config.tapAreaY1) {
       upDown = "up";
-    } else if ((engine.drawHeight * 3) / 4 < event.screenPos.y) {
+    } else if (config.tapAreaY2 < event.screenPos.y) {
       upDown = "down";
     }
 
