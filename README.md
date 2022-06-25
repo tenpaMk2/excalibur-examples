@@ -137,6 +137,19 @@ Credits are as follows.
 | :----------------: | :------- | :----------------------- |
 |    box graphics    | kenny.nl | <https://www.kenney.nl/> |
 
+### snake
+
+![sample](./imgs/sample-snake.png)
+
+Simple snake game.
+You can control the snake by tapping on edge of screen.
+
+Credits are as follows.
+
+| item (description) | author   | URL                      |
+| :----------------: | :------- | :----------------------- |
+|      graphics      | kenny.nl | <https://www.kenney.nl/> |
+
 ### sprite-animations
 
 ![sample](./imgs/sample-sprite-animations.png)

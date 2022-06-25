@@ -11,6 +11,7 @@
     "no-bounce-at-0.25.3": "cd examples/no-bounce-at-0.25.3 && npm install && npm run start",
     "scroll-and-score-text": "cd examples/scroll-and-score-text && npm install && npm run start",
     "slingshot": "cd examples/slingshot && npm install && npm run start",
+    "snake": "cd examples/snake && npm install && npm run start",
     "sprite-animations": "cd examples/sprite-animations && npm install && npm run start",
     "tilemap": "cd examples/tilemap && npm install && npm run start"
   },
