@@ -12,4 +12,5 @@ export default {
   gameCol: 8,
   gameRow: 10,
   snakeInterval: 300, // [ms]
+  gameOverTextSize: 64,
 };

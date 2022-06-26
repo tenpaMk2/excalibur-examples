@@ -2,6 +2,7 @@ import {
   Actor,
   CollisionType,
   Engine,
+  Events,
   Sprite,
   SpriteSheet,
   Timer,
@@ -9,12 +10,15 @@ import {
 } from "excalibur";
 import config from "../config";
 import { Resources } from "../resource";
+import { Bait } from "./bait";
+import { GameOver } from "./game-over";
 
 export class Snake {
   private bodies: Actor[] = [];
   private endSprites: Sprite[] = []; // up, right, down, left
   private bodiesprites: Sprite[] = []; // up-down, right-left, up-right, right-down, down-left, left-up
-  private currentDirection!: Vector = Vector.Up;
+  private currentDirection: Vector = Vector.Up;
+  private timer: Timer;
 
   constructor(pos: Vector, engine: Engine) {
     this.prepareGraphics();
@@ -29,15 +33,24 @@ export class Snake {
     this.bodies.push(head);
     engine.add(head);
 
-    const timer = new Timer({
+    this.timer = new Timer({
       interval: config.snakeInterval,
       repeats: true,
       fcn: () => {
         this.move(this.currentDirection);
       },
     });
-    engine.currentScene.add(timer);
-    timer.start();
+    engine.currentScene.add(this.timer);
+    this.timer.start();
+
+    head.on("collisionstart", (event: Events.CollisionStartEvent): void => {
+      if (event.other instanceof Bait) return; // controll by `bait.ts`.
+      const index = this.findBody(event.other);
+      if (index === -1 || index <= 3) return; // skip impossible (unkown obj or near the head body obj) collision
+
+      engine.add(new GameOver());
+      this.stop();
+    });
 
     this.pushTail(engine);
   }
@@ -93,6 +106,11 @@ export class Snake {
   getHead(): Actor {
     if (this.bodies.length === 0) throw Error("No bodies!!");
     return this.bodies[0];
+  }
+
+  // indexof
+  private findBody(targetBody: Actor): number {
+    return this.bodies.indexOf(targetBody);
   }
 
   turn = (direction4: Vector): void => {
@@ -217,5 +235,9 @@ export class Snake {
     this.bodies.push(tail);
     // this.addChild(tail);
     engine.add(tail);
+  }
+
+  stop(): void {
+    this.timer.stop();
   }
 }
