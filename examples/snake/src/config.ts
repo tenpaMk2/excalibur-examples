@@ -16,7 +16,7 @@ export default {
   tapAreaY1: gameHeight * 0.25,
   tapAreaY2: gameHeight * 0.75,
   gameCol: 8,
-  gameRow: 10,
+  gameRow: 14,
   snakeInterval: 300, // [ms]
   gameOverTextSize: 64,
   upTreeZ: ZDefines.upTree,
