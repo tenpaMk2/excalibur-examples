@@ -35,8 +35,11 @@ export class GameOver extends ScreenElement {
         textAlign: TextAlign.Center,
         size: config.gameOverTextSize,
       }),
+      z: config.screenZ,
     });
     engine.add(this.gameOverText);
     this.addChild(this.gameOverText);
+
+    this.z = config.screenZ;
   }
 }

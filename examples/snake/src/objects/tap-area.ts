@@ -8,6 +8,7 @@ export class TapArea extends ScreenElement {
   constructor(engine: Engine) {
     super({
       pos: Vector.Zero,
+      z: config.screenZ,
     });
 
     this.initGraphic(engine.drawWidth, engine.drawHeight);
@@ -60,6 +61,7 @@ export class TapArea extends ScreenElement {
         height: config.tapAreaY1,
         color: Color.Yellow,
         anchor: Vector.Zero,
+        z: config.screenZ,
       }),
       new ScreenElement({
         name: "right",
@@ -68,6 +70,7 @@ export class TapArea extends ScreenElement {
         height: config.tapAreaY2 - config.tapAreaY1,
         color: Color.Yellow,
         anchor: Vector.Zero,
+        z: config.screenZ,
       }),
       new ScreenElement({
         name: "down",
@@ -76,6 +79,7 @@ export class TapArea extends ScreenElement {
         height: config.gameHeight - config.tapAreaY2,
         color: Color.Yellow,
         anchor: Vector.Zero,
+        z: config.screenZ,
       }),
       new ScreenElement({
         name: "left",
@@ -84,6 +88,7 @@ export class TapArea extends ScreenElement {
         height: config.tapAreaY2 - config.tapAreaY1,
         color: Color.Yellow,
         anchor: Vector.Zero,
+        z: config.screenZ,
       })
     );
 

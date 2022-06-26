@@ -16,8 +16,8 @@ export class BaitSpawner {
   }
 
   spawn() {
-    const col = this.rnd.integer(0, config.gameCol - 1);
-    const row = this.rnd.integer(0, config.gameRow - 1);
+    const col = this.rnd.integer(1, config.gameCol - 2);
+    const row = this.rnd.integer(1, config.gameRow - 2);
     const centerPos = this.grid.getCenterOfTile(col, row);
 
     const bait = new Bait(centerPos, this.snake, this.engine, this);

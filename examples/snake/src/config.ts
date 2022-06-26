@@ -1,6 +1,12 @@
 const gameWidth = 1080 / 2;
 const gameHeight = 1920 / 2;
 
+enum ZDefines {
+  others = 0,
+  upTree,
+  screenElement,
+}
+
 export default {
   TileWidth: 64, // pixels
   gameWidth: gameWidth, // not pixels when fit screen!!
@@ -13,4 +19,6 @@ export default {
   gameRow: 10,
   snakeInterval: 300, // [ms]
   gameOverTextSize: 64,
+  upTreeZ: ZDefines.upTree,
+  screenZ: ZDefines.screenElement,
 };

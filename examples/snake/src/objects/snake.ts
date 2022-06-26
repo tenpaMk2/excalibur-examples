@@ -5,6 +5,7 @@ import {
   Events,
   Sprite,
   SpriteSheet,
+  TileMap,
   Timer,
   Vector,
 } from "excalibur";
@@ -46,7 +47,8 @@ export class Snake {
     head.on("collisionstart", (event: Events.CollisionStartEvent): void => {
       if (event.other instanceof Bait) return; // controll by `bait.ts`.
       const index = this.findBody(event.other);
-      if (index === -1 || index <= 3) return; // skip impossible (unkown obj or near the head body obj) collision
+      if ((index === -1 || index <= 3) && !(event.other instanceof TileMap))
+        return; // skip impossible (unkown obj or near the head body obj) collision
 
       engine.add(new GameOver());
       this.stop();

@@ -3,7 +3,6 @@
 import {
   CollisionType,
   Engine,
-  Sprite,
   SpriteSheet,
   Tile,
   TileMap,
@@ -14,10 +13,32 @@ import { Resources } from "../resource";
 
 export class Grid {
   private background!: TileMap;
-  private foreground!: TileMap;
+  private downTreeMap!: TileMap;
+  private upTreeMap!: TileMap;
 
   constructor(engine: Engine) {
-    const mapchipSpriteSheet = SpriteSheet.fromImageSource({
+    const tileMapConfig = {
+      pos: Vector.Zero,
+      rows: config.gameRow,
+      columns: config.gameCol,
+      tileWidth: config.TileWidth,
+      tileHeight: config.TileWidth,
+      collisionType: CollisionType.PreventCollision,
+    };
+    this.background = new TileMap(tileMapConfig);
+    this.downTreeMap = new TileMap(tileMapConfig);
+    this.upTreeMap = new TileMap(tileMapConfig);
+
+    this.initBackground();
+    this.initForeground();
+
+    engine.add(this.background);
+    engine.add(this.downTreeMap);
+    engine.add(this.upTreeMap);
+  }
+
+  private generateSpriteSheet(): SpriteSheet {
+    return SpriteSheet.fromImageSource({
       image: Resources.mapchip,
       grid: {
         rows: 31,
@@ -32,37 +53,52 @@ export class Grid {
         },
       },
     });
-    const grasslandSprite = mapchipSpriteSheet.getSprite(5, 0)!;
-    grasslandSprite.width = config.TileWidth;
-    grasslandSprite.height = config.TileWidth;
-    const upTreeSprite = mapchipSpriteSheet.getSprite(16, 10)!;
-    upTreeSprite.width = config.TileWidth;
-    upTreeSprite.height = config.TileWidth;
-    const downTreeSprite = mapchipSpriteSheet.getSprite(16, 11)!;
-    downTreeSprite.width = config.TileWidth;
-    downTreeSprite.height = config.TileWidth;
-
-    const tileMapConfig = {
-      pos: Vector.Zero,
-      rows: config.gameRow,
-      columns: config.gameCol,
-      tileWidth: config.TileWidth,
-      tileHeight: config.TileWidth,
-      collisionType: CollisionType.PreventCollision,
-    };
-    this.background = new TileMap(tileMapConfig);
-    this.foreground = new TileMap(tileMapConfig);
-
-    this.initBackground(grasslandSprite);
-
-    engine.add(this.background);
-    engine.add(this.foreground);
   }
 
-  private initBackground(sprite: Sprite) {
+  private initBackground() {
+    const spriteSheet = this.generateSpriteSheet();
+    const sprite = spriteSheet.getSprite(5, 0)!;
+    sprite.width = config.TileWidth;
+    sprite.height = config.TileWidth;
+
     this.background.tiles.forEach((tile: Tile) => {
       tile.addGraphic(sprite);
     });
+  }
+
+  private initForeground() {
+    const spriteSheet = this.generateSpriteSheet();
+    const upSprite = spriteSheet.getSprite(16, 10)!;
+    upSprite.width = config.TileWidth;
+    upSprite.height = config.TileWidth;
+    const downSprite = spriteSheet.getSprite(16, 11)!;
+    downSprite.width = config.TileWidth;
+    downSprite.height = config.TileWidth;
+
+    for (let row = 0; row < config.gameRow; row++) {
+      for (let col = 0; col < config.gameCol; col++) {
+        if (
+          row === 0 ||
+          row === config.gameRow - 1 ||
+          col === 0 ||
+          col === config.gameCol - 1
+        ) {
+          // plant downTree.
+          const downTile = this.downTreeMap.getTile(col, row)!;
+          downTile.addGraphic(downSprite);
+
+          // setup colllider
+          downTile.solid = true;
+
+          // plant upTree
+          const upTile = this.upTreeMap.getTile(col, row - 1);
+          if (!upTile) continue;
+          upTile.addGraphic(upSprite);
+        }
+      }
+    }
+
+    this.upTreeMap.z = config.upTreeZ;
   }
 
   getCenterOfTile(col: number, row: number): Vector {
