@@ -20,7 +20,7 @@ export class Snake {
   private currentDirection: Vector = Vector.Up;
   private timer: Timer;
 
-  constructor(pos: Vector, engine: Engine) {
+  constructor(pos: Vector, private engine: Engine) {
     this.prepareGraphics();
 
     const head = new Actor({
@@ -52,7 +52,7 @@ export class Snake {
       this.stop();
     });
 
-    this.pushTail(engine);
+    this.pushTail();
   }
 
   private prepareGraphics(): void {
@@ -226,7 +226,7 @@ export class Snake {
     }
   }
 
-  pushTail(engine: Engine): void {
+  pushTail(): void {
     const tail = new Actor({
       pos: this.bodies.slice(-1)[0].pos,
       radius: config.TileWidth / 3,
@@ -234,7 +234,7 @@ export class Snake {
     });
     this.bodies.push(tail);
     // this.addChild(tail);
-    engine.add(tail);
+    this.engine.add(tail);
   }
 
   stop(): void {

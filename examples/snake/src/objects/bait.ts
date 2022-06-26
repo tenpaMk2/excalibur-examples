@@ -26,7 +26,9 @@ export class Bait extends Actor {
       collisionType: CollisionType.Passive,
       radius: config.TileWidth / 3,
     });
+  }
 
+  onInitialize(engine: Engine): void {
     this.initGraphic();
     this.initPhysics();
   }
@@ -66,7 +68,7 @@ export class Bait extends Actor {
     );
 
     this.on("postkill", (event: PostKillEvent): void => {
-      this.snake.pushTail(this.engine);
+      this.snake.pushTail();
       this.baitSpawner.spawn();
     });
   }
