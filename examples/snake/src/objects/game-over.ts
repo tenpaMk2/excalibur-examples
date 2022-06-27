@@ -29,8 +29,8 @@ export class GameOver extends ScreenElement {
     this.gameOverText = new Label({
       text: "GameOver",
       color: Color.White,
-      x: engine.halfCanvasWidth,
-      y: engine.halfCanvasHeight,
+      x: engine.halfDrawWidth,
+      y: engine.halfDrawHeight,
       font: new Font({
         textAlign: TextAlign.Center,
         size: config.gameOverTextSize,
