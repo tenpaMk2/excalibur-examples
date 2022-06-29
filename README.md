@@ -109,9 +109,9 @@ Demo for `Physics` .
 
 Credits are as follows.
 
-| item (description) | author   | URL                      |
-| :----------------: | :------- | :----------------------- |
-| character graphics | kenny.nl | <https://www.kenney.nl/> |
+| item (description) | author    | URL                      |
+| :----------------: | :-------- | :----------------------- |
+| character graphics | kenney.nl | <https://www.kenney.nl/> |
 
 ### no-bounce-at-0.25.3
 
@@ -133,9 +133,9 @@ Demo for `Physics` .
 
 Credits are as follows.
 
-| item (description) | author   | URL                      |
-| :----------------: | :------- | :----------------------- |
-|    box graphics    | kenny.nl | <https://www.kenney.nl/> |
+| item (description) | author    | URL                      |
+| :----------------: | :-------- | :----------------------- |
+|    box graphics    | kenney.nl | <https://www.kenney.nl/> |
 
 ### snake
 
@@ -146,9 +146,19 @@ You can control the snake by tapping on edge of screen.
 
 Credits are as follows.
 
-| item (description) | author   | URL                      |
-| :----------------: | :------- | :----------------------- |
-|      graphics      | kenny.nl | <https://www.kenney.nl/> |
+| item (description) | author    | URL                      |
+| :----------------: | :-------- | :----------------------- |
+|      graphics      | kenney.nl | <https://www.kenney.nl/> |
+
+### sound
+
+Simple sound demo.
+
+Credits are as follows.
+
+| item (description) | author    | URL                      |
+| :----------------: | :-------- | :----------------------- |
+|       sound        | kenney.nl | <https://www.kenney.nl/> |
 
 ### sprite-animations
 
@@ -171,7 +181,7 @@ It also implements basic rogue-like component.
 
 Credits are as follows.
 
-| item (description) | author   | URL                      |
-| :----------------: | :------- | :----------------------- |
-|  mapchip graphics  | kenny.nl | <https://www.kenney.nl/> |
-| character graphics | kenny.nl | <https://www.kenney.nl/> |
+| item (description) | author    | URL                      |
+| :----------------: | :-------- | :----------------------- |
+|  mapchip graphics  | kenney.nl | <https://www.kenney.nl/> |
+| character graphics | kenney.nl | <https://www.kenney.nl/> |
