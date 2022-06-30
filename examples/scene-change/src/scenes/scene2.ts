@@ -9,6 +9,8 @@ export class Scene2 extends Scene {
       height: 1000,
       color: Color.Cyan,
     });
-    _engine.add(actor);
+
+    // _engine.add(actor); // not work due to issue #2379: <https://github.com/excaliburjs/Excalibur/issues/2379>
+    this.add(actor); // workaround for ↑ bug.
   }
 }
