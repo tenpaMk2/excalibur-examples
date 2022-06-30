@@ -119,6 +119,10 @@ Credits are as follows.
 
 Demo for `Physics` .
 
+### scene-change
+
+Demo for scene-change.
+
 ### scroll-and-score-text
 
 ![sample](./imgs/sample-scroll-and-score.png)
