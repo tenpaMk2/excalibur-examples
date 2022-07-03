@@ -94,6 +94,12 @@ Credits are as follows.
 | :----------------: | :------------- | :----------------------------------------------------- |
 | original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
 
+### event
+
+Demo for custom events.
+
+Credits are as follows.
+
 ### lockon
 
 ![sample](./imgs/sample-lockon.png)
