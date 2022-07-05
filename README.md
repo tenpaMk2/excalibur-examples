@@ -57,6 +57,21 @@ Credits are as follows.
 | :----------------: | :------------- | :----------------------------------------------------- |
 | original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
 
+### bowman
+
+![sample](./imgs/sample-bowman.png)
+
+Demo game.
+Drag and drop to shoot the arrow!!
+
+Credits are as follows.
+
+|  item (description)   | author          | URL                                                       |
+| :-------------------: | :-------------- | :-------------------------------------------------------- |
+|    player graphic     | sylvius fischer | <https://opengameart.org/content/fumiko-complete-charset> |
+| bow and arrow graphic | SCaydi          | <https://opengameart.org/content/archer-job-set>          |
+|     enemy graphic     | kenney.nl       | <https://www.kenney.nl/>                                  |
+
 ### breakout
 
 ![sample](./imgs/sample-breakout.png)
