@@ -3,15 +3,17 @@ import {
   CollisionGroupManager,
   CollisionType,
   Engine,
-  Sprite,
   SpriteSheet,
   Vector,
 } from "excalibur";
 import { Resources } from "../resource";
-import { Arrow } from "./arrow";
+import { Arrow, ArrowType } from "./arrow";
+import { BowType } from "./bow-select-event";
+import { ResourceManager } from "./resource-manager";
 
 export class Bowman extends Actor {
   private bow!: Actor;
+  private bowType: BowType = "Normal";
 
   constructor(private engine: Engine, x: number, y: number) {
     const spriteSheet = SpriteSheet.fromImageSource({
@@ -46,31 +48,49 @@ export class Bowman extends Actor {
     engine.add(this.bow);
     this.addChild(this.bow);
 
-    const sprite = this.generateBowSprite();
-    this.bow.graphics.use(sprite);
+    this.changeBow("Normal");
   }
 
   shoot(power: number, angle: number) {
     this.bow.rotation = angle;
 
+    let arrowType: ArrowType;
+    switch (this.bowType) {
+      case "Normal":
+        arrowType = "Normal";
+        break;
+
+      case "Metal":
+        arrowType = "Bomb";
+        break;
+
+      case "Hell":
+        arrowType = "Hell";
+        break;
+    }
+
     const arrow = new Arrow(
       this.pos.x + this.width / 2,
       this.pos.y,
       power,
-      angle
+      angle,
+      arrowType
     );
     this.engine.add(arrow);
   }
 
-  private generateBowSprite(): Sprite {
-    return new Sprite({
-      image: Resources.bow,
-      sourceView: {
-        x: 10,
-        y: 12,
-        width: 44,
-        height: 70,
-      },
-    });
+  changeBow(bowType: BowType) {
+    switch (bowType) {
+      case "Normal":
+        this.bow.graphics.use(ResourceManager.getNormalBowSprite());
+        break;
+      case "Metal":
+        this.bow.graphics.use(ResourceManager.getMetalBowSprite());
+        break;
+      case "Hell":
+        this.bow.graphics.use(ResourceManager.getHellBowSprite());
+        break;
+    }
+    this.bowType = bowType;
   }
 }

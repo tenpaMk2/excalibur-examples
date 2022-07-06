@@ -12,6 +12,7 @@ import {
 import config from "../config";
 import { Resources } from "../resource";
 import { Arrow } from "./arrow";
+import { Blast } from "./blast";
 import { Ground } from "./ground";
 import { HPBar } from "./hp-bar";
 
@@ -75,12 +76,14 @@ export class Enemy extends Actor {
 
       if (event.other instanceof Arrow) {
         this.HP -= 300;
+      } else if (event.other instanceof Blast) {
+        this.HP -= 500;
+      }
 
-        if (this.HP < 0) {
-          this.kill();
-        } else {
-          hpBar.changeProgress(this.HP / Enemy.maxHP);
-        }
+      if (this.HP <= 0) {
+        this.kill();
+      } else {
+        hpBar.changeProgress(this.HP / Enemy.maxHP);
       }
     });
 

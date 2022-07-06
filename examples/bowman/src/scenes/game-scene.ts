@@ -9,6 +9,8 @@ import {
   ScreenElement,
   Text,
 } from "excalibur";
+import { BowSelectEvent } from "../objects/bow-select-event";
+import { BowSelector } from "../objects/bow-selector";
 import { Bowman } from "../objects/bowman";
 import { BracingEvent } from "../objects/bracing-event";
 import { EnemySpawner } from "../objects/enemy-spawner";
@@ -44,6 +46,13 @@ export class GameScene extends Scene {
 
     const enemySpawner = new EnemySpawner(engine);
 
+    const bowSelector = new BowSelector(engine);
+
+    // @ts-ignore
+    bowSelector.eventPubSuber.on("bow-select", (event: BowSelectEvent) => {
+      bowman.changeBow(event.bowType);
+    });
+
     this.generateTempCredits(engine);
   }
 
@@ -63,4 +72,5 @@ export class GameScene extends Scene {
     });
     engine.add(tempCredits);
     tempCredits.graphics.use(text);
+  }
 }
