@@ -82,6 +82,7 @@ export class Enemy extends Actor {
       }
 
       if (this.HP <= 0) {
+        hpBar.changeProgress(0);
         this.isRotatable = true;
         this.actions.clearActions();
         this.actions.rotateTo(Math.PI * 0.5, 3, RotationType.Clockwise).die();
