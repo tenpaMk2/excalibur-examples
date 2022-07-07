@@ -110,10 +110,10 @@ export class Arrow extends Actor {
           }, 3000);
           break;
         case "Bomb":
-          this.kill();
           const globalPos = this.getGlobalPos();
           const blast = new Blast(globalPos.x, globalPos.y);
           engine.add(blast);
+          this.kill();
           break;
         case "Hell":
           engine.clock.schedule(() => {
