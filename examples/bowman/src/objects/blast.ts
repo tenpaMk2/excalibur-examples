@@ -26,7 +26,7 @@ export class Blast extends Actor {
     this.actions
       .scaleTo(new Vector(1, 1), new Vector(10, 10))
       .delay(1000)
-      .scaleTo(Vector.Zero, new Vector(10, 10))
+      .scaleTo(new Vector(0.5, 0.5), new Vector(10, 10))
       .die();
   }
 }
