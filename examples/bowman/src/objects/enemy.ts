@@ -6,6 +6,7 @@ import {
   CollisionType,
   Engine,
   ExitViewPortEvent,
+  RotationType,
   SpriteSheet,
   Vector,
 } from "excalibur";
@@ -19,7 +20,7 @@ import { HPBar } from "./hp-bar";
 export class Enemy extends Actor {
   static maxHP = 1000;
   HP: number = Enemy.maxHP;
-  isWalking: boolean = false;
+  isRotatable: boolean = true;
 
   constructor(private engine: Engine, x: number, y: number) {
     const animation = Enemy.generateAnimation();
@@ -68,7 +69,7 @@ export class Enemy extends Actor {
 
     this.on("collisionstart", (event: CollisionStartEvent<Actor>) => {
       if (event.other instanceof Ground) {
-        this.isWalking = true;
+        this.isRotatable = true;
         this.body.collisionType = CollisionType.Fixed;
         this.planWalking();
         return;
@@ -81,7 +82,9 @@ export class Enemy extends Actor {
       }
 
       if (this.HP <= 0) {
-        this.kill();
+        this.isRotatable = true;
+        this.actions.clearActions();
+        this.actions.rotateTo(Math.PI * 0.5, 3, RotationType.Clockwise).die();
       } else {
         hpBar.changeProgress(this.HP / Enemy.maxHP);
       }
@@ -93,7 +96,7 @@ export class Enemy extends Actor {
   }
 
   onPreUpdate(engine: Engine, delta: number) {
-    if (!this.isWalking) return;
+    if (this.isRotatable) return;
     this.rotation = 0;
   }
 
