@@ -98,7 +98,7 @@ export class Arrow extends Actor {
       this.vel = Vector.Zero;
       this.angularVelocity = 0;
 
-      this.body.collisionType = CollisionType.Fixed;
+      this.body.collisionType = CollisionType.PreventCollision;
 
       event.other.addChild(this);
       this.pos = this.pos.sub(event.other.pos);
