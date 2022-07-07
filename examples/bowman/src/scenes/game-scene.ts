@@ -5,6 +5,7 @@ import {
   Color,
   Engine,
   Font,
+  Random,
   Scene,
   ScreenElement,
   Text,
@@ -19,6 +20,8 @@ import { TapUI } from "../objects/tap-ui";
 
 export class GameScene extends Scene {
   onInitialize(engine: Engine): void {
+    const rnd = new Random(1234);
+
     CollisionGroupManager.create("bowman");
     CollisionGroupManager.create("enemy");
 
@@ -44,7 +47,7 @@ export class GameScene extends Scene {
       bowman.shoot(event.power * 3, event.angle);
     });
 
-    const enemySpawner = new EnemySpawner(engine);
+    const enemySpawner = new EnemySpawner(engine, rnd);
 
     const bowSelector = new BowSelector(engine);
 

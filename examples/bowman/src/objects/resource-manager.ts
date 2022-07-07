@@ -1,4 +1,4 @@
-import { Actor, Sprite } from "excalibur";
+import { Actor, Animation, Sprite, SpriteSheet } from "excalibur";
 import { Resources } from "../resource";
 
 export class ResourceManager extends Actor {
@@ -70,6 +70,98 @@ export class ResourceManager extends Actor {
         y: 100,
         width: 18,
         height: 68,
+      },
+    });
+  }
+
+  static getGreenEnemyAnimation(): Animation {
+    const spriteSheet = ResourceManager.getEnemySpriteSheet();
+    return new Animation({
+      frames: [
+        {
+          graphic: spriteSheet.getSprite(0, 0)!,
+          duration: 300,
+        },
+        {
+          graphic: spriteSheet.getSprite(1, 0)!,
+          duration: 300,
+        },
+      ],
+    });
+  }
+
+  static getBlueEnemyAnimation(): Animation {
+    const spriteSheet = ResourceManager.getEnemySpriteSheet();
+    return new Animation({
+      frames: [
+        {
+          graphic: spriteSheet.getSprite(2, 0)!,
+          duration: 300,
+        },
+        {
+          graphic: spriteSheet.getSprite(3, 0)!,
+          duration: 300,
+        },
+      ],
+    });
+  }
+
+  static getRedEnemyAnimation(): Animation {
+    const spriteSheet = ResourceManager.getEnemySpriteSheet();
+    return new Animation({
+      frames: [
+        {
+          graphic: spriteSheet.getSprite(4, 0)!,
+          duration: 300,
+        },
+        {
+          graphic: spriteSheet.getSprite(5, 0)!,
+          duration: 300,
+        },
+      ],
+    });
+  }
+
+  static getYellowEnemyAnimation(): Animation {
+    const spriteSheet = ResourceManager.getEnemySpriteSheet();
+    return new Animation({
+      frames: [
+        {
+          graphic: spriteSheet.getSprite(6, 0)!,
+          duration: 300,
+        },
+        {
+          graphic: spriteSheet.getSprite(7, 0)!,
+          duration: 300,
+        },
+      ],
+    });
+  }
+
+  static getWhiteEnemyAnimation(): Animation {
+    const spriteSheet = ResourceManager.getEnemySpriteSheet();
+    return new Animation({
+      frames: [
+        {
+          graphic: spriteSheet.getSprite(0, 1)!,
+          duration: 300,
+        },
+        {
+          graphic: spriteSheet.getSprite(1, 1)!,
+          duration: 300,
+        },
+      ],
+    });
+  }
+
+  static getEnemySpriteSheet(): SpriteSheet {
+    return SpriteSheet.fromImageSource({
+      image: Resources.enemy,
+      grid: {
+        rows: 3,
+        columns: 9,
+        spriteWidth: 24, // pixels
+        spriteHeight: 24, // pixels
       },
     });
   }

@@ -7,23 +7,51 @@ import {
   Engine,
   ExitViewPortEvent,
   RotationType,
-  SpriteSheet,
   Vector,
 } from "excalibur";
 import config from "../config";
-import { Resources } from "../resource";
 import { Arrow } from "./arrow";
 import { Blast } from "./blast";
 import { Ground } from "./ground";
 import { HPBar } from "./hp-bar";
+import { ResourceManager } from "./resource-manager";
+
+export type EnemyType = "green" | "blue" | "red" | "yellow" | "white";
 
 export class Enemy extends Actor {
   static maxHP = 1000;
   HP: number = Enemy.maxHP;
   isRotatable: boolean = true;
 
-  constructor(private engine: Engine, x: number, y: number) {
-    const animation = Enemy.generateAnimation();
+  constructor(
+    private engine: Engine,
+    x: number,
+    y: number,
+    private enemyType: EnemyType
+  ) {
+    let animation: Animation;
+    switch (enemyType) {
+      case "green":
+        animation = ResourceManager.getGreenEnemyAnimation();
+        break;
+      case "blue":
+        animation = ResourceManager.getBlueEnemyAnimation();
+        animation.scale = new Vector(1.3, 1.3);
+        break;
+      case "red":
+        animation = ResourceManager.getRedEnemyAnimation();
+        animation.scale = new Vector(1.6, 1.6);
+        break;
+      case "yellow":
+        animation = ResourceManager.getYellowEnemyAnimation();
+        animation.scale = new Vector(2, 2);
+        break;
+      case "white":
+        animation = ResourceManager.getWhiteEnemyAnimation();
+        animation.scale = new Vector(3, 3);
+        break;
+    }
+
     super({
       x: x,
       y: y,
@@ -37,33 +65,8 @@ export class Enemy extends Actor {
     this.graphics.use(animation);
   }
 
-  private static generateAnimation(): Animation {
-    const spriteSheet = SpriteSheet.fromImageSource({
-      image: Resources.enemy,
-      grid: {
-        rows: 3,
-        columns: 9,
-        spriteWidth: 24, // pixels
-        spriteHeight: 24, // pixels
-      },
-    });
-
-    return new Animation({
-      frames: [
-        {
-          graphic: spriteSheet.getSprite(0, 0)!,
-          duration: 300,
-        },
-        {
-          graphic: spriteSheet.getSprite(1, 0)!,
-          duration: 300,
-        },
-      ],
-    });
-  }
-
   onInitialize(engine: Engine) {
-    const hpBar = new HPBar(this.height / 2 + 1);
+    const hpBar = new HPBar(4);
     engine.add(hpBar);
     this.addChild(hpBar);
 
