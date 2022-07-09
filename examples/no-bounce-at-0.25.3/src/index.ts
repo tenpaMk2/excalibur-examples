@@ -1,5 +1,4 @@
-import { DisplayMode, Engine, Physics } from "excalibur";
-import { loader } from "./resource";
+import { DisplayMode, Engine, Loader, Physics } from "excalibur";
 import { GameScene } from "./scenes/game-scene";
 
 const engine = new Engine({
@@ -15,5 +14,8 @@ Physics.useRealisticPhysics();
 
 engine.add("game-scene", new GameScene());
 engine.goToScene("game-scene");
+
+const loader = new Loader();
+loader.suppressPlayButton = true;
 
 engine.start(loader);
