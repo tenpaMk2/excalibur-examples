@@ -1,10 +1,11 @@
 import { DisplayMode, Engine } from "excalibur";
+import config from "./config";
 import { loader } from "./resource";
 import { Level } from "./scenes/level";
 
 const game = new Engine({
-  width: 90 * 4,
-  height: 160 * 4,
+  width: config.gameWidth,
+  height: config.gameHeight,
   displayMode: DisplayMode.FitScreen,
   canvasElementId: "game",
 });

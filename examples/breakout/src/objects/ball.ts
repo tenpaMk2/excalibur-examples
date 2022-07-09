@@ -7,6 +7,7 @@ import {
   Timer,
   Vector,
 } from "excalibur";
+import config from "../config";
 export class Ball extends Actor {
   constructor(pos: Vector, radius: number, public initialSpeed: number = 300) {
     super({
@@ -31,7 +32,7 @@ export class Ball extends Actor {
         this.vel.x = x;
         this.vel.y = y;
       },
-      interval: 1000,
+      interval: config.startTime,
       repeats: false,
     });
     engine.add(timer);

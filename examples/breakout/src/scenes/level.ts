@@ -70,7 +70,7 @@ export class Level extends Scene {
     });
 
     // Collisions
-    paddle.on("preCollision", (event: PreCollisionEvent) => {
+    paddle.on("precollision", (event: PreCollisionEvent) => {
       if (this.ball !== event.other) {
         return;
       }
@@ -81,7 +81,7 @@ export class Level extends Scene {
       this.ball.vel.size = velSize;
     });
 
-    this.ball.on("preCollision", (event: PreCollisionEvent) => {
+    this.ball.on("precollision", (event: PreCollisionEvent) => {
       switch (event.side) {
         case Side.Top:
           this.ball.vel.y = Math.abs(this.ball.vel.y);
@@ -101,7 +101,7 @@ export class Level extends Scene {
     });
 
     blocks.forEach((block) => {
-      block.on("preCollision", (event: PreCollisionEvent) => {
+      block.on("precollision", (event: PreCollisionEvent) => {
         if (event.other !== this.ball) return;
 
         block.kill();
