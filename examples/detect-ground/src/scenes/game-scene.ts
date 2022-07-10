@@ -8,6 +8,7 @@ import {
   Side,
   Vector,
 } from "excalibur";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class GameScene extends Scene {
   onInitialize(engine: Engine): void {
@@ -50,6 +51,10 @@ export class GameScene extends Scene {
       } else {
         isOnGround = false;
       }
+    });
+
+    engine.input.pointers.primary.on("down", (event: PointerEvent): void => {
+      if (isOnGround) player.vel = player.vel.add(new Vector(0, -100)); // jump!!
     });
   }
 }
