@@ -1,8 +1,12 @@
 import {
+  ActionContext,
+  ActionSequence,
   Actor,
   CollisionType,
   Color,
   EasingFunctions,
+  ParallelActions,
+  RotationType,
   Vector,
 } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input";
@@ -28,15 +32,41 @@ export class Hop extends Actor {
 
   private initReactions(): void {
     this.on("pointerdown", (event: PointerEvent) => {
-      this.actions.repeat((repeatContext) => {
-        repeatContext
-          .easeTo(
-            this.pos.add(Vector.Up.scale(100)),
-            100,
-            EasingFunctions.EaseOutQuad
-          )
-          .easeTo(this.pos, 100, EasingFunctions.EaseInQuad);
-      }, 2);
+      const hopSequence = new ActionSequence(
+        this,
+        (actionContext: ActionContext): any => {
+          actionContext
+            .easeTo(
+              this.pos.add(new Vector(0, -100)),
+              200,
+              EasingFunctions.EaseOutQuad
+            )
+            .easeTo(this.pos, 200, EasingFunctions.EaseInQuad)
+            .easeTo(
+              this.pos.add(new Vector(0, -100)),
+              200,
+              EasingFunctions.EaseOutQuad
+            )
+            .easeTo(this.pos, 200, EasingFunctions.EaseInQuad);
+        }
+      );
+
+      const rotateSequence = new ActionSequence(
+        this,
+        (actionContext: ActionContext) => {
+          actionContext
+            .rotateTo(Math.PI * 0.25, 4, RotationType.Clockwise)
+            .rotateTo(0, 4, RotationType.CounterClockwise)
+            .rotateTo(-Math.PI * 0.25, 4, RotationType.CounterClockwise)
+            .rotateTo(0, 4, RotationType.Clockwise);
+        }
+      );
+
+      const parallelActions = new ParallelActions([
+        hopSequence,
+        rotateSequence,
+      ]);
+      this.actions.runAction(parallelActions);
     });
   }
 }
