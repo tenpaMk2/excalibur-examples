@@ -1,40 +1,23 @@
-import { Actor, CollisionType, Color, SpriteSheet } from "excalibur";
+import { Actor, CollisionType, Color, Engine, SpriteSheet } from "excalibur";
+import config from "../config";
 import { Resources } from "../resource";
+import { ResourceManager } from "./resource-manager";
 
 export class Box extends Actor {
-  constructor(x: number, y: number, length: number) {
+  constructor(x: number, y: number, edgeLength: number) {
     super({
       x: x,
       y: y,
-      width: length,
-      height: length,
-      color: Color.Vermilion,
+      width: edgeLength,
+      height: edgeLength,
       collisionType: CollisionType.Active,
     });
-    this.initGraphics(length);
+
+    const sprite = ResourceManager.getBoxSprite(edgeLength);
+    this.graphics.use(sprite);
   }
 
-  initGraphics = (length: number) => {
-    const mapchipSpriteSheet = SpriteSheet.fromImageSource({
-      image: Resources.mapchip,
-      grid: {
-        rows: 31,
-        columns: 57,
-        spriteHeight: 16,
-        spriteWidth: 16,
-      },
-      spacing: {
-        margin: {
-          x: 1,
-          y: 1,
-        },
-      },
-    });
-
-    const sprite = mapchipSpriteSheet.getSprite(43, 12);
-    if (!sprite) return;
-    sprite.width = length;
-    sprite.height = length;
-    this.graphics.use(sprite);
-  };
+  onInitialize(engine: Engine) {
+    this.body.mass = config.boxMass;
+  }
 }
