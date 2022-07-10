@@ -1,4 +1,5 @@
 {
+  "name": "slingshot",
   "type": "module",
   "scripts": {
     "start": "parcel serve ./src/index.html",
@@ -7,11 +8,11 @@
   "author": "tenpaMk2",
   "license": "MIT",
   "dependencies": {
-    "excalibur": "^0.26.0"
+    "excalibur": "^0.27.0"
   },
   "devDependencies": {
-    "parcel": "^2.4.1",
-    "prettier": "^2.6.2",
-    "typescript": "^4.6.3"
+    "parcel": "^2.6.2",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
   }
 }
