@@ -1,7 +1,7 @@
-import { DisplayMode, Engine } from "excalibur";
+import { DisplayMode, Engine, Loader } from "excalibur";
 import config from "./config";
-import { loader } from "./resource";
-import { Level } from "./scenes/level";
+import { Resources } from "./resource";
+import { GameScene } from "./scenes/game-scene";
 
 const game = new Engine({
   width: config.gameWidth,
@@ -10,7 +10,14 @@ const game = new Engine({
   canvasElementId: "game",
 });
 
-game.add("level", new Level());
-game.goToScene("level");
+game.showDebug(false);
+game.add("game-scene", new GameScene());
+game.goToScene("game-scene");
+
+const loader = new Loader();
+loader.suppressPlayButton = true;
+for (const resource of Object.values(Resources)) {
+  loader.addResource(resource);
+}
 
 game.start(loader);

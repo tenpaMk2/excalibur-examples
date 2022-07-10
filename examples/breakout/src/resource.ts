@@ -1,11 +1,9 @@
-import { Loader } from "excalibur";
+import { ImageSource } from "excalibur";
 
-const Resources = {};
+import catColor from "./assets/cat-color.webp";
+import catGray from "./assets/cat-gray.webp";
 
-const loader = new Loader();
-
-for (const res in Resources) {
-  loader.addResource((Resources as any)[res]);
-}
-
-export { Resources, loader };
+export const Resources = {
+  catColor: new ImageSource(catColor),
+  catGray: new ImageSource(catGray),
+};
