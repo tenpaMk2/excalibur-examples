@@ -7,6 +7,7 @@ import {
   PolygonCollider,
   Vector,
 } from "excalibur";
+import config from "../config";
 
 export class Ground extends Actor {
   static readonly TRIANGLE_POINTS = [
@@ -20,25 +21,25 @@ export class Ground extends Actor {
     new Vector(540, 0),
   ];
 
-  constructor() {
+  constructor(y: number) {
     super({
       x: 0,
-      y: 0,
+      y: y,
       collisionType: CollisionType.Fixed,
       collider: new PolygonCollider({
         points: Ground.TRIANGLE_POINTS,
       }).triangulate(),
     });
+  }
 
+  onInitialize(engine: Engine) {
     const triangle = new Polygon({
       points: Ground.TRIANGLE_POINTS,
       color: Color.Yellow,
     });
     this.graphics.use(triangle);
     this.graphics.anchor = new Vector(0, 1);
-  }
 
-  onInitialize = (engine: Engine) => {
-    this.pos.y = engine.drawHeight;
-  };
+    this.body.bounciness = config.groundBounciness;
+  }
 }

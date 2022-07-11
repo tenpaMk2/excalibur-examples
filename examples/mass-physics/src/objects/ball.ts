@@ -1,8 +1,15 @@
-import { Actor, CollisionType, Engine, Random, SpriteSheet } from "excalibur";
-import { Resources } from "../resource";
+import {
+  Actor,
+  CollisionType,
+  Engine,
+  ExitViewPortEvent,
+  Random,
+} from "excalibur";
+import config from "../config";
+import { ResourceManager } from "./resource-manager";
 
 export class Ball extends Actor {
-  constructor(x: number, y: number, radius: number) {
+  constructor(x: number, y: number, radius: number, rnd: Random) {
     super({
       x: x,
       y: y,
@@ -10,34 +17,15 @@ export class Ball extends Actor {
       collisionType: CollisionType.Active,
     });
 
-    const bodySpriteSheet = SpriteSheet.fromImageSource({
-      image: Resources.chara,
-      grid: {
-        rows: 12,
-        columns: 2,
-        spriteHeight: 16,
-        spriteWidth: 16,
-      },
-      spacing: {
-        margin: {
-          x: 1,
-          y: 1,
-        },
-        originOffset: {
-          x: 0,
-          y: 0,
-        },
-      },
-    });
-
-    const sprite = bodySpriteSheet.getSprite(
-      new Random(x * 114 + y * 514).integer(0, 1),
-      new Random(x * 19 + y * 19).integer(5, 11)
-    );
-    sprite.width = radius * 2;
-    sprite.height = radius * 2;
+    const sprite = ResourceManager.getRandomVillagerSprite(rnd, radius);
     this.graphics.use(sprite);
   }
 
-  onInitialize = (engine: Engine) => {};
+  onInitialize(engine: Engine) {
+    this.body.bounciness = config.ballBounciness;
+
+    this.on("exitviewport", (event: ExitViewPortEvent) => {
+      this.kill();
+    });
+  }
 }
