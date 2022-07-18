@@ -13,8 +13,8 @@ import {
 export class GameScene extends Scene {
   private tilemap!: TileMap;
   private rnd: Random = new Random(1234);
-  private currentID: number = 1;
-  private roomIDStart!: number;
+  private currentAreaID: number = 1;
+  private currentRoomID: number = 1;
 
   onInitialize(engine: Engine): void {
     this.tilemap = new TileMap({
@@ -27,38 +27,46 @@ export class GameScene extends Scene {
     engine.add(this.tilemap);
 
     this.markArea(
-      this.currentID,
+      this.currentAreaID,
       0,
       this.tilemap.columns - 1,
       this.tilemap.rows - 1,
       0
     );
-    this.divideArea(this.currentID);
-    this.divideArea(this.currentID);
-    this.divideArea(this.currentID);
-    this.divideArea(this.currentID);
-    this.divideArea(this.currentID);
+    this.divideArea(this.currentAreaID);
+    this.divideArea(this.currentAreaID);
+    this.divideArea(this.currentAreaID);
+    this.divideArea(this.currentAreaID);
+    this.divideArea(this.currentAreaID);
 
-    this.currentID++;
-    this.roomIDStart = this.currentID;
-    for (let id = 1; id < this.roomIDStart; id++) {
+    for (let id = 1; id <= this.currentAreaID; id++) {
       this.makeRoom(id);
-    }
-
-    for (let id = this.roomIDStart; id <= this.currentID; id++) {
-      this.makePathway(id);
     }
 
     this.updateTilemap();
   }
 
   updateTilemap(): void {
-    const texts: Text[] = [];
-    for (let id = 0; id < this.currentID; id++) {
-      texts.push(
+    const areaTexts: Text[] = [];
+    for (let id = 0; id <= this.currentAreaID; id++) {
+      areaTexts.push(
         new Text({
           text: `${id}`,
-          color: this.roomIDStart <= id ? Color.Chartreuse : Color.White,
+          color: Color.White,
+          font: new Font({
+            family: "mono",
+            size: 8,
+          }),
+        })
+      );
+    }
+
+    const roomTexts: Text[] = [];
+    for (let id = 0; id <= this.currentRoomID; id++) {
+      roomTexts.push(
+        new Text({
+          text: `${id}`,
+          color: Color.Chartreuse,
           font: new Font({
             family: "mono",
             size: 8,
@@ -68,15 +76,48 @@ export class GameScene extends Scene {
     }
 
     this.tilemap.tiles.forEach((tile) => {
-      const id = tile.data.get("id")!;
-      const text = texts[id];
+      const roomid = tile.data.get("roomID");
+      if (roomid) {
+        const text = roomTexts[roomid];
 
-      tile.clearGraphics();
-      tile.addGraphic(text);
+        tile.clearGraphics();
+        tile.addGraphic(text);
+        return;
+      }
+
+      const areaID = tile.data.get("areaID");
+      if (areaID) {
+        const text = areaTexts[areaID];
+
+        tile.clearGraphics();
+        tile.addGraphic(text);
+        return;
+      }
     });
   }
 
   markArea(
+    id: number,
+    up: number,
+    right: number,
+    down: number,
+    left: number
+  ): void {
+    this.markCore("areaID", id, up, right, down, left);
+  }
+
+  markRoom(
+    id: number,
+    up: number,
+    right: number,
+    down: number,
+    left: number
+  ): void {
+    this.markCore("roomID", id, up, right, down, left);
+  }
+
+  markCore(
+    key: string,
     id: number,
     up: number,
     right: number,
@@ -90,7 +131,7 @@ export class GameScene extends Scene {
           row * this.tilemap.tileHeight
         );
         const tile = this.tilemap.getTileByPoint(point);
-        tile.data.set("id", id);
+        tile.data.set(key, id);
       }
     }
   }
@@ -106,8 +147,8 @@ export class GameScene extends Scene {
       }
 
       const dividingLine = this.decideDividingLine(left, width)!;
-      this.currentID++;
-      this.markArea(this.currentID, up, right, down, dividingLine);
+      this.currentAreaID++;
+      this.markArea(this.currentAreaID, up, right, down, dividingLine);
     } else {
       if (height <= 6) {
         Logger.getInstance().warn("Too small(height) to divide the area.");
@@ -115,12 +156,37 @@ export class GameScene extends Scene {
       }
 
       const dividingLine = this.decideDividingLine(up, height)!;
-      this.currentID++;
-      this.markArea(this.currentID, dividingLine, right, down, left);
+      this.currentAreaID++;
+      this.markArea(this.currentAreaID, dividingLine, right, down, left);
     }
   }
 
   getAreaInfo(targetID: number): {
+    up: number;
+    right: number;
+    down: number;
+    left: number;
+    width: number;
+    height: number;
+  } {
+    return this.getInfoCore("areaID", targetID);
+  }
+
+  getRoomInfo(targetID: number): {
+    up: number;
+    right: number;
+    down: number;
+    left: number;
+    width: number;
+    height: number;
+  } {
+    return this.getInfoCore("roomID", targetID);
+  }
+
+  getInfoCore(
+    key: string,
+    targetID: number
+  ): {
     up: number;
     right: number;
     down: number;
@@ -134,7 +200,7 @@ export class GameScene extends Scene {
     let leftmost = this.tilemap.columns - 1;
 
     this.tilemap.tiles.forEach((tile) => {
-      if (tile.data.get("id") === targetID) {
+      if (tile.data.get(key) === targetID) {
         const { col: column, row } = this.posToColRow(tile.pos);
 
         upmost = row < upmost ? row : upmost;
@@ -177,13 +243,7 @@ export class GameScene extends Scene {
     const rUp = this.rnd.integer(up + 1, down - 2);
     const rDown = this.rnd.integer(rUp + 1, down - 1);
 
-    this.markArea(this.currentID, rUp, rRight, rDown, rLeft);
-    this.currentID++;
-  }
-
-  makePathway(roomID: number) {
-    const { up, right, down, left, width, height } = this.getAreaInfo(roomID);
-    const x = this.rnd.integer(left, right);
-    const y = this.rnd.integer(up, down);
+    this.markRoom(this.currentRoomID, rUp, rRight, rDown, rLeft);
+    this.currentRoomID++;
   }
 }
