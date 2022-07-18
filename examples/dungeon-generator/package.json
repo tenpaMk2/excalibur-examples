@@ -1,0 +1,18 @@
+{
+  "name": "dungeon-generator",
+  "type": "module",
+  "scripts": {
+    "start": "parcel serve ./src/index.html",
+    "build": "parcel build ./src/index.html --dist-dir ./publish --public-url ./"
+  },
+  "author": "tenpaMk2",
+  "license": "MIT",
+  "dependencies": {
+    "excalibur": "^0.27.0"
+  },
+  "devDependencies": {
+    "parcel": "^2.6.2",
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
+  }
+}
