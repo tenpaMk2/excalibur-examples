@@ -57,6 +57,12 @@ Credits are as follows.
 | :----------------: | :------------- | :----------------------------------------------------- |
 | original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
 
+### bounce
+
+![sample](./imgs/sample-bounce.png)
+
+Demo for `Physics` .
+
 ### bowman
 
 ![sample](./imgs/sample-bowman.png)
@@ -109,6 +115,23 @@ Credits are as follows.
 | :----------------: | :------------- | :----------------------------------------------------- |
 | original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
 
+### detect-ground
+
+![sample](./imgs/sample-detect-ground.png)
+
+It shows how to detect ground in some patterns.
+
+| item (description) | author                       | URL                                                         |
+| :----------------: | :--------------------------- | :---------------------------------------------------------- |
+|   original idea    | excalibur discussions (erik) | <https://github.com/excaliburjs/Excalibur/discussions/2406> |
+
+### doll-stamper
+
+![sample](./imgs/sample-doll-stamper.png)
+
+The application for adding 💗 to your cute dolls!!
+It also the demo for dynamic image uploading.
+
 ### event
 
 Demo for custom events.
@@ -133,12 +156,6 @@ Credits are as follows.
 | item (description) | author    | URL                      |
 | :----------------: | :-------- | :----------------------- |
 | character graphics | kenney.nl | <https://www.kenney.nl/> |
-
-### no-bounce-at-0.25.3
-
-![sample](./imgs/sample-no-bounce-at-0.25.3.png)
-
-Demo for `Physics` .
 
 ### scene-change
 
