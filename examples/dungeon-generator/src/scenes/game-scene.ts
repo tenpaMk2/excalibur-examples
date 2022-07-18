@@ -10,11 +10,13 @@ import {
   Vector,
 } from "excalibur";
 
+type Direction = "Up" | "Right" | "Down" | "Left";
 export class GameScene extends Scene {
   private tilemap!: TileMap;
   private rnd: Random = new Random(1234);
   private currentAreaID: number = 1;
   private currentRoomID: number = 1;
+  private currentPathwayID: number = 1;
 
   onInitialize(engine: Engine): void {
     this.tilemap = new TileMap({
@@ -43,20 +45,26 @@ export class GameScene extends Scene {
       this.makeRoom(id);
     }
 
+    for (let id = 1; id <= this.currentRoomID; id++) {
+      this.makePathway(id);
+    }
+
     this.updateTilemap();
   }
 
   updateTilemap(): void {
+    const font = new Font({
+      family: "mono",
+      size: 8,
+    });
+
     const areaTexts: Text[] = [];
     for (let id = 0; id <= this.currentAreaID; id++) {
       areaTexts.push(
         new Text({
           text: `${id}`,
           color: Color.White,
-          font: new Font({
-            family: "mono",
-            size: 8,
-          }),
+          font: font.clone(),
         })
       );
     }
@@ -67,18 +75,35 @@ export class GameScene extends Scene {
         new Text({
           text: `${id}`,
           color: Color.Chartreuse,
-          font: new Font({
-            family: "mono",
-            size: 8,
-          }),
+          font: font.clone(),
+        })
+      );
+    }
+
+    const pathwayTexts: Text[] = [];
+    for (let id = 0; id <= this.currentPathwayID; id++) {
+      pathwayTexts.push(
+        new Text({
+          text: `${id}`,
+          color: Color.Rose,
+          font: font.clone(),
         })
       );
     }
 
     this.tilemap.tiles.forEach((tile) => {
-      const roomid = tile.data.get("roomID");
-      if (roomid) {
-        const text = roomTexts[roomid];
+      const roomID = tile.data.get("roomID");
+      if (roomID) {
+        const text = roomTexts[roomID];
+
+        tile.clearGraphics();
+        tile.addGraphic(text);
+        return;
+      }
+
+      const pathwayID = tile.data.get("pathwayID");
+      if (pathwayID) {
+        const text = pathwayTexts[pathwayID];
 
         tile.clearGraphics();
         tile.addGraphic(text);
@@ -116,6 +141,16 @@ export class GameScene extends Scene {
     this.markCore("roomID", id, up, right, down, left);
   }
 
+  markPathway(
+    id: number,
+    up: number,
+    right: number,
+    down: number,
+    left: number
+  ): void {
+    this.markCore("pathwayID", id, up, right, down, left);
+  }
+
   markCore(
     key: string,
     id: number,
@@ -136,9 +171,9 @@ export class GameScene extends Scene {
     }
   }
 
-  divideArea(targetID: number): void {
+  divideArea(areaID: number): void {
     const isVertical = this.rnd.bool();
-    const { up, right, down, left, width, height } = this.getAreaInfo(targetID);
+    const { up, right, down, left, width, height } = this.getAreaInfo(areaID);
 
     if (isVertical) {
       if (width <= 6) {
@@ -161,7 +196,7 @@ export class GameScene extends Scene {
     }
   }
 
-  getAreaInfo(targetID: number): {
+  getAreaInfo(areaID: number): {
     up: number;
     right: number;
     down: number;
@@ -169,10 +204,10 @@ export class GameScene extends Scene {
     width: number;
     height: number;
   } {
-    return this.getInfoCore("areaID", targetID);
+    return this.getInfoCore("areaID", areaID);
   }
 
-  getRoomInfo(targetID: number): {
+  getRoomInfo(roomID: number): {
     up: number;
     right: number;
     down: number;
@@ -180,7 +215,7 @@ export class GameScene extends Scene {
     width: number;
     height: number;
   } {
-    return this.getInfoCore("roomID", targetID);
+    return this.getInfoCore("roomID", roomID);
   }
 
   getInfoCore(
@@ -235,8 +270,8 @@ export class GameScene extends Scene {
     return offset + this.rnd.integer(3, range - 4);
   }
 
-  makeRoom(targetID: number) {
-    const { up, right, down, left, width, height } = this.getAreaInfo(targetID);
+  makeRoom(areaID: number) {
+    const { up, right, down, left, width, height } = this.getAreaInfo(areaID);
 
     const rLeft = this.rnd.integer(left + 1, right - 2);
     const rRight = this.rnd.integer(rLeft + 1, right - 1);
@@ -245,5 +280,110 @@ export class GameScene extends Scene {
 
     this.markRoom(this.currentRoomID, rUp, rRight, rDown, rLeft);
     this.currentRoomID++;
+  }
+
+  makePathway(roomID: number) {
+    const { up, right, down, left, width, height } = this.getRoomInfo(roomID);
+    const roomX = this.rnd.integer(left, right);
+    const roomY = this.rnd.integer(up, down);
+    const areaID = roomID;
+
+    {
+      const { x, y } = this.searchDividingLine(areaID, areaID - 1, "Up");
+      if (y) {
+        this.markPathway(this.currentPathwayID, y, roomX, roomY, roomX);
+        this.currentAreaID++;
+      }
+    }
+    {
+      const { x, y } = this.searchDividingLine(areaID, areaID + 1, "Down");
+      if (y) {
+        this.markPathway(this.currentPathwayID, roomY, roomX, y, roomX);
+        this.currentAreaID++;
+      }
+    }
+    {
+      {
+        const { x, y } = this.searchDividingLine(areaID, areaID - 1, "Left");
+        if (x) {
+          this.markPathway(this.currentPathwayID, roomY, roomX, roomY, x);
+          this.currentAreaID++;
+        }
+      }
+    }
+    {
+      const { x, y } = this.searchDividingLine(areaID, areaID + 1, "Right");
+      if (x) {
+        this.markPathway(this.currentPathwayID, roomY, x, roomY, roomX);
+        this.currentAreaID++;
+      }
+    }
+  }
+
+  searchDividingLine(
+    srcAreaID: number,
+    dstAreaID: number,
+    direction: Direction
+  ): { x: number | null; y: number | null } {
+    if (srcAreaID === dstAreaID)
+      throw Error(
+        "Cannot search dividing line because src and dst IDs are same!!"
+      );
+
+    const { up, right, down, left, width, height } =
+      this.getAreaInfo(srcAreaID);
+
+    switch (direction) {
+      case "Up":
+        for (let x = left; x <= right; x++) {
+          const columnArray = this.tilemap.getColumns()[x];
+          const columnAreaIDs: number[] = columnArray.map((tile) =>
+            tile.data.get("areaID")
+          );
+          const index = columnAreaIDs.findLastIndex(
+            (value: number) => value === dstAreaID
+          );
+          if (index !== -1) return { x: null, y: index + 1 };
+        }
+        break;
+      case "Down":
+        for (let x = left; x <= right; x++) {
+          const columnArray = this.tilemap.getColumns()[x];
+          const columnAreaIDs: number[] = columnArray.map((tile) =>
+            tile.data.get("areaID")
+          );
+          const index = columnAreaIDs.findIndex(
+            (value: number) => value === dstAreaID
+          );
+          if (index !== -1) return { x: null, y: index - 1 };
+        }
+        break;
+      case "Left":
+        for (let y = up; y <= down; y++) {
+          const rowArray = this.tilemap.getRows()[y];
+          const rowAreaIDs: number[] = rowArray.map((tile) =>
+            tile.data.get("areaID")
+          );
+          const index = rowAreaIDs.findLastIndex(
+            (value: number) => value === dstAreaID
+          );
+          if (index !== -1) return { x: index + 1, y: null };
+        }
+        break;
+      case "Right":
+        for (let y = up; y <= down; y++) {
+          const rowArray = this.tilemap.getRows()[y];
+          const rowAreaIDs: number[] = rowArray.map((tile) =>
+            tile.data.get("areaID")
+          );
+          const index = rowAreaIDs.findIndex(
+            (value: number) => value === dstAreaID
+          );
+          if (index !== -1) return { x: index - 1, y: null };
+        }
+        break;
+    }
+
+    return { x: null, y: null };
   }
 }
