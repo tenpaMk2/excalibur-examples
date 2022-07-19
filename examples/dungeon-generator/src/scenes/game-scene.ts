@@ -5,18 +5,21 @@ import {
   Logger,
   Random,
   Scene,
+  Side,
   Text,
   TileMap,
   Vector,
 } from "excalibur";
+import { AreaInfo } from "../objects/area-info";
+import { RoomInfo } from "../objects/room-info";
 
-type Direction = "Up" | "Right" | "Down" | "Left";
 export class GameScene extends Scene {
   private tilemap!: TileMap;
   private rnd: Random = new Random(1234);
   private currentAreaID: number = 1;
   private currentRoomID: number = 1;
   private currentPathwayID: number = 1;
+  private areaInfos: AreaInfo[] = [];
 
   onInitialize(engine: Engine): void {
     this.tilemap = new TileMap({
@@ -28,7 +31,7 @@ export class GameScene extends Scene {
     });
     engine.add(this.tilemap);
 
-    this.markArea(
+    this.makeArea(
       this.currentAreaID,
       0,
       this.tilemap.columns - 1,
@@ -45,14 +48,14 @@ export class GameScene extends Scene {
       this.makeRoom(id);
     }
 
-    for (let id = 1; id <= this.currentRoomID; id++) {
+    for (let id = 1; id <= this.currentRoomID - 1; id++) {
       this.makePathway(id);
     }
 
     this.updateTilemap();
   }
 
-  updateTilemap(): void {
+  private updateTilemap(): void {
     const font = new Font({
       family: "mono",
       size: 8,
@@ -121,37 +124,38 @@ export class GameScene extends Scene {
     });
   }
 
-  markArea(
+  private makeArea(
     id: number,
     up: number,
     right: number,
     down: number,
     left: number
   ): void {
-    this.markCore("areaID", id, up, right, down, left);
+    this.markMap("areaID", id, up, right, down, left);
+    this.areaInfos[this.currentAreaID] = new AreaInfo(up, right, down, left);
   }
 
-  markRoom(
+  private markRoom(
     id: number,
     up: number,
     right: number,
     down: number,
     left: number
   ): void {
-    this.markCore("roomID", id, up, right, down, left);
+    this.markMap("roomID", id, up, right, down, left);
   }
 
-  markPathway(
+  private markPathway(
     id: number,
     up: number,
     right: number,
     down: number,
     left: number
   ): void {
-    this.markCore("pathwayID", id, up, right, down, left);
+    this.markMap("pathwayID", id, up, right, down, left);
   }
 
-  markCore(
+  private markMap(
     key: string,
     id: number,
     up: number,
@@ -171,9 +175,15 @@ export class GameScene extends Scene {
     }
   }
 
-  divideArea(areaID: number): void {
+  private divideArea(areaID: number): void {
     const isVertical = this.rnd.bool();
-    const { up, right, down, left, width, height } = this.getAreaInfo(areaID);
+    const areaInfo = this.areaInfos[areaID];
+    const top = areaInfo.top;
+    const right = areaInfo.right;
+    const bottom = areaInfo.bottom;
+    const left = areaInfo.left;
+    const width = areaInfo.width;
+    const height = areaInfo.height;
 
     if (isVertical) {
       if (width <= 6) {
@@ -182,87 +192,27 @@ export class GameScene extends Scene {
       }
 
       const dividingLine = this.decideDividingLine(left, width)!;
+
+      this.areaInfos[this.currentAreaID].divide(Side.Right, dividingLine - 1);
+
       this.currentAreaID++;
-      this.markArea(this.currentAreaID, up, right, down, dividingLine);
+      this.makeArea(this.currentAreaID, top, right, bottom, dividingLine);
     } else {
       if (height <= 6) {
         Logger.getInstance().warn("Too small(height) to divide the area.");
         return;
       }
 
-      const dividingLine = this.decideDividingLine(up, height)!;
+      const dividingLine = this.decideDividingLine(top, height)!;
+
+      this.areaInfos[this.currentAreaID].divide(Side.Bottom, dividingLine - 1);
+
       this.currentAreaID++;
-      this.markArea(this.currentAreaID, dividingLine, right, down, left);
+      this.makeArea(this.currentAreaID, dividingLine, right, bottom, left);
     }
   }
 
-  getAreaInfo(areaID: number): {
-    up: number;
-    right: number;
-    down: number;
-    left: number;
-    width: number;
-    height: number;
-  } {
-    return this.getInfoCore("areaID", areaID);
-  }
-
-  getRoomInfo(roomID: number): {
-    up: number;
-    right: number;
-    down: number;
-    left: number;
-    width: number;
-    height: number;
-  } {
-    return this.getInfoCore("roomID", roomID);
-  }
-
-  getInfoCore(
-    key: string,
-    targetID: number
-  ): {
-    up: number;
-    right: number;
-    down: number;
-    left: number;
-    width: number;
-    height: number;
-  } {
-    let upmost = this.tilemap.rows - 1;
-    let rightmost = 0;
-    let downmost = 0;
-    let leftmost = this.tilemap.columns - 1;
-
-    this.tilemap.tiles.forEach((tile) => {
-      if (tile.data.get(key) === targetID) {
-        const { col: column, row } = this.posToColRow(tile.pos);
-
-        upmost = row < upmost ? row : upmost;
-        downmost = downmost < row ? row : downmost;
-        rightmost = rightmost < column ? column : rightmost;
-        leftmost = column < leftmost ? column : leftmost;
-      }
-    });
-
-    return {
-      up: upmost,
-      right: rightmost,
-      down: downmost,
-      left: leftmost,
-      width: rightmost - leftmost + 1,
-      height: downmost - upmost + 1,
-    };
-  }
-
-  posToColRow(pos: Vector): { col: number; row: number } {
-    return {
-      col: Math.floor(pos.x / this.tilemap.tileWidth),
-      row: Math.floor(pos.y / this.tilemap.tileHeight),
-    };
-  }
-
-  decideDividingLine(offset: number, range: number) {
+  private decideDividingLine(offset: number, range: number) {
     if (range <= 6) {
       Logger.getInstance().warn("Too small to dicide the dividing line.");
       return null;
@@ -270,120 +220,74 @@ export class GameScene extends Scene {
     return offset + this.rnd.integer(3, range - 4);
   }
 
-  makeRoom(areaID: number) {
-    const { up, right, down, left, width, height } = this.getAreaInfo(areaID);
+  private makeRoom(areaID: number) {
+    const info = this.areaInfos[areaID];
 
-    const rLeft = this.rnd.integer(left + 1, right - 2);
-    const rRight = this.rnd.integer(rLeft + 1, right - 1);
-    const rUp = this.rnd.integer(up + 1, down - 2);
-    const rDown = this.rnd.integer(rUp + 1, down - 1);
+    const left = this.rnd.integer(info.left + 1, info.right - 2);
+    const right = this.rnd.integer(left + 1, info.right - 1);
+    const top = this.rnd.integer(info.top + 1, info.bottom - 2);
+    const bottom = this.rnd.integer(top + 1, info.bottom - 1);
 
-    this.markRoom(this.currentRoomID, rUp, rRight, rDown, rLeft);
+    const roomInfo = new RoomInfo(top, right, bottom, left, this.rnd);
+    this.areaInfos[this.currentRoomID].roomInfo = roomInfo;
+
+    this.markRoom(this.currentRoomID, top, right, bottom, left);
     this.currentRoomID++;
   }
 
-  makePathway(roomID: number) {
-    const { up, right, down, left, width, height } = this.getRoomInfo(roomID);
-    const roomX = this.rnd.integer(left, right);
-    const roomY = this.rnd.integer(up, down);
-    const areaID = roomID;
+  private makePathway(id: number) {
+    switch (this.areaInfos[id].dividedSide) {
+      case Side.Right:
+        this.makeRightPathway(id);
+        break;
+      case Side.Bottom:
+        this.makeDownPathway(id);
+        break;
 
-    {
-      const { x, y } = this.searchDividingLine(areaID, areaID - 1, "Up");
-      if (y) {
-        this.markPathway(this.currentPathwayID, y, roomX, roomY, roomX);
-        this.currentPathwayID++;
-      }
-    }
-    {
-      const { x, y } = this.searchDividingLine(areaID, areaID + 1, "Down");
-      if (y) {
-        this.markPathway(this.currentPathwayID, roomY, roomX, y, roomX);
-        this.currentPathwayID++;
-      }
-    }
-    {
-      {
-        const { x, y } = this.searchDividingLine(areaID, areaID - 1, "Left");
-        if (x) {
-          this.markPathway(this.currentPathwayID, roomY, roomX, roomY, x);
-          this.currentPathwayID++;
-        }
-      }
-    }
-    {
-      const { x, y } = this.searchDividingLine(areaID, areaID + 1, "Right");
-      if (x) {
-        this.markPathway(this.currentPathwayID, roomY, x, roomY, roomX);
-        this.currentPathwayID++;
-      }
+      default:
+        break;
     }
   }
 
-  searchDividingLine(
-    srcAreaID: number,
-    dstAreaID: number,
-    direction: Direction
-  ): { x: number | null; y: number | null } {
-    if (srcAreaID === dstAreaID)
-      throw Error(
-        "Cannot search dividing line because src and dst IDs are same!!"
-      );
+  private makeRightPathway(id: number) {
+    const areaInfo = this.areaInfos[id];
+    const roomInfo = areaInfo.roomInfo!;
+    const nextRoomInfo = this.areaInfos[id + 1].roomInfo!;
+    const p1 = roomInfo.decidePathwayPoint();
+    const p2 = nextRoomInfo.decidePathwayPoint();
+    const yBottom = p1.y < p2.y ? p2.y : p1.y;
+    const yTop = p1.y < p2.y ? p1.y : p2.y;
 
-    const { up, right, down, left, width, height } =
-      this.getAreaInfo(srcAreaID);
+    this.markPathway(this.currentPathwayID, p1.y, areaInfo.right, p1.y, p1.x);
+    this.markPathway(
+      this.currentPathwayID,
+      yTop,
+      areaInfo.right,
+      yBottom,
+      areaInfo.right
+    );
+    this.markPathway(this.currentPathwayID, p2.y, p2.x, p2.y, areaInfo.right);
+    this.currentPathwayID++;
+  }
 
-    switch (direction) {
-      case "Up":
-        for (let x = left; x <= right; x++) {
-          const columnArray = this.tilemap.getColumns()[x];
-          const columnAreaIDs: number[] = columnArray.map((tile) =>
-            tile.data.get("areaID")
-          );
-          const index = columnAreaIDs.findLastIndex(
-            (value: number) => value === dstAreaID
-          );
-          if (index !== -1) return { x: null, y: index + 1 };
-        }
-        break;
-      case "Down":
-        for (let x = left; x <= right; x++) {
-          const columnArray = this.tilemap.getColumns()[x];
-          const columnAreaIDs: number[] = columnArray.map((tile) =>
-            tile.data.get("areaID")
-          );
-          const index = columnAreaIDs.findIndex(
-            (value: number) => value === dstAreaID
-          );
-          if (index !== -1) return { x: null, y: index - 1 };
-        }
-        break;
-      case "Left":
-        for (let y = up; y <= down; y++) {
-          const rowArray = this.tilemap.getRows()[y];
-          const rowAreaIDs: number[] = rowArray.map((tile) =>
-            tile.data.get("areaID")
-          );
-          const index = rowAreaIDs.findLastIndex(
-            (value: number) => value === dstAreaID
-          );
-          if (index !== -1) return { x: index + 1, y: null };
-        }
-        break;
-      case "Right":
-        for (let y = up; y <= down; y++) {
-          const rowArray = this.tilemap.getRows()[y];
-          const rowAreaIDs: number[] = rowArray.map((tile) =>
-            tile.data.get("areaID")
-          );
-          const index = rowAreaIDs.findIndex(
-            (value: number) => value === dstAreaID
-          );
-          if (index !== -1) return { x: index - 1, y: null };
-        }
-        break;
-    }
+  private makeDownPathway(id: number) {
+    const areaInfo = this.areaInfos[id];
+    const roomInfo = areaInfo.roomInfo!;
+    const nextRoomInfo = this.areaInfos[id + 1].roomInfo!;
+    const p1 = roomInfo.decidePathwayPoint();
+    const p2 = nextRoomInfo.decidePathwayPoint();
+    const xRight = p1.x < p2.x ? p2.x : p1.x;
+    const xLeft = p1.x < p2.x ? p1.x : p2.x;
 
-    return { x: null, y: null };
+    this.markPathway(this.currentPathwayID, p1.y, p1.x, areaInfo.bottom, p1.x);
+    this.markPathway(
+      this.currentPathwayID,
+      areaInfo.bottom,
+      xRight,
+      areaInfo.bottom,
+      xLeft
+    );
+    this.markPathway(this.currentPathwayID, areaInfo.bottom, p2.x, p2.y, p2.x);
+    this.currentPathwayID++;
   }
 }
