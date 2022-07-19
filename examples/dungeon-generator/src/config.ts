@@ -5,4 +5,5 @@ export default {
   gameWidth: gameWidth,
   gameHeight: gameHeight,
   additionalPathwayCount: 2,
+  minAreaEdgeLength: 3,
 };

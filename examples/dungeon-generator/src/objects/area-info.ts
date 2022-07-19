@@ -1,4 +1,5 @@
-import { Side } from "excalibur";
+import { Random, Side } from "excalibur";
+import config from "../config";
 import { RoomInfo } from "./room-info";
 
 export class AreaInfo {
@@ -9,7 +10,8 @@ export class AreaInfo {
     public top: number,
     public right: number,
     public bottom: number,
-    public left: number
+    public left: number,
+    private rnd: Random
   ) {}
 
   get width(): number {
@@ -20,21 +22,33 @@ export class AreaInfo {
     return this.bottom - this.top + 1;
   }
 
-  divide(side: Side, line: number): void {
+  divide(side: Side): void {
     this.dividedSide = side;
 
     switch (side) {
       case Side.Top:
-        this.top = line;
+        this.top = this.rnd.integer(
+          this.top + this.height / 2,
+          this.bottom - config.minAreaEdgeLength
+        );
         break;
       case Side.Right:
-        this.right = line;
+        this.right = this.rnd.integer(
+          this.left + config.minAreaEdgeLength,
+          this.left + this.width / 2
+        );
         break;
       case Side.Bottom:
-        this.bottom = line;
+        this.bottom = this.rnd.integer(
+          this.top + config.minAreaEdgeLength,
+          this.top + this.height / 2
+        );
         break;
       case Side.Left:
-        this.left = line;
+        this.left = this.rnd.integer(
+          this.left + this.width / 2,
+          this.right - config.minAreaEdgeLength
+        );
         break;
       case Side.None:
         throw Error("Invalid `Side` !!");

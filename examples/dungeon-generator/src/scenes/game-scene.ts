@@ -138,7 +138,13 @@ export class GameScene extends Scene {
     left: number
   ): void {
     this.markMap("areaID", id, up, right, down, left);
-    this.areaInfos[this.currentAreaID] = new AreaInfo(up, right, down, left);
+    this.areaInfos[this.currentAreaID] = new AreaInfo(
+      up,
+      right,
+      down,
+      left,
+      this.rnd
+    );
   }
 
   private markRoom(
@@ -192,38 +198,32 @@ export class GameScene extends Scene {
     const height = areaInfo.height;
 
     if (isVertical) {
-      if (width <= 6) {
+      if (width < config.minAreaEdgeLength * 2) {
         Logger.getInstance().warn("Too small(width) to divide the area.");
         return;
       }
 
-      const dividingLine = this.decideDividingLine(left, width)!;
-
-      this.areaInfos[this.currentAreaID].divide(Side.Right, dividingLine - 1);
+      this.areaInfos[this.currentAreaID].divide(Side.Right);
 
       this.currentAreaID++;
-      this.makeArea(this.currentAreaID, top, right, bottom, dividingLine);
+      this.makeArea(this.currentAreaID, top, right, bottom, areaInfo.right + 1);
     } else {
-      if (height <= 6) {
+      if (height < config.minAreaEdgeLength * 2) {
         Logger.getInstance().warn("Too small(height) to divide the area.");
         return;
       }
 
-      const dividingLine = this.decideDividingLine(top, height)!;
-
-      this.areaInfos[this.currentAreaID].divide(Side.Bottom, dividingLine - 1);
+      this.areaInfos[this.currentAreaID].divide(Side.Bottom);
 
       this.currentAreaID++;
-      this.makeArea(this.currentAreaID, dividingLine, right, bottom, left);
+      this.makeArea(
+        this.currentAreaID,
+        areaInfo.bottom + 1,
+        right,
+        bottom,
+        left
+      );
     }
-  }
-
-  private decideDividingLine(offset: number, range: number) {
-    if (range <= 6) {
-      Logger.getInstance().warn("Too small to dicide the dividing line.");
-      return null;
-    }
-    return offset + this.rnd.integer(3, range - 4);
   }
 
   private makeRoom(areaID: number) {
