@@ -223,10 +223,16 @@ export class GameScene extends Scene {
   private makeRoom(areaID: number) {
     const info = this.areaInfos[areaID];
 
-    const left = this.rnd.integer(info.left + 1, info.right - 2);
-    const right = this.rnd.integer(left + 1, info.right - 1);
-    const top = this.rnd.integer(info.top + 1, info.bottom - 2);
-    const bottom = this.rnd.integer(top + 1, info.bottom - 1);
+    let x1, x2, y1, y2;
+    do {
+      [x1, x2] = this.rnd.range(2, info.left + 1, info.right - 1);
+      [y1, y2] = this.rnd.range(2, info.top + 1, info.bottom - 1);
+    } while (Math.abs(x2 - x1) <= 1 || Math.abs(y2 - y1) <= 1);
+
+    const left = x1 < x2 ? x1 : x2;
+    const right = x1 < x2 ? x2 : x1;
+    const top = y1 < y2 ? y1 : y2;
+    const bottom = y1 < y2 ? y2 : y1;
 
     const roomInfo = new RoomInfo(top, right, bottom, left, this.rnd);
     this.areaInfos[this.currentRoomID].roomInfo = roomInfo;
