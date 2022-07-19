@@ -39,11 +39,9 @@ export class GameScene extends Scene {
       this.tilemap.rows - 1,
       0
     );
-    this.divideArea(this.currentAreaID);
-    this.divideArea(this.currentAreaID);
-    this.divideArea(this.currentAreaID);
-    this.divideArea(this.currentAreaID);
-    this.divideArea(this.currentAreaID);
+    for (let i = 0; i < config.divideCount; i++) {
+      this.divideArea(this.currentAreaID);
+    }
 
     for (let id = 1; id <= this.currentAreaID; id++) {
       this.makeRoom(id);

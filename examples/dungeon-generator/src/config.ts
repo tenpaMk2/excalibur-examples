@@ -4,6 +4,8 @@ const gameHeight = 1920 / 2;
 export default {
   gameWidth: gameWidth,
   gameHeight: gameHeight,
-  additionalPathwayCount: 2,
+  additionalPathwayCount: 1,
+  divideCount: 5,
+  divideFactor: 3,
   minAreaEdgeLength: 3,
 };

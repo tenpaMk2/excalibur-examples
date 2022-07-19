@@ -28,25 +28,25 @@ export class AreaInfo {
     switch (side) {
       case Side.Top:
         this.top = this.rnd.integer(
-          this.top + this.height / 2,
+          this.top + this.height / config.divideFactor,
           this.bottom - config.minAreaEdgeLength
         );
         break;
       case Side.Right:
         this.right = this.rnd.integer(
           this.left + config.minAreaEdgeLength,
-          this.left + this.width / 2
+          this.left + this.width / config.divideFactor
         );
         break;
       case Side.Bottom:
         this.bottom = this.rnd.integer(
           this.top + config.minAreaEdgeLength,
-          this.top + this.height / 2
+          this.top + this.height / config.divideFactor
         );
         break;
       case Side.Left:
         this.left = this.rnd.integer(
-          this.left + this.width / 2,
+          this.left + this.width / config.divideFactor,
           this.right - config.minAreaEdgeLength
         );
         break;
