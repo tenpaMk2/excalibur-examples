@@ -292,14 +292,14 @@ export class GameScene extends Scene {
       const { x, y } = this.searchDividingLine(areaID, areaID - 1, "Up");
       if (y) {
         this.markPathway(this.currentPathwayID, y, roomX, roomY, roomX);
-        this.currentAreaID++;
+        this.currentPathwayID++;
       }
     }
     {
       const { x, y } = this.searchDividingLine(areaID, areaID + 1, "Down");
       if (y) {
         this.markPathway(this.currentPathwayID, roomY, roomX, y, roomX);
-        this.currentAreaID++;
+        this.currentPathwayID++;
       }
     }
     {
@@ -307,7 +307,7 @@ export class GameScene extends Scene {
         const { x, y } = this.searchDividingLine(areaID, areaID - 1, "Left");
         if (x) {
           this.markPathway(this.currentPathwayID, roomY, roomX, roomY, x);
-          this.currentAreaID++;
+          this.currentPathwayID++;
         }
       }
     }
@@ -315,7 +315,7 @@ export class GameScene extends Scene {
       const { x, y } = this.searchDividingLine(areaID, areaID + 1, "Right");
       if (x) {
         this.markPathway(this.currentPathwayID, roomY, x, roomY, roomX);
-        this.currentAreaID++;
+        this.currentPathwayID++;
       }
     }
   }
