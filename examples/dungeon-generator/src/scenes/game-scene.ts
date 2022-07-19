@@ -10,6 +10,7 @@ import {
   TileMap,
   Vector,
 } from "excalibur";
+import config from "../config";
 import { AreaInfo } from "../objects/area-info";
 import { RoomInfo } from "../objects/room-info";
 
@@ -17,7 +18,7 @@ export class GameScene extends Scene {
   private tilemap!: TileMap;
   private rnd: Random = new Random(1234);
   private currentAreaID: number = 1;
-  private currentRoomID: number = 1;
+  private currentRoomID: number = 0;
   private currentPathwayID: number = 1;
   private areaInfos: AreaInfo[] = [];
 
@@ -50,6 +51,11 @@ export class GameScene extends Scene {
 
     for (let id = 1; id <= this.currentRoomID - 1; id++) {
       this.makePathway(id);
+    }
+
+    for (let i = 0; i < config.additionalPathwayCount; i++) {
+      const [id1, id2] = this.rnd.range(2, 1, this.currentRoomID);
+      this.makeAdditionalPathway(id1, id2);
     }
 
     this.updateTilemap();
@@ -224,9 +230,15 @@ export class GameScene extends Scene {
     const info = this.areaInfos[areaID];
 
     let x1, x2, y1, y2;
+    let count = 0;
     do {
       [x1, x2] = this.rnd.range(2, info.left + 1, info.right - 1);
       [y1, y2] = this.rnd.range(2, info.top + 1, info.bottom - 1);
+      count++;
+      if (5 < count) {
+        Logger.getInstance().warn("Reach the loop limit!!");
+        break;
+      }
     } while (Math.abs(x2 - x1) <= 1 || Math.abs(y2 - y1) <= 1);
 
     const left = x1 < x2 ? x1 : x2;
@@ -234,11 +246,11 @@ export class GameScene extends Scene {
     const top = y1 < y2 ? y1 : y2;
     const bottom = y1 < y2 ? y2 : y1;
 
+    this.currentRoomID++;
     const roomInfo = new RoomInfo(top, right, bottom, left, this.rnd);
     this.areaInfos[this.currentRoomID].roomInfo = roomInfo;
 
     this.markRoom(this.currentRoomID, top, right, bottom, left);
-    this.currentRoomID++;
   }
 
   private makePathway(id: number) {
@@ -294,6 +306,22 @@ export class GameScene extends Scene {
       xLeft
     );
     this.markPathway(this.currentPathwayID, areaInfo.bottom, p2.x, p2.y, p2.x);
+    this.currentPathwayID++;
+  }
+
+  private makeAdditionalPathway(id1: number, id2: number) {
+    const p1 = this.areaInfos[id1].roomInfo!.decidePathwayPoint();
+    const p2 = this.areaInfos[id2].roomInfo!.decidePathwayPoint();
+
+    const top = p1.y < p2.y ? p1.y : p2.y;
+    const left = p1.x < p2.x ? p1.x : p2.x;
+    const bottom = p1.y < p2.y ? p2.y : p1.y;
+    const right = p1.x < p2.x ? p2.x : p1.x;
+
+    this.markPathway(this.currentPathwayID, top, right, top, left);
+    this.markPathway(this.currentPathwayID, bottom, right, bottom, left);
+    this.markPathway(this.currentPathwayID, top, right, bottom, right);
+    this.markPathway(this.currentPathwayID, top, left, bottom, left);
     this.currentPathwayID++;
   }
 }
