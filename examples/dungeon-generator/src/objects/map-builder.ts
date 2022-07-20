@@ -60,6 +60,7 @@ export class MapBuilder {
 
       const [id1, id2] = this.rnd.pickSet(roomIDs, 2, false);
       this.makeAdditionalPathway(id1, id2);
+      this.removePathway(id1 < id2 ? id1 : id2);
     }
 
     return new DungeonMap(this.tilemap, {
@@ -293,5 +294,13 @@ export class MapBuilder {
       }
     }
     this.currentPathwayID++;
+  }
+
+  private removePathway(id: number): void {
+    this.tilemap.tiles.forEach((tile) => {
+      const pathwayID = tile.data.get("pathwayID");
+      if (pathwayID !== id) return;
+      tile.data.delete("pathwayID");
+    });
   }
 }
