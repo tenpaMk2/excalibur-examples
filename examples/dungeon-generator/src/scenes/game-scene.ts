@@ -6,6 +6,7 @@ import {
   Random,
   Scene,
   Side,
+  SpriteSheet,
   Text,
   TileMap,
   Vector,
@@ -13,10 +14,11 @@ import {
 import config from "../config";
 import { AreaInfo } from "../objects/area-info";
 import { RoomInfo } from "../objects/room-info";
+import { Resources } from "../resource";
 
 export class GameScene extends Scene {
   private tilemap!: TileMap;
-  private rnd: Random = new Random(1234);
+  private rnd: Random = new Random(4);
   private currentAreaID: number = 1;
   private currentRoomID: number = 0;
   private currentPathwayID: number = 1;
@@ -60,6 +62,49 @@ export class GameScene extends Scene {
   }
 
   private updateTilemap(): void {
+    if (config.debug) {
+      this.updateTilemapDebug();
+      return;
+    }
+
+    const spritesheet = SpriteSheet.fromImageSource({
+      image: Resources.mapchip,
+      grid: {
+        rows: 22,
+        columns: 49,
+        spriteHeight: 16,
+        spriteWidth: 16,
+      },
+    });
+    const roomSprite = spritesheet.getSprite(4, 0)!;
+    const pathwaySprite = spritesheet.getSprite(2, 0)!;
+    const wallSprite = spritesheet.getSprite(0, 13)!;
+
+    this.tilemap.tiles.forEach((tile) => {
+      const roomID = tile.data.get("roomID");
+      if (roomID) {
+        tile.clearGraphics();
+        tile.addGraphic(roomSprite);
+        return;
+      }
+
+      const pathwayID = tile.data.get("pathwayID");
+      if (pathwayID) {
+        tile.clearGraphics();
+        tile.addGraphic(pathwaySprite);
+        return;
+      }
+
+      const areaID = tile.data.get("areaID");
+      if (areaID) {
+        tile.clearGraphics();
+        tile.addGraphic(wallSprite);
+        return;
+      }
+    });
+  }
+
+  private updateTilemapDebug(): void {
     const font = new Font({
       family: "mono",
       size: 8,
@@ -101,28 +146,25 @@ export class GameScene extends Scene {
     this.tilemap.tiles.forEach((tile) => {
       const roomID = tile.data.get("roomID");
       if (roomID) {
-        const text = roomTexts[roomID];
-
+        const graphic = roomTexts[roomID];
         tile.clearGraphics();
-        tile.addGraphic(text);
+        tile.addGraphic(graphic);
         return;
       }
 
       const pathwayID = tile.data.get("pathwayID");
       if (pathwayID) {
-        const text = pathwayTexts[pathwayID];
-
+        const graphic = pathwayTexts[pathwayID];
         tile.clearGraphics();
-        tile.addGraphic(text);
+        tile.addGraphic(graphic);
         return;
       }
 
       const areaID = tile.data.get("areaID");
       if (areaID) {
-        const text = areaTexts[areaID];
-
+        const graphic = areaTexts[areaID];
         tile.clearGraphics();
-        tile.addGraphic(text);
+        tile.addGraphic(graphic);
         return;
       }
     });

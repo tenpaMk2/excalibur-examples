@@ -8,4 +8,5 @@ export default {
   divideCount: 5,
   divideFactor: 3,
   minAreaEdgeLength: 3,
+  debug: false,
 };

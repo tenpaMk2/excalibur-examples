@@ -10,7 +10,7 @@ const engine = new Engine({
   displayMode: DisplayMode.FitScreen,
 });
 
-engine.showDebug(false);
+engine.showDebug(config.debug);
 
 engine.add("game-scene", new GameScene());
 engine.goToScene("game-scene");

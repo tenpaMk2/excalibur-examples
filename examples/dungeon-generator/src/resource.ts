@@ -1,7 +1,7 @@
 import { ImageSource } from "excalibur";
 
-import heart from "./assets/heart.png";
+import mapchip from "./assets/colored_packed.png";
 
 export const Resources = {
-  heart: new ImageSource(heart),
+  mapchip: new ImageSource(mapchip),
 };
