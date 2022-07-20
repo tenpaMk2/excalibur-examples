@@ -19,14 +19,6 @@ export class DungeonMap {
     this.pathwayCount = info.pathwayCount;
   }
 
-  search() {
-    // todo: implement
-  }
-
-  register() {
-    // todo: implement
-  }
-
   updateTilemap(): void {
     if (config.debug) {
       this.updateTilemapDebug();
