@@ -47,11 +47,11 @@ export class MapBuilder {
       this.divideArea(this.currentAreaID);
     }
 
-    for (let id = 1; id <= this.buildOptions.divideCount; id++) {
+    for (let id = 1; id <= this.currentAreaID; id++) {
       this.makeRoom(id);
     }
 
-    for (let id = 1; id <= this.buildOptions.divideCount - 1; id++) {
+    for (let id = 1; id <= this.currentRoomID - 1; id++) {
       this.makePathway(id);
     }
 
