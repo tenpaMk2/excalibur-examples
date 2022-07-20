@@ -4,7 +4,7 @@ import { MapBuilder } from "../objects/map-builder";
 
 export class GameScene extends Scene {
   onInitialize(engine: Engine): void {
-    const rnd = new Random(13);
+    const rnd = new Random(config.randomSeed);
 
     const mapBuilder = new MapBuilder(
       engine,
