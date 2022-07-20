@@ -249,18 +249,49 @@ export class MapBuilder {
   }
 
   private makeAdditionalPathway(id1: number, id2: number) {
-    const p1 = this.areaInfos[id1].roomInfo!.decidePathwayPoint();
-    const p2 = this.areaInfos[id2].roomInfo!.decidePathwayPoint();
+    const p1raw = this.areaInfos[id1].roomInfo!.decidePathwayPoint();
+    const p2raw = this.areaInfos[id2].roomInfo!.decidePathwayPoint();
+    const p1 = p1raw.x < p2raw.x ? p1raw : p2raw;
+    const p2 = p1raw.x < p2raw.x ? p2raw : p1raw;
 
-    const top = p1.y < p2.y ? p1.y : p2.y;
-    const left = p1.x < p2.x ? p1.x : p2.x;
-    const bottom = p1.y < p2.y ? p2.y : p1.y;
-    const right = p1.x < p2.x ? p2.x : p1.x;
-
-    this.markPathway(this.currentPathwayID, top, right, top, left);
-    this.markPathway(this.currentPathwayID, bottom, right, bottom, left);
-    this.markPathway(this.currentPathwayID, top, right, bottom, right);
-    this.markPathway(this.currentPathwayID, top, left, bottom, left);
+    const left = p1.x;
+    const right = p2.x;
+    const isVertical = this.rnd.bool();
+    if (p1.y < p2.y) {
+      const top = p1.y;
+      const bottom = p2.y;
+      if (isVertical) {
+        // ┐
+        // └
+        const x = this.rnd.integer(left, right);
+        this.markPathway(this.currentPathwayID, top, x, top, left);
+        this.markPathway(this.currentPathwayID, top, x, bottom, x);
+        this.markPathway(this.currentPathwayID, bottom, right, bottom, x);
+      } else {
+        // └┐
+        const y = this.rnd.integer(top, bottom);
+        this.markPathway(this.currentPathwayID, top, left, y, left);
+        this.markPathway(this.currentPathwayID, y, right, y, left);
+        this.markPathway(this.currentPathwayID, y, right, bottom, right);
+      }
+    } else {
+      const top = p2.y;
+      const bottom = p1.y;
+      if (isVertical) {
+        // ┌
+        // ┘
+        const x = this.rnd.integer(left, right);
+        this.markPathway(this.currentPathwayID, bottom, x, bottom, left);
+        this.markPathway(this.currentPathwayID, top, x, bottom, x);
+        this.markPathway(this.currentPathwayID, top, right, top, x);
+      } else {
+        // ┌┘
+        const y = this.rnd.integer(top, bottom);
+        this.markPathway(this.currentPathwayID, y, left, bottom, left);
+        this.markPathway(this.currentPathwayID, y, right, y, left);
+        this.markPathway(this.currentPathwayID, top, right, y, right);
+      }
+    }
     this.currentPathwayID++;
   }
 }
