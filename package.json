@@ -10,6 +10,7 @@
     "clocks": "cd examples/clocks && npm install && npm run start",
     "detect-ground": "cd examples/detect-ground && npm install && npm run start",
     "doll-stamper": "cd examples/doll-stamper && npm install && npm run start",
+    "dungeon-generator": "cd examples/dungeon-generator && npm install && npm run start",
     "event": "cd examples/event && npm install && npm run start",
     "lockon": "cd examples/lockon && npm install && npm run start",
     "mass-physics": "cd examples/mass-physics && npm install && npm run start",
