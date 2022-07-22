@@ -14,6 +14,7 @@
     "event": "cd examples/event && npm install && npm run start",
     "lockon": "cd examples/lockon && npm install && npm run start",
     "mass-physics": "cd examples/mass-physics && npm install && npm run start",
+    "samegame": "cd examples/samegame && npm install && npm run start",
     "scene-change": "cd examples/scene-change && npm install && npm run start",
     "scroll-and-score-text": "cd examples/scroll-and-score-text && npm install && npm run start",
     "slingshot": "cd examples/slingshot && npm install && npm run start",

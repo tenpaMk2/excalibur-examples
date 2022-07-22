@@ -167,6 +167,18 @@ Credits are as follows.
 | :----------------: | :-------- | :----------------------- |
 | character graphics | kenney.nl | <https://www.kenney.nl/> |
 
+### samegame
+
+![sample](./imgs/sample-samegame.png)
+
+The simple samegame.
+
+Credits are as follows.
+
+| item (description) | author          | URL                                         |
+| :----------------: | :-------------- | :------------------------------------------ |
+|    gem graphics    | Clint Bellanger | <https://opengameart.org/content/gem-icons> |
+
 ### scene-change
 
 Demo for scene-change.
