@@ -146,7 +146,12 @@ Random dungeon generator for rogue-like games!!
 
 Demo for custom events.
 
-Credits are as follows.
+### inputs
+
+![sample](./imgs/sample-inputs.png)
+
+Demo for keyboard inputs.
+See the sourcecode for controlling.
 
 ### lockon
 

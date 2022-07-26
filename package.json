@@ -12,6 +12,7 @@
     "doll-stamper": "cd examples/doll-stamper && npm install && npm run start",
     "dungeon-generator": "cd examples/dungeon-generator && npm install && npm run start",
     "event": "cd examples/event && npm install && npm run start",
+    "inputs": "cd examples/inputs && npm install && npm run start",
     "lockon": "cd examples/lockon && npm install && npm run start",
     "mass-physics": "cd examples/mass-physics && npm install && npm run start",
     "samegame": "cd examples/samegame && npm install && npm run start",
