@@ -1,6 +1,6 @@
 # excaliburjs-examples
 
-[Excalibur](https://excaliburjs.com/)
+[Excalibur.js](https://excaliburjs.com/)
 examples (just demos and demo-games).
 
 ## How to play
