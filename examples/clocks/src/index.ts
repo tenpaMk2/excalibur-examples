@@ -6,12 +6,11 @@ const engine = new Engine({
   width: 1080 / 2,
   height: 1920 / 2,
   displayMode: DisplayMode.FitScreen,
-  canvasElementId: "game",
 });
 
 // engine.showDebug(true);
-
 Physics.useRealisticPhysics();
+loader.suppressPlayButton = true;
 
 engine.add("game-scene", new GameScene());
 engine.goToScene("game-scene");

@@ -1,16 +1,20 @@
-import { Scene, Engine, Random } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
+import { Scene, Engine, Random, SceneActivationContext } from "excalibur";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 import { Clone } from "../objects/clone";
 import { Original } from "../objects/original";
 import { Score } from "../objects/score";
 
-export class GameScene extends Scene {
+interface GameSceneInterface {
+  initialize(): void; 
+}
+
+export class GameScene extends Scene<GameSceneInterface> {
   original!: Original;
   clone!: Clone;
   score!: Score;
   hasClicked: Boolean = false;
 
-  onInitialize = (engine: Engine) => {};
+  onInitialize = (_engine: Engine) => {};
 
   initialize = () => {
     if (this.original) {
@@ -27,7 +31,7 @@ export class GameScene extends Scene {
     this.engine.input.pointers.primary.off("down");
   };
 
-  onActivate(_oldScene: Scene, _newScene: Scene): void {
+  onActivate(_ctx: SceneActivationContext<GameSceneInterface>) {
     this.initialize();
 
     this.original = new Original(
@@ -48,7 +52,7 @@ export class GameScene extends Scene {
     this.engine.input.pointers.primary.on(
       // @ts-ignore
       "down",
-      (event: PointerEvent) => {
+      (_event: PointerEvent) => {
         if (!this.hasClicked) {
           this.hasClicked = true;
 

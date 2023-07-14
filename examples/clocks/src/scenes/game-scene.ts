@@ -1,7 +1,7 @@
 import { Scene, Engine, CollisionStartEvent, Logger } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import { Bullet } from "../objects/bullet";
 import { Clock } from "../objects/clock";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class GameScene extends Scene {
   clocks: Clock[];
@@ -15,7 +15,7 @@ export class GameScene extends Scene {
     this.initStage1(engine);
 
     // Input
-    engine.input.pointers.primary.on("down", (event: PointerEvent) => {
+    engine.input.pointers.primary.on("down", (_event: PointerEvent) => {
       this.shoot(engine);
     });
   };
@@ -42,7 +42,8 @@ export class GameScene extends Scene {
     this.setBulletCollision(engine, bullet);
   };
 
-  setBulletCollision = (engine: Engine, bullet: Bullet) => {
+  setBulletCollision = (_engine: Engine, bullet: Bullet) => {
+    // @ts-ignore: I use a correct type of `handler` . Excalibur.js type definition is wrong?
     bullet.on("collisionstart", (event: CollisionStartEvent<Clock>) => {
       if (!this.clocks.includes(event.other)) {
         return;

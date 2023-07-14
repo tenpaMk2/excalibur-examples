@@ -13,8 +13,8 @@ export class Square extends Actor {
     });
   }
 
-  onInitialize(engine: Engine) {
-    this.on("pointerdown", (event: PointerEvent) => {
+  onInitialize(_engine: Engine) {
+    this.on("pointerdown", (_event: PointerEvent) => {
       const time = new Date();
       this.emit("death", new DeathEvent(time.toString(), time.getTime()));
     });

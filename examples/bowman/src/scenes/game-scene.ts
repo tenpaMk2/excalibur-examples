@@ -47,7 +47,7 @@ export class GameScene extends Scene {
       bowman.shoot(event.power * 3, event.angle);
     });
 
-    const enemySpawner = new EnemySpawner(engine, rnd);
+    new EnemySpawner(engine, rnd);
 
     const bowSelector = new BowSelector(engine);
 

@@ -7,11 +7,10 @@ import {
   Scene,
   Vector,
 } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import config from "../config";
 import { enemyAnimation } from "../resources";
 import { Boom } from "./boom";
-import { Lockon } from "./lockon";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class Enemy extends Actor {
   public isLockOn: Boolean = false;
@@ -33,25 +32,25 @@ export class Enemy extends Actor {
     this.initGraphics();
   }
 
-  onInitialize = (engine: Engine) => {
+  onInitialize = (_engine: Engine) => {
     this.initLockOnEvent();
 
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       if (this.pos.y < 0) return;
       this.kill();
     });
   };
 
   initLockOnEvent = () => {
-    this.on("pointerdragenter", (event: PointerEvent) => {
+    this.on("pointerdragenter", (_event: PointerEvent) => {
       this.lockOn();
     });
-    this.on("pointerdown", (event: PointerEvent) => {
+    this.on("pointerdown", (_event: PointerEvent) => {
       this.lockOn();
     });
   };
 
-  onPreUpdate = (engine: Engine, delta: number) => {
+  onPreUpdate = (_engine: Engine, _delta: number) => {
     this.rotation = this.vel.toAngle();
 
     this.acc.x = (this.targetPos.x - this.pos.x) * config.enemyAccXMultiplier;
@@ -77,7 +76,7 @@ export class Enemy extends Actor {
     this.initLockOnEvent();
   };
 
-  onPreKill = (scene: Scene) => {
-    const boom = new Boom(this.engine, this.pos);
+  onPreKill = (_scene: Scene) => {
+    new Boom(this.engine, this.pos);
   };
 }

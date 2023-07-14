@@ -6,7 +6,6 @@ import { GameScene } from "./scenes/game-scene";
 const engine = new Engine({
   width: config.gameWidth,
   height: config.gameHeight,
-  canvasElementId: "game",
   displayMode: DisplayMode.FitScreen,
 });
 

@@ -16,7 +16,7 @@ export class Bait extends Actor {
   constructor(
     pos: Vector,
     private snake: Snake,
-    private engine: Engine,
+    _engine: Engine,
     private baitSpawner: BaitSpawner
   ) {
     super({
@@ -28,7 +28,7 @@ export class Bait extends Actor {
     });
   }
 
-  onInitialize(engine: Engine): void {
+  onInitialize(_engine: Engine): void {
     this.initGraphic();
     this.initPhysics();
   }
@@ -67,7 +67,7 @@ export class Bait extends Actor {
       }
     );
 
-    this.on("postkill", (event: PostKillEvent): void => {
+    this.on("postkill", (_event: PostKillEvent): void => {
       this.snake.pushTail();
       this.baitSpawner.spawn();
     });

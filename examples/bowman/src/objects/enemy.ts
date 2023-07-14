@@ -24,10 +24,10 @@ export class Enemy extends Actor {
   isRotatable: boolean = true;
 
   constructor(
-    private engine: Engine,
+    _engine: Engine,
     x: number,
     y: number,
-    private enemyType: EnemyType
+    enemyType: EnemyType
   ) {
     let animation: Animation;
     switch (enemyType) {
@@ -94,18 +94,18 @@ export class Enemy extends Actor {
       }
     });
 
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       this.kill();
     });
   }
 
-  onPreUpdate(engine: Engine, delta: number) {
+  onPreUpdate(_engine: Engine, _delta: number) {
     if (this.isRotatable) return;
     this.rotation = 0;
   }
 
   planWalking() {
-    this.actions.repeat((ctx) => {
+    this.actions.repeat((_ctx) => {
       config.path.forEach((point) => {
         this.actions.moveTo(point[0], point[1], config.enemySpeed1);
       });

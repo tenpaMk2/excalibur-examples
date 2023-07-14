@@ -1,6 +1,5 @@
-import { Actor, CollisionType, Color, Engine, SpriteSheet } from "excalibur";
+import { Actor, CollisionType, Engine } from "excalibur";
 import config from "../config";
-import { Resources } from "../resource";
 import { ResourceManager } from "./resource-manager";
 
 export class Box extends Actor {
@@ -17,7 +16,7 @@ export class Box extends Actor {
     this.graphics.use(sprite);
   }
 
-  onInitialize(engine: Engine) {
+  onInitialize(_engine: Engine) {
     this.body.mass = config.boxMass;
   }
 }

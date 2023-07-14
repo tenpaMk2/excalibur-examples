@@ -20,14 +20,14 @@ export class Clone extends Actor {
         spriteHeight: 32,
       },
     });
-    const sprite = spriteSheet.getSprite(1, 124);
+    const sprite = spriteSheet.getSprite(1, 124)!;
     sprite.scale = new Vector(5, 5);
     this.graphics.use(sprite);
 
     this.graphics.opacity = opacity;
   }
 
-  onPreUpdate = (engine: Engine, delta: number) => {
+  onPreUpdate = (_engine: Engine, _delta: number) => {
     if (this.isFreezed) return;
 
     if (this.graphics.opacity < 0 || 1 < this.graphics.opacity) {

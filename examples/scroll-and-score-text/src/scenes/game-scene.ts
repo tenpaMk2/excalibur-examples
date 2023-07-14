@@ -69,7 +69,7 @@ export class GameScene extends Scene {
     });
   };
 
-  onPreUpdate = (engine: Engine, delta: number): void => {
+  onPreUpdate = (_engine: Engine, delta: number): void => {
     this.scoreText.text = `score: ${delta.toFixed(3)}`;
   };
 }

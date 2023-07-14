@@ -6,7 +6,6 @@ const engine = new Engine({
   width: 1920 / 2,
   height: 1080 / 2,
   displayMode: DisplayMode.FitScreen,
-  canvasElementId: "game",
 });
 
 // engine.showDebug(true);

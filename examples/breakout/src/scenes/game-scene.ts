@@ -2,19 +2,13 @@ import {
   Scene,
   Engine,
   Vector,
-  Actor,
   PreCollisionEvent,
-  TileMap,
-  CollisionType,
-  Sprite,
 } from "excalibur";
-import config from "../config";
 
 import { Ball } from "../objects/ball";
 import { BlockGrid } from "../objects/block";
 import { GameOverScreen } from "../objects/gameover-screen";
 import { Paddle } from "../objects/paddle";
-import { Resources } from "../resource";
 
 export class GameScene extends Scene {
   ball!: Ball;
@@ -24,7 +18,7 @@ export class GameScene extends Scene {
     const width = engine.drawWidth;
     const height = engine.drawHeight;
 
-    const blocks = new BlockGrid(engine);
+    new BlockGrid(engine);
 
     this.ball = new Ball(new Vector(width * 0.2, height * 0.7), height * 0.02);
     engine.add(this.ball);

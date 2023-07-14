@@ -46,7 +46,7 @@ export class Ball extends Actor {
     });
   }
 
-  onPreUpdate(engine: Engine, delta: number): void {
+  onPreUpdate(_engine: Engine, _delta: number): void {
     if (!this.canBrace) return;
 
     this.acc = this.startPos.sub(this.pos).scale(100);

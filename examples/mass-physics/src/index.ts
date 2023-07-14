@@ -7,7 +7,6 @@ const engine = new Engine({
   width: config.gameWidth,
   height: config.gameHeight,
   displayMode: DisplayMode.FitScreen,
-  canvasElementId: "game",
 });
 
 Physics.useRealisticPhysics();

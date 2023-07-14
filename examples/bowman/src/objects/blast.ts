@@ -19,7 +19,7 @@ export class Blast extends Actor {
     });
   }
 
-  onInitialize(engine: Engine): void {
+  onInitialize(_engine: Engine): void {
     this.graphics.opacity = 0.3;
 
     this.scale = new Vector(0.1, 0.1);

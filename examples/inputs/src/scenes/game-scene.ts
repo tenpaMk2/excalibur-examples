@@ -23,7 +23,7 @@ export class GameScene extends Scene {
       collisionType: CollisionType.Active,
     });
     engine.add(player);
-    player.onPreUpdate = (engine: Engine, delta: number) => {
+    player.onPreUpdate = (engine: Engine, _delta: number) => {
       if (engine.input.keyboard.isHeld(Input.Keys.Left)) {
         player.vel.x = -config.moveSpeed;
       }

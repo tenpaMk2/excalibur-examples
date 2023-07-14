@@ -33,7 +33,7 @@ export class Missile extends Actor {
       event.other.kill();
       this.kill();
     });
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       this.kill();
     });
 
@@ -42,7 +42,7 @@ export class Missile extends Actor {
     }, config.missileLaunchTimeMS);
   };
 
-  onPreUpdate = (engine: Engine, delta: number) => {
+  onPreUpdate = (_engine: Engine, _delta: number) => {
     if (!this.allowAcc) return;
     this.acc = this.targetPos.sub(this.pos);
     this.acc.size = config.missileAcc;

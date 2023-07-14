@@ -3,7 +3,7 @@ import config from "../config";
 import { skySprite } from "../resources";
 
 export class Sky extends Actor {
-  constructor(private engine: Engine) {
+  constructor(engine: Engine) {
     super({
       anchor: Vector.Zero,
       collisionType: CollisionType.PreventCollision,

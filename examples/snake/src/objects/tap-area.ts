@@ -95,13 +95,13 @@ export class TapArea extends ScreenElement {
     subAreas.forEach((subArea: ScreenElement) => {
       subArea.graphics.opacity = 0;
 
-      subArea.on("pointerenter", (event: PointerEvent): void => {
+      subArea.on("pointerenter", (_event: PointerEvent): void => {
         subArea.graphics.opacity = 0.2;
       });
-      subArea.on("pointerleave", (event: PointerEvent): void => {
+      subArea.on("pointerleave", (_event: PointerEvent): void => {
         subArea.graphics.opacity = 0;
       });
-      subArea.on("pointerdown", (event: PointerEvent): void => {
+      subArea.on("pointerdown", (_event: PointerEvent): void => {
         let direction4 = Vector.Zero;
         switch (subArea.name) {
           case "up":

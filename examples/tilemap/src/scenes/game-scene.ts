@@ -27,9 +27,9 @@ export class GameScene extends Scene {
 
     this.processOthersTurns();
 
-    // ??? how to use events ???
+    // @ts-ignore: ??? how to use events ???
     this.tapArea.on("tapdown", (event: tapdownEvent): void => {
-      const player = this.turnQueue.dequeueCreature();
+      this.turnQueue.dequeueCreature();
 
       this.processPlayerTurn(engine, event.direction9);
 
@@ -134,7 +134,7 @@ export class GameScene extends Scene {
     this.tryToMove(this.grid, creature, targetPos);
   };
 
-  processPlayerTurn = (engine: Engine, direction: direction9) => {
+  processPlayerTurn = (_engine: Engine, direction: direction9) => {
     let unitVector8: Vector = Vector.Zero;
     switch (direction) {
       case "up":
@@ -170,7 +170,7 @@ export class GameScene extends Scene {
     this.tryToMove(
       this.grid,
       this.player,
-      this.player.pos.add(unitVector8.scale(config.TileWidth))
+      this.player.pos.add(unitVector8.scale(config.TileWidth)),
     );
   };
 

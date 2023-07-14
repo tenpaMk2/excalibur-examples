@@ -1,13 +1,13 @@
-import { Actor, CollisionType, Color, Engine, Sprite, Vector } from "excalibur";
+import { Actor, CollisionType, Color, Engine } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
-import { BowSelectEvent, BowType } from "./bow-select-event";
+import { BowSelectEvent} from "./bow-select-event";
 import { ResourceManager } from "./resource-manager";
 
 export class BowSelector {
   eventPubSuber: Actor;
   bows: Actor[] = [];
 
-  constructor(private engine: Engine) {
+  constructor(engine: Engine) {
     this.eventPubSuber = new Actor();
 
     const normalBowSelector = new Actor({
@@ -21,11 +21,11 @@ export class BowSelector {
     });
     engine.add(normalBowSelector);
     this.bows.push(normalBowSelector);
-    normalBowSelector.onInitialize = (engine: Engine): void => {
+    normalBowSelector.onInitialize = (_engine: Engine): void => {
       normalBowSelector.graphics.show(ResourceManager.getNormalBowSprite());
       normalBowSelector.graphics.opacity = 1;
 
-      normalBowSelector.on("pointerdown", (event: PointerEvent): void => {
+      normalBowSelector.on("pointerdown", (_event: PointerEvent): void => {
         this.eventPubSuber.emit("bow-select", new BowSelectEvent("Normal"));
 
         this.unselectAll();
@@ -44,10 +44,10 @@ export class BowSelector {
     });
     engine.add(metalBowSelector);
     this.bows.push(metalBowSelector);
-    metalBowSelector.onInitialize = (engine: Engine): void => {
+    metalBowSelector.onInitialize = (_engine: Engine): void => {
       metalBowSelector.graphics.show(ResourceManager.getMetalBowSprite());
 
-      metalBowSelector.on("pointerdown", (event: PointerEvent): void => {
+      metalBowSelector.on("pointerdown", (_event: PointerEvent): void => {
         this.eventPubSuber.emit("bow-select", new BowSelectEvent("Metal"));
 
         this.unselectAll();
@@ -66,10 +66,10 @@ export class BowSelector {
     });
     engine.add(hellBowSelector);
     this.bows.push(hellBowSelector);
-    hellBowSelector.onInitialize = (engine: Engine): void => {
+    hellBowSelector.onInitialize = (_engine: Engine): void => {
       hellBowSelector.graphics.show(ResourceManager.getHellBowSprite());
 
-      hellBowSelector.on("pointerdown", (event: PointerEvent): void => {
+      hellBowSelector.on("pointerdown", (_event: PointerEvent): void => {
         this.eventPubSuber.emit("bow-select", new BowSelectEvent("Hell"));
 
         this.unselectAll();

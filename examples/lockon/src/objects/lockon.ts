@@ -20,13 +20,13 @@ export class Lockon extends Actor {
     this.graphics.use(sprite);
   };
 
-  onInitialize = (engine: Engine) => {
+  onInitialize = (_engine: Engine) => {
     this.actions
       // .rotateTo(Math.PI / 4, Math.PI)
       .scaleTo(new Vector(0.5, 0.5), new Vector(10, 10));
   };
 
-  onPreUpdate = (engine: Engine, delta: number) => {
+  onPreUpdate = (_engine: Engine, _delta: number) => {
     this.pos = this.targetPos;
   };
 }

@@ -7,7 +7,6 @@ const game = new Engine({
   width: config.gameWidth,
   height: config.gameHeight,
   displayMode: DisplayMode.FitScreen,
-  canvasElementId: "game",
 });
 
 game.showDebug(false);

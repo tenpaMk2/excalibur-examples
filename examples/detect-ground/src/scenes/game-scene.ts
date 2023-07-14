@@ -34,7 +34,7 @@ export class GameScene extends Scene {
     this.initSolution2(engine);
     this.initSolution3(engine);
 
-    engine.input.pointers.primary.on("down", (event: PointerEvent): void => {
+    engine.input.pointers.primary.on("down", (_event: PointerEvent): void => {
       if (this.isPlayer1OnGround()) {
         this.player1.vel = this.player1.vel.add(new Vector(0, -100)); // jump!!
       }
@@ -125,10 +125,10 @@ export class GameScene extends Scene {
 
     this.player2.vel = new Vector(30, 0);
 
-    player2HitBox.on("collisionstart", (event: CollisionStartEvent): void => {
+    player2HitBox.on("collisionstart", (_event: CollisionStartEvent): void => {
       this.activeGroundCollisions++;
     });
-    player2HitBox.on("collisionend", (event: CollisionEndEvent): void => {
+    player2HitBox.on("collisionend", (_event: CollisionEndEvent): void => {
       this.activeGroundCollisions--;
     });
   }
@@ -164,7 +164,7 @@ export class GameScene extends Scene {
     this.player3.vel = new Vector(30, 0);
   }
 
-  onPreUpdate(engine: Engine, delta: number): void {
+  onPreUpdate(_engine: Engine, _delta: number): void {
     this.player1SideCollisions.length = 0;
   }
 

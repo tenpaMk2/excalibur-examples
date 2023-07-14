@@ -181,9 +181,6 @@ export class Snake {
     other1: Actor,
     other2: Actor
   ): void {
-    let other1PosNumber: 0 | 1 | 2 | 3 | 4 = 0; // same, up, right, down, left
-    let other2PosNumber: 0 | 1 | 2 | 3 | 4 = 0;
-
     const otherPositions = [other1, other2]
       .map((other) => {
         if (

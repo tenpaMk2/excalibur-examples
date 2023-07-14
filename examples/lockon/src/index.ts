@@ -7,7 +7,6 @@ const engine = new Engine({
   width: config.gameWidth,
   height: config.gameHeight,
   displayMode: DisplayMode.FitScreen,
-  canvasElementId: "game",
 });
 
 // engine.showDebug(true);
@@ -18,5 +17,7 @@ Physics.acc = new Vector(0, 980);
 
 engine.add("game-scene", new GameScene());
 engine.goToScene("game-scene");
+
+loader.suppressPlayButton = true;
 
 engine.start(loader);

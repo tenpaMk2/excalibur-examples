@@ -5,7 +5,7 @@ import { BracingEvent } from "./bracing-event";
 export class TapUI {
   eventPubSuber: Actor;
 
-  constructor(private engine: Engine) {
+  constructor(engine: Engine) {
     this.eventPubSuber = new Actor();
 
     let dragUI: ScreenElement;

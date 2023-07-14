@@ -21,7 +21,7 @@ export class Cloud extends Actor {
   onInitialize = (engine: Engine) => {
     this.initGraphics();
 
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       const newOne = new Cloud(this.pos.y);
       this.kill();
       engine.add(newOne);

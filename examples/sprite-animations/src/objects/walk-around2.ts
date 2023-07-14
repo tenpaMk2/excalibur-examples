@@ -64,7 +64,7 @@ export class WalkAround2 extends Actor {
     });
   };
 
-  onPreUpdate = (engine: Engine, delta: number) => {
+  onPreUpdate = (_engine: Engine, _delta: number) => {
     const angle = this.vel.toAngle();
     if ((-Math.PI * 3) / 4 < angle && angle <= (-Math.PI * 1) / 4) {
       this.graphics.use(this.animationUp);

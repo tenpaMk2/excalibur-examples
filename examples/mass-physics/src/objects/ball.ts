@@ -21,10 +21,10 @@ export class Ball extends Actor {
     this.graphics.use(sprite);
   }
 
-  onInitialize(engine: Engine) {
+  onInitialize(_engine: Engine) {
     this.body.bounciness = config.ballBounciness;
 
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       this.kill();
     });
   }

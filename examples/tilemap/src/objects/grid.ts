@@ -73,7 +73,7 @@ export class Grid {
     engine.add(this.downTreeMap);
   }
 
-  onInitialize = (engine: Engine) => {};
+  onInitialize = (_engine: Engine) => {};
 
   getTileCenter(x: number, y: number): Vector {
     const tile = this.infoMap.getTile(x, y);

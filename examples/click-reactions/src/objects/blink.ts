@@ -9,9 +9,9 @@ import {
   RotationType,
   Vector,
 } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import config from "../config";
 import { ResourceManager } from "./resource-manager";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class Blinker extends Actor {
   constructor(x: number, y: number) {
@@ -26,7 +26,7 @@ export class Blinker extends Actor {
     });
   }
 
-  onInitialize(engine: Engine) {
+  onInitialize(_engine: Engine) {
     const sprite = ResourceManager.getJK12Sprite();
     this.graphics.use(sprite);
 
@@ -34,7 +34,7 @@ export class Blinker extends Actor {
   }
 
   private initReactions(): void {
-    this.on("pointerdown", (event: PointerEvent) => {
+    this.on("pointerdown", (_event: PointerEvent) => {
       const blinkSequence = new ActionSequence(
         this,
         (actionContext: ActionContext): any => {

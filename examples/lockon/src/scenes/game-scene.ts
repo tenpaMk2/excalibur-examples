@@ -9,7 +9,6 @@ import {
   Vector,
   PostKillEvent,
 } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import { Base } from "../objects/base";
 import { Missile } from "../objects/missile";
 import { Enemy } from "../objects/enemy";
@@ -17,6 +16,7 @@ import { Cloud } from "../objects/cloud";
 import config from "../config";
 import { Sky } from "../objects/sky";
 import { Lockon } from "../objects/lockon";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class GameScene extends Scene {
   private rnd: Random;
@@ -57,7 +57,7 @@ export class GameScene extends Scene {
 
     this.generateClouds(engine);
 
-    engine.input.pointers.primary.on("up", (event: PointerEvent) => {
+    engine.input.pointers.primary.on("up", (_event: PointerEvent) => {
       const unlaunchedLockons = this.lockons.filter(
         (lockon) => !lockon.islaunched
       );
@@ -93,7 +93,7 @@ export class GameScene extends Scene {
     const enemy = new Enemy(engine, x, y, target.pos);
     engine.add(enemy);
 
-    enemy.on("lockon", (event: any) => {
+    enemy.on("lockon", (_event: any) => {
       this.generateLockon(engine, enemy);
     });
     enemy.on("collisionstart", (event: CollisionStartEvent) => {
@@ -101,7 +101,7 @@ export class GameScene extends Scene {
       // target.hit();
       enemy.kill();
     });
-    enemy.on("prekill", (event: PreKillEvent) => {
+    enemy.on("prekill", (_event: PreKillEvent) => {
       this.enemies = this.enemies.filter((enemy) => !enemy.isKilled());
     });
 
@@ -113,11 +113,11 @@ export class GameScene extends Scene {
     engine.add(lockon);
     this.lockons.push(lockon);
 
-    lockon.on("prekill", (event: PreKillEvent) => {
+    lockon.on("prekill", (_event: PreKillEvent) => {
       this.lockons = this.lockons.filter((lockon) => !lockon.isKilled());
       enemy.cancelLockOn();
     });
-    enemy.on("prekill", (event: PreKillEvent) => {
+    enemy.on("prekill", (_event: PreKillEvent) => {
       lockon.kill();
     });
   };
@@ -133,11 +133,11 @@ export class GameScene extends Scene {
     engine.add(missile);
     target.islaunched = true;
 
-    missile.on("postKill", (event: PostKillEvent) => {
+    missile.on("postKill", (_event: PostKillEvent) => {
       if (target.isKilled()) return;
       target.kill();
     });
-    target.on("postKill", (event: PostKillEvent) => {
+    target.on("postKill", (_event: PostKillEvent) => {
       if (missile.isKilled()) return;
       missile.kill();
     });

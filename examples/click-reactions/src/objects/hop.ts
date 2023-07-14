@@ -9,9 +9,9 @@ import {
   RotationType,
   Vector,
 } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import config from "../config";
 import { ResourceManager } from "./resource-manager";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class Hop extends Actor {
   constructor(x: number, y: number) {
@@ -31,7 +31,7 @@ export class Hop extends Actor {
   }
 
   private initReactions(): void {
-    this.on("pointerdown", (event: PointerEvent) => {
+    this.on("pointerdown", (_event: PointerEvent) => {
       const hopSequence = new ActionSequence(
         this,
         (actionContext: ActionContext): any => {

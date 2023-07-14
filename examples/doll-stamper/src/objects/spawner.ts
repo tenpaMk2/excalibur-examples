@@ -26,7 +26,7 @@ export class Spawner {
           event.screenPos.sub(startPos).toAngle() + Math.PI * 0.5;
       });
 
-      engine.input.pointers.primary.once("up", (event: PointerEvent) => {
+      engine.input.pointers.primary.once("up", (_event: PointerEvent) => {
         engine.input.pointers.primary.off("move");
       });
     });

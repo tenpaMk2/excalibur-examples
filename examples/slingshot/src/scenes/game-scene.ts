@@ -1,27 +1,24 @@
-import { Scene, Engine, Vector, Logger } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
+import { Scene, Engine } from "excalibur";
 import { Ball } from "../objects/ball";
 import { Box } from "../objects/box";
 import { Ground } from "../objects/ground";
 
 export class GameScene extends Scene {
-  private springEnable = false;
   private ball!: Ball;
-  private startPos: Vector = Vector.Zero;
 
   onInitialize(engine: Engine) {
     const ground = new Ground(
       engine.halfDrawWidth,
       engine.drawHeight,
       engine.drawWidth,
-      engine.drawHeight / 20
+      engine.drawHeight / 20,
     );
     engine.add(ground);
 
     this.ball = new Ball(
       engine.drawWidth / 4,
       engine.halfDrawHeight,
-      engine.drawHeight / 20
+      engine.drawHeight / 20,
     );
     engine.add(this.ball);
 

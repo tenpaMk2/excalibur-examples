@@ -132,7 +132,7 @@ export class Asteroid extends Actor {
   }
 
   onInitialize = (engine: Engine) => {
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       if (this.pos.x < 0) {
         this.pos.x = engine.drawWidth + this.collider.bounds.width / 2;
       } else if (engine.drawWidth < this.pos.x) {

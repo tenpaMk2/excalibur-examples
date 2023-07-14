@@ -49,7 +49,7 @@ export class Boom extends Actor {
     this.engine.add(emitter);
   };
 
-  onInitialize = (engine: Engine) => {
+  onInitialize = (_engine: Engine) => {
     this.actions
       .scaleTo(new Vector(1.5, 1.5), new Vector(10, 10))
       .blink(30, 30, 10)
@@ -58,7 +58,7 @@ export class Boom extends Actor {
       });
   };
 
-  onPreUpdate = (engine: Engine, delta: number) => {
+  onPreUpdate = (_engine: Engine, _delta: number) => {
     const globalRotation = this.getGlobalRotation();
     this.rotation -= globalRotation;
   };

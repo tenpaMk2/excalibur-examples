@@ -17,7 +17,7 @@ export class Original extends Actor {
         spriteHeight: 32,
       },
     });
-    const sprite = spriteSheet.getSprite(1, 124);
+    const sprite = spriteSheet.getSprite(1, 124)!;
     sprite.scale = new Vector(5, 5);
     this.graphics.use(sprite);
 

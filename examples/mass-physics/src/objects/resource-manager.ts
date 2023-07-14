@@ -1,4 +1,4 @@
-import { Actor, CollisionType, Engine, Random, SpriteSheet } from "excalibur";
+import { Random, SpriteSheet } from "excalibur";
 import { Resources } from "../resource";
 
 export class ResourceManager {

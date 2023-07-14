@@ -126,13 +126,13 @@ export class Arrow extends Actor {
       }
     });
 
-    this.on("exitviewport", (event: ExitViewPortEvent) => {
+    this.on("exitviewport", (_event: ExitViewPortEvent) => {
       if (this.pos.y < 0) return;
       this.kill();
     });
   }
 
-  onPreUpdate(engine: Engine, delta: number) {
+  onPreUpdate(_engine: Engine, _delta: number) {
     if (this.rotatable) this.rotation = this.vel.toAngle() + Math.PI * 0.5;
   }
 }

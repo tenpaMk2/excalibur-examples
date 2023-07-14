@@ -60,7 +60,7 @@ export class GameScene extends Scene {
     });
   };
 
-  onPreUpdate = (engine: Engine, delta: number): void => {};
+  onPreUpdate = (): void => {};
 
   shoot = (engine: Engine) => {
     const bullet = new Bullet(
@@ -70,6 +70,7 @@ export class GameScene extends Scene {
     );
     engine.add(bullet);
 
+    // @ts-ignore: I use a correct type of `handler` . Excalibur.js type definition is wrong?
     bullet.on("collisionstart", (event: CollisionStartEvent<Asteroid>) => {
       if (!this.asteroids.includes(event.other)) {
         return;

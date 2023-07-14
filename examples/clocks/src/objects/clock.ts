@@ -31,7 +31,7 @@ export class Clock extends Actor {
     this.scale = new Vector(this.targetScale, this.targetScale);
   };
 
-  createHourMarkers = (engine: Engine) => {
+  createHourMarkers = (_engine: Engine) => {
     for (let hour = 0; hour < 12; hour++) {
       const canvasWidth = 8; // must be 2^n.
       const canvasHeight = 512; // must be 2^n.

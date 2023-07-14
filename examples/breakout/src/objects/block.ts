@@ -54,7 +54,7 @@ export class BlockGrid {
       engine.add(block);
       block.graphics.use(foregroundGraphic);
 
-      block.on("precollision", (event: PreCollisionEvent): void => {
+      block.on("precollision", (_event: PreCollisionEvent): void => {
         block.kill();
       });
     });

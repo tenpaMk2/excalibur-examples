@@ -13,5 +13,5 @@ export class Bullet extends Actor {
     this.rotation = angle;
   }
 
-  onPreUpdate = (engine: Engine, delta: number): void => {};
+  onPreUpdate = (_engine: Engine, _delta: number): void => {};
 }

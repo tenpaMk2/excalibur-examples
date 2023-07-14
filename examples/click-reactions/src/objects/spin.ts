@@ -1,7 +1,7 @@
 import { Actor, CollisionType, Color, RotationType } from "excalibur";
-import { PointerEvent } from "excalibur/build/dist/Input";
 import config from "../config";
 import { ResourceManager } from "./resource-manager";
+import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
 export class Spin extends Actor {
   constructor(x: number, y: number) {
@@ -21,7 +21,7 @@ export class Spin extends Actor {
   }
 
   private initReactions(): void {
-    this.on("pointerdown", (event: PointerEvent) => {
+    this.on("pointerdown", (_event: PointerEvent) => {
       this.actions.clearActions();
       this.actions
         .rotateTo(Math.PI * 2, 20, RotationType.Clockwise)

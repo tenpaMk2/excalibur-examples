@@ -131,13 +131,13 @@ export class TapArea extends ScreenElement {
     subAreas.forEach((subArea: ScreenElement) => {
       subArea.graphics.opacity = 0;
 
-      subArea.on("pointerenter", (event: PointerEvent): void => {
+      subArea.on("pointerenter", (_event: PointerEvent): void => {
         subArea.graphics.opacity = 0.2;
       });
-      subArea.on("pointerleave", (event: PointerEvent): void => {
+      subArea.on("pointerleave", (_event: PointerEvent): void => {
         subArea.graphics.opacity = 0;
       });
-      subArea.on("pointerdown", (event: PointerEvent): void => {
+      subArea.on("pointerdown", (_event: PointerEvent): void => {
         // ??? how to use events ???
         const ev: tapdownEvent = { direction9: subArea.name as direction9 };
         this.emit("tapdown", ev);

@@ -4,12 +4,12 @@ import { Spawner } from "../objects/spawner";
 
 export class GameScene extends Scene {
   onInitialize(engine: Engine): void {
-    const imageDisplayer = new ImageDisplayer(engine, "#input");
+    new ImageDisplayer(engine, "#input");
 
-    const spawner = new Spawner(engine);
+    new Spawner(engine);
 
     const button = document.getElementById("screenshot")! as HTMLInputElement;
-    button.onclick = async (event: Event) => {
+    button.onclick = async (_event: Event) => {
       const screenshot = await engine.screenshot();
       document.body.insertBefore(screenshot, button);
     };

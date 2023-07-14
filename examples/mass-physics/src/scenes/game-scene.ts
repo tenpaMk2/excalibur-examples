@@ -1,4 +1,4 @@
-import { Scene, Engine, Random, ExitViewPortEvent, KillEvent } from "excalibur";
+import { Scene, Engine, Random, KillEvent } from "excalibur";
 import config from "../config";
 import { Ball } from "../objects/ball";
 import { Ground } from "../objects/ground";
@@ -31,7 +31,7 @@ export class GameScene extends Scene {
     const ball = new Ball(x, y, radius, this.rnd);
     engine.add(ball);
 
-    ball.on("kill", (event: KillEvent): void => {
+    ball.on("kill", (_event: KillEvent): void => {
       this.generateBall(engine);
     });
   }

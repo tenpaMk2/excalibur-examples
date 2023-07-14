@@ -5,7 +5,6 @@ import { Scene2 } from "./scenes/scene2";
 const engine = new Engine({
   width: 1920 / 2,
   height: 1080 / 2,
-  canvasElementId: "game",
 });
 
 engine.add("scene1", new Scene1());

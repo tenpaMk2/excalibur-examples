@@ -1,18 +1,19 @@
 {
+  "private": true,
   "name": "detect-ground",
-  "type": "module",
   "scripts": {
-    "start": "parcel serve ./src/index.html",
-    "build": "parcel build ./src/index.html --dist-dir ./publish --public-url ./"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   },
-  "author": "tenpaMk2",
+  "author": "tenpaMk2 <wavyroom@gmail.com> (https://github.com/tenpaMk2)",
   "license": "MIT",
   "dependencies": {
-    "excalibur": "^0.27.0"
+    "excalibur": "^0.27.0",
+    "vite": "4.4.4",
+    "typescript": "^5.1.6"
   },
   "devDependencies": {
-    "parcel": "^2.6.2",
-    "prettier": "^2.7.1",
-    "typescript": "^4.7.4"
+    "prettier": "^3.0.0"
   }
 }

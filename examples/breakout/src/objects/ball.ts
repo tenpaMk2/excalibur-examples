@@ -43,11 +43,11 @@ export class Ball extends Actor {
       }
     });
 
-    this.on("exitviewport", (evt) => {
+    this.on("exitviewport", (_evt) => {
       this.kill();
     });
 
-    this.on("postkill", (event: PostKillEvent): void => {
+    this.on("postkill", (_event: PostKillEvent): void => {
       const gameOverScreen = new GameOverScreen(
         engine.drawWidth,
         engine.drawHeight

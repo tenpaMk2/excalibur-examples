@@ -32,7 +32,7 @@ export class Ground extends Actor {
     });
   }
 
-  onInitialize(engine: Engine) {
+  onInitialize(_engine: Engine) {
     const triangle = new Polygon({
       points: Ground.TRIANGLE_POINTS,
       color: Color.Yellow,
