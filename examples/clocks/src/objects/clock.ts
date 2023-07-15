@@ -9,7 +9,7 @@ import {
 } from "excalibur";
 
 export class Clock extends Actor {
-  shaft: Actor;
+  shaft!: Actor;
   isCurrentClock: boolean = false;
   targetScale: number;
 

@@ -13,7 +13,7 @@ import {
 } from "excalibur";
 
 export class GameScene extends Scene {
-  scoreText: Text;
+  scoreText!: Text;
 
   onInitialize = (engine: Engine) => {
     const centerText = new Text({

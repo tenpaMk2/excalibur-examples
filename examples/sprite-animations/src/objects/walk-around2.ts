@@ -12,10 +12,10 @@ import config from "../config";
 import { Resources } from "../resource";
 
 export class WalkAround2 extends Actor {
-  private animationDown: Animation;
-  private animationLeft: Animation;
-  private animationRight: Animation;
-  private animationUp: Animation;
+  private animationDown!: Animation;
+  private animationLeft!: Animation;
+  private animationRight!: Animation;
+  private animationUp!: Animation;
 
   constructor(x: number, y: number) {
     super({
@@ -102,6 +102,6 @@ export class WalkAround2 extends Actor {
       indices,
       config.animationWaitMS,
       AnimationStrategy.PingPong
-    );
+    )!;
   };
 }
