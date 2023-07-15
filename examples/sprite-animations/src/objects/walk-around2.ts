@@ -8,7 +8,7 @@ import {
   SpriteSheet,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 
 export class WalkAround2 extends Actor {
@@ -39,19 +39,19 @@ export class WalkAround2 extends Actor {
       const half = config.length / 2;
       const upLeft = new Vector(
         engine.halfDrawWidth + half,
-        engine.halfDrawHeight + half
+        engine.halfDrawHeight + half,
       );
       const downLeft = new Vector(
         engine.halfDrawWidth + half,
-        engine.drawHeight - half
+        engine.drawHeight - half,
       );
       const downRight = new Vector(
         engine.drawWidth - half,
-        engine.drawHeight - half
+        engine.drawHeight - half,
       );
       const upRight = new Vector(
         engine.drawWidth - half,
-        engine.halfDrawHeight + half
+        engine.halfDrawHeight + half,
       );
 
       this.pos = upLeft;
@@ -101,7 +101,7 @@ export class WalkAround2 extends Actor {
       spriteSheet,
       indices,
       config.animationWaitMS,
-      AnimationStrategy.PingPong
+      AnimationStrategy.PingPong,
     )!;
   };
 }

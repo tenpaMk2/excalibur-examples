@@ -1,10 +1,7 @@
-const gameWidth = 1080 / 2;
-const gameHeight = 1920 / 2;
-
-export default {
+export const config = {
   debug: false,
-  gameWidth: gameWidth,
-  gameHeight: gameHeight,
+  gameWidth: 1080 / 2,
+  gameHeight: 1920 / 2,
   randomSeed: 1,
   tileEdgeLength: 32,
   row: 24,

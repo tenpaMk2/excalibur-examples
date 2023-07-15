@@ -5,7 +5,7 @@ import {
   CollisionType,
   SpriteSheet,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 
 export class SpriteSheetAnimation extends Actor {
@@ -41,7 +41,7 @@ export class SpriteSheetAnimation extends Actor {
       spriteSheet,
       [0, 1, 2],
       300,
-      AnimationStrategy.PingPong
+      AnimationStrategy.PingPong,
     );
 
     this.graphics.use(animation);

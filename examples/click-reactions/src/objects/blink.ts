@@ -9,7 +9,7 @@ import {
   RotationType,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { ResourceManager } from "./resource-manager";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
@@ -39,14 +39,14 @@ export class Blinker extends Actor {
         this,
         (actionContext: ActionContext): any => {
           actionContext.blink(100, 100, 5);
-        }
+        },
       );
 
       const rotateSequence = new ActionSequence(
         this,
         (actionContext: ActionContext) => {
           actionContext.rotateTo(Math.PI * 0.5, 2, RotationType.Clockwise);
-        }
+        },
       );
 
       const parallelActions = new ParallelActions([

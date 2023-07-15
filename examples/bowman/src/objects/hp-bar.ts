@@ -1,5 +1,5 @@
 import { Actor, Canvas, CollisionType, Vector } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 
 export class HPBar extends Actor {
   private progress: number = 1;

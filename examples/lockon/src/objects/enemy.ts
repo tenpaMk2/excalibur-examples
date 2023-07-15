@@ -7,7 +7,7 @@ import {
   Scene,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { enemyAnimation } from "../resources";
 import { Boom } from "./boom";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
@@ -19,7 +19,7 @@ export class Enemy extends Actor {
     private engine: Engine,
     x: number,
     y: number,
-    private targetPos: Vector
+    private targetPos: Vector,
   ) {
     super({
       x: x,

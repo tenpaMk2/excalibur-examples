@@ -9,7 +9,7 @@ import {
   Timer,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 import { Bait } from "./bait";
 import { GameOver } from "./game-over";
@@ -21,7 +21,10 @@ export class Snake {
   private currentDirection: Vector = Vector.Up;
   private timer: Timer;
 
-  constructor(pos: Vector, private engine: Engine) {
+  constructor(
+    pos: Vector,
+    private engine: Engine,
+  ) {
     this.prepareGraphics();
 
     const head = new Actor({
@@ -149,7 +152,7 @@ export class Snake {
       this.updateNotEndGraphic(
         this.bodies[i],
         this.bodies[i - 1],
-        this.bodies[i + 1]
+        this.bodies[i + 1],
       );
     }
   }
@@ -179,7 +182,7 @@ export class Snake {
   private updateNotEndGraphic(
     target: Actor,
     other1: Actor,
-    other2: Actor
+    other2: Actor,
   ): void {
     const otherPositions = [other1, other2]
       .map((other) => {

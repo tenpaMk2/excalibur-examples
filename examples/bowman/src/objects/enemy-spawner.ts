@@ -1,9 +1,12 @@
 import { Engine, Random, Timer } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Enemy, EnemyType } from "./enemy";
 
 export class EnemySpawner {
-  constructor(private engine: Engine, private rnd: Random) {
+  constructor(
+    private engine: Engine,
+    private rnd: Random,
+  ) {
     this.spawn();
 
     const timer = new Timer({
@@ -29,7 +32,7 @@ export class EnemySpawner {
       this.engine,
       this.engine.drawWidth * 0.95,
       0,
-      enemyType
+      enemyType,
     );
     this.engine.add(enemy);
   }

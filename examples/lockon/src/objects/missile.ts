@@ -8,13 +8,17 @@ import {
   ExitViewPortEvent,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { missileAnimation } from "../resources";
 
 export class Missile extends Actor {
   private allowAcc = false;
 
-  constructor(pos: Vector, vel: Vector, private targetPos: Vector) {
+  constructor(
+    pos: Vector,
+    vel: Vector,
+    private targetPos: Vector,
+  ) {
     super({
       pos: pos,
       vel: vel,

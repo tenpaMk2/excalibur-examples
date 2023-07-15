@@ -7,7 +7,7 @@ import {
   Font,
   Color,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Grid } from "../objects/grid";
 
 export class GameScene extends Scene {

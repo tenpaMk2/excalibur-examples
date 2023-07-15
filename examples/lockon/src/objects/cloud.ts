@@ -5,7 +5,7 @@ import {
   ExitViewPortEvent,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { cloudSprite } from "../resources";
 
 export class Cloud extends Actor {

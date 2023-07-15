@@ -1,5 +1,5 @@
 import { Actor, CollisionType, Engine } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { ResourceManager } from "./resource-manager";
 
 export class Box extends Actor {

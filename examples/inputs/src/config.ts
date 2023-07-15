@@ -1,10 +1,7 @@
-const gameWidth = 32 * 9 * 2;
-const gameHeight = 32 * 16 * 2;
-
-export default {
+export const config = {
   debug: false,
-  gameWidth: gameWidth,
-  gameHeight: gameHeight,
+  gameWidth: 32 * 9 * 2,
+  gameHeight: 32 * 16 * 2,
   gravity: 980,
   moveSpeed: 100,
   jumpSpeed: 500,

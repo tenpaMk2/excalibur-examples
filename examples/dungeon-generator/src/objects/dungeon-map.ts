@@ -1,5 +1,5 @@
 import { Color, Font, SpriteSheet, Text, TileMap } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 
 type DungeonMapInfo = {
@@ -13,7 +13,10 @@ export class DungeonMap {
   readonly roomCount: number;
   readonly pathwayCount: number;
 
-  constructor(private tilemap: TileMap, info: DungeonMapInfo) {
+  constructor(
+    private tilemap: TileMap,
+    info: DungeonMapInfo,
+  ) {
     this.areaCount = info.areaCount;
     this.roomCount = info.roomCount;
     this.pathwayCount = info.pathwayCount;
@@ -74,7 +77,7 @@ export class DungeonMap {
           text: `${id}`,
           color: Color.White,
           font: font.clone(),
-        })
+        }),
       );
     }
     const roomTexts: Text[] = [];
@@ -84,7 +87,7 @@ export class DungeonMap {
           text: `${id}`,
           color: Color.Chartreuse,
           font: font.clone(),
-        })
+        }),
       );
     }
     const pathwayTexts: Text[] = [];
@@ -94,7 +97,7 @@ export class DungeonMap {
           text: `${id}`,
           color: Color.Rose,
           font: font.clone(),
-        })
+        }),
       );
     }
     this.tilemap.tiles.forEach((tile) => {

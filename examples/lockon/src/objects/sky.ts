@@ -1,5 +1,5 @@
 import { Actor, CollisionType, Engine, Vector } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { skySprite } from "../resources";
 
 export class Sky extends Actor {

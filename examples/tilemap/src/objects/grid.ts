@@ -8,7 +8,7 @@ import {
   TileMap,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 import { Creature } from "./creature";
 
@@ -87,7 +87,7 @@ export class Grid {
 
   unregisterCreature = (creature: Creature) => {
     const cells = this.infoMap.tiles.filter(
-      (tile) => tile.data.get("creature") === creature
+      (tile) => tile.data.get("creature") === creature,
     );
     if (cells.length <= 0) {
       Logger.getInstance().error("can not unregister because no creatures.");
@@ -95,7 +95,7 @@ export class Grid {
     }
     if (2 <= cells.length) {
       Logger.getInstance().error(
-        "can not unregister because multiple creatures."
+        "can not unregister because multiple creatures.",
       );
       return;
     }
@@ -105,7 +105,7 @@ export class Grid {
 
   moveCreature = (creature: Creature, targetPos: Vector) => {
     const cells = this.infoMap.tiles.filter(
-      (tile) => tile.data.get("creature") === creature
+      (tile) => tile.data.get("creature") === creature,
     );
     if (cells.length <= 0) {
       Logger.getInstance().error("can not move because no creatures exist.");
@@ -113,7 +113,7 @@ export class Grid {
     }
     if (2 <= cells.length) {
       Logger.getInstance().error(
-        "can not move because multiple creatures exist."
+        "can not move because multiple creatures exist.",
       );
       return;
     }
@@ -185,7 +185,7 @@ export class Grid {
 
     if (targetCell.data.get("isTree")) {
       const upTreeTile = this.upTreeMap.getTileByPoint(
-        targetPos.sub(Vector.Down.scale(config.TileWidth))
+        targetPos.sub(Vector.Down.scale(config.TileWidth)),
       );
       upTreeTile.clearGraphics();
       const downTreeTile = this.downTreeMap.getTileByPoint(targetPos);
@@ -199,7 +199,7 @@ export class Grid {
   _debugData = (key: string) => {
     const cell2d = this.infoMap.getRows();
     const result = cell2d.map((cells) =>
-      cells.map((cell) => (cell.data.has(key) ? "⭕" : "➖"))
+      cells.map((cell) => (cell.data.has(key) ? "⭕" : "➖")),
     );
     result.forEach((rows) => console.log(rows));
   };

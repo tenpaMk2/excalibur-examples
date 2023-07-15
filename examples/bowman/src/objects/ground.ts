@@ -7,7 +7,7 @@ import {
   PolygonCollider,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 
 export class Ground extends Actor {
   constructor(x: number, y: number, width: number, height: number) {

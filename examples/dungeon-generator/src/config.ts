@@ -1,10 +1,7 @@
-const gameWidth = 1080 / 2;
-const gameHeight = 1920 / 2;
-
-export default {
+export const config = {
   randomSeed: 1,
-  gameWidth: gameWidth,
-  gameHeight: gameHeight,
+  gameWidth: 1080 / 2,
+  gameHeight: 1920 / 2,
   additionalPathwayCount: 2,
   divideCount: 5,
   divideFactor: 3,

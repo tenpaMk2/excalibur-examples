@@ -7,7 +7,7 @@ import {
   SpriteSheet,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 import { BaitSpawner } from "./bait-spawner";
 import { Snake } from "./snake";
@@ -17,7 +17,7 @@ export class Bait extends Actor {
     pos: Vector,
     private snake: Snake,
     _engine: Engine,
-    private baitSpawner: BaitSpawner
+    private baitSpawner: BaitSpawner,
   ) {
     super({
       pos: pos,
@@ -64,7 +64,7 @@ export class Bait extends Actor {
       (event: Events.CollisionStartEvent<Actor>): void => {
         if (event.other !== this.snake.getHead()) return; // head
         this.kill();
-      }
+      },
     );
 
     this.on("postkill", (_event: PostKillEvent): void => {

@@ -46,8 +46,8 @@ export class TapUI {
         "brace",
         new BracingEvent(
           event.screenPos.distance(dragUI.pos),
-          event.screenPos.sub(dragUI.pos).toAngle() + Math.PI
-        )
+          event.screenPos.sub(dragUI.pos).toAngle() + Math.PI,
+        ),
       );
     });
   }

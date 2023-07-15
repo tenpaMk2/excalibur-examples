@@ -1,5 +1,5 @@
 import { Random, Side } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { RoomInfo } from "./room-info";
 
 export class AreaInfo {
@@ -11,7 +11,7 @@ export class AreaInfo {
     public right: number,
     public bottom: number,
     public left: number,
-    private rnd: Random
+    private rnd: Random,
   ) {}
 
   get width(): number {
@@ -29,25 +29,25 @@ export class AreaInfo {
       case Side.Top:
         this.top = this.rnd.integer(
           this.top + this.height / config.divideFactor,
-          this.bottom - config.minAreaEdgeLength
+          this.bottom - config.minAreaEdgeLength,
         );
         break;
       case Side.Right:
         this.right = this.rnd.integer(
           this.left + config.minAreaEdgeLength,
-          this.left + this.width / config.divideFactor
+          this.left + this.width / config.divideFactor,
         );
         break;
       case Side.Bottom:
         this.bottom = this.rnd.integer(
           this.top + config.minAreaEdgeLength,
-          this.top + this.height / config.divideFactor
+          this.top + this.height / config.divideFactor,
         );
         break;
       case Side.Left:
         this.left = this.rnd.integer(
           this.left + this.width / config.divideFactor,
-          this.right - config.minAreaEdgeLength
+          this.right - config.minAreaEdgeLength,
         );
         break;
       case Side.None:

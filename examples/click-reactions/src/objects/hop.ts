@@ -9,7 +9,7 @@ import {
   RotationType,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { ResourceManager } from "./resource-manager";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 
@@ -39,16 +39,16 @@ export class Hop extends Actor {
             .easeTo(
               this.pos.add(new Vector(0, -100)),
               200,
-              EasingFunctions.EaseOutQuad
+              EasingFunctions.EaseOutQuad,
             )
             .easeTo(this.pos, 200, EasingFunctions.EaseInQuad)
             .easeTo(
               this.pos.add(new Vector(0, -100)),
               200,
-              EasingFunctions.EaseOutQuad
+              EasingFunctions.EaseOutQuad,
             )
             .easeTo(this.pos, 200, EasingFunctions.EaseInQuad);
-        }
+        },
       );
 
       const rotateSequence = new ActionSequence(
@@ -59,7 +59,7 @@ export class Hop extends Actor {
             .rotateTo(0, 4, RotationType.CounterClockwise)
             .rotateTo(-Math.PI * 0.25, 4, RotationType.CounterClockwise)
             .rotateTo(0, 4, RotationType.Clockwise);
-        }
+        },
       );
 
       const parallelActions = new ParallelActions([

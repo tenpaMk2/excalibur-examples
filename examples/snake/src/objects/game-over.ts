@@ -8,7 +8,7 @@ import {
   TextAlign,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 
 export class GameOver extends ScreenElement {
   private gameOverText!: Label;

@@ -1,5 +1,5 @@
 import { DisplayMode, Engine, Physics, Vector } from "excalibur";
-import config from "./config";
+import { config } from "./config";
 import { loader } from "./resources";
 import { GameScene } from "./scenes/game-scene";
 

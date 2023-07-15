@@ -1,9 +1,6 @@
-const gameWidth = 1920 / 2;
-const gameHeight = 1080 / 2;
-
-export default {
-  gameWidth: gameWidth,
-  gameHeight: gameHeight,
+export const config = {
+  gameWidth: 1920 / 2,
+  gameHeight: 1080 / 2,
   HPHeight: 8,
   HPWidth: 32,
   enemySpeed1: 10,

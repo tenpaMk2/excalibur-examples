@@ -13,7 +13,7 @@ import { Base } from "../objects/base";
 import { Missile } from "../objects/missile";
 import { Enemy } from "../objects/enemy";
 import { Cloud } from "../objects/cloud";
-import config from "../config";
+import { config } from "../config";
 import { Sky } from "../objects/sky";
 import { Lockon } from "../objects/lockon";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
@@ -41,7 +41,7 @@ export class GameScene extends Scene {
     this.base = new Base(
       engine.halfDrawWidth,
       (engine.drawHeight * 19) / 20,
-      engine.drawHeight / 20
+      engine.drawHeight / 20,
     );
     engine.add(this.base);
 
@@ -59,7 +59,7 @@ export class GameScene extends Scene {
 
     engine.input.pointers.primary.on("up", (_event: PointerEvent) => {
       const unlaunchedLockons = this.lockons.filter(
-        (lockon) => !lockon.islaunched
+        (lockon) => !lockon.islaunched,
       );
       if (unlaunchedLockons.length === 0) return;
 
@@ -126,9 +126,9 @@ export class GameScene extends Scene {
     const missile = new Missile(
       this.base.pos,
       Vector.fromAngle(this.rnd.floating(-Math.PI, 0)).scale(
-        config.missileInitialSpeed
+        config.missileInitialSpeed,
       ),
-      target.pos
+      target.pos,
     );
     engine.add(missile);
     target.islaunched = true;

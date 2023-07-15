@@ -1,5 +1,5 @@
 import { Actor, Canvas, Logger, Vector } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 
 export class HPBar extends Actor {
   constructor(public maxHP: number) {

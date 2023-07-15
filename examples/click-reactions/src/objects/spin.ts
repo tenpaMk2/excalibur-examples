@@ -1,5 +1,5 @@
 import { Actor, CollisionType, Color, RotationType } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { ResourceManager } from "./resource-manager";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
 

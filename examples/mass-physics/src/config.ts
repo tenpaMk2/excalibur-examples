@@ -1,9 +1,9 @@
 const gameWidth = 1080 / 2;
 const gameHeight = 1920 / 2;
 
-export default {
-  gameWidth: gameWidth,
-  gameHeight: gameHeight,
+export const config = {
+  gameWidth,
+  gameHeight,
   minBallRadius: gameWidth / 40,
   maxBallRadius: gameWidth / 10,
   NumOfBalls: 60,

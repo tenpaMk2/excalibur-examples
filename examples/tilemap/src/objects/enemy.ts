@@ -1,5 +1,5 @@
 import { Actor, Engine, SpriteSheet, Vector } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 import { Action, Creature } from "./creature";
 import { HPBar } from "./hp-bar";

@@ -1,6 +1,6 @@
 import { Actor, CollisionType, Color, Engine, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
-import config from "../config";
+import { config } from "../config";
 import { ResourceManager } from "./resource-manager";
 
 export class Ball extends Actor {

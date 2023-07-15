@@ -1,5 +1,5 @@
 import { SpriteSheet } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Resources } from "../resource";
 
 export class ResourceManager {

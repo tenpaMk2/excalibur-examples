@@ -1,4 +1,4 @@
-export default {
+export const config = {
   gameWidth: 1920 / 2,
   gameHeight: 1080 / 2,
   gravity: 980,

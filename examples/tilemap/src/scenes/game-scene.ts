@@ -1,6 +1,6 @@
 import { Scene, Engine, Vector, Logger } from "excalibur";
 import { Battle } from "../battle";
-import config from "../config";
+import { config } from "../config";
 import { Action, Creature } from "../objects/creature";
 import { Enemy } from "../objects/enemy";
 import { Grid } from "../objects/grid";

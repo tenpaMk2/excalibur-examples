@@ -9,7 +9,7 @@ import {
   RotationType,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Arrow } from "./arrow";
 import { Blast } from "./blast";
 import { Ground } from "./ground";
@@ -23,12 +23,7 @@ export class Enemy extends Actor {
   HP: number = Enemy.maxHP;
   isRotatable: boolean = true;
 
-  constructor(
-    _engine: Engine,
-    x: number,
-    y: number,
-    enemyType: EnemyType
-  ) {
+  constructor(_engine: Engine, x: number, y: number, enemyType: EnemyType) {
     let animation: Animation;
     switch (enemyType) {
       case "green":

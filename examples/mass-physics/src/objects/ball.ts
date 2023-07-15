@@ -5,7 +5,7 @@ import {
   ExitViewPortEvent,
   Random,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { ResourceManager } from "./resource-manager";
 
 export class Ball extends Actor {

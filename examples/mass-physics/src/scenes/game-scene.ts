@@ -1,5 +1,5 @@
 import { Scene, Engine, Random, KillEvent } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Ball } from "../objects/ball";
 import { Ground } from "../objects/ground";
 
@@ -25,7 +25,7 @@ export class GameScene extends Scene {
     const y = this.rnd.floating(0, engine.drawHeight / 10);
     const radius = this.rnd.floating(
       config.minBallRadius,
-      config.maxBallRadius
+      config.maxBallRadius,
     );
 
     const ball = new Ball(x, y, radius, this.rnd);

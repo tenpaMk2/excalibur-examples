@@ -1,5 +1,5 @@
 import { DisplayMode, Engine, Loader, Physics, Vector } from "excalibur";
-import config from "./config";
+import { config } from "./config";
 import { GameScene } from "./scenes/game-scene";
 
 const engine = new Engine({

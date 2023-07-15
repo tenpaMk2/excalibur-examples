@@ -1,6 +1,6 @@
 import { Canvas, Color, Engine, ScreenElement, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
-import config from "../config";
+import { config } from "../config";
 
 export type direction9 =
   | "up"
@@ -125,7 +125,7 @@ export class TapArea extends ScreenElement {
         width: config.tapAreaX2 - config.tapAreaX1,
         height: config.tapAreaY2 - config.tapAreaY1,
         color: Color.Yellow,
-      })
+      }),
     );
 
     subAreas.forEach((subArea: ScreenElement) => {

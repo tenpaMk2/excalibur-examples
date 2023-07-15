@@ -1,6 +1,6 @@
 import { Canvas, Color, Engine, ScreenElement, Vector } from "excalibur";
 import { PointerEvent } from "excalibur/build/dist/Input/PointerEvent";
-import config from "../config";
+import { config } from "../config";
 
 export class TapArea extends ScreenElement {
   private tapDownCallBack: ((direction4: Vector) => void) | null = null;
@@ -89,7 +89,7 @@ export class TapArea extends ScreenElement {
         color: Color.Yellow,
         anchor: Vector.Zero,
         z: config.screenZ,
-      })
+      }),
     );
 
     subAreas.forEach((subArea: ScreenElement) => {

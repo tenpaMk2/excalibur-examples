@@ -1,5 +1,5 @@
 import { Engine, Random, Scene, Vector } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { MapBuilder } from "../objects/map-builder";
 
 export class GameScene extends Scene {
@@ -21,7 +21,7 @@ export class GameScene extends Scene {
         divideFactor: config.divideFactor,
         additionalPathwayCount: config.additionalPathwayCount,
         minAreaEdgeLength: config.minAreaEdgeLength,
-      }
+      },
     );
     const dungeonMap = mapBuilder.build();
     dungeonMap.updateTilemap();

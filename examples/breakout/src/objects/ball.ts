@@ -10,11 +10,15 @@ import {
   Timer,
   Vector,
 } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { GameOverScreen } from "./gameover-screen";
 import { GameOverText } from "./gameover-text";
 export class Ball extends Actor {
-  constructor(pos: Vector, radius: number, private initialSpeed: number = 300) {
+  constructor(
+    pos: Vector,
+    radius: number,
+    private initialSpeed: number = 300,
+  ) {
     super({
       pos: pos,
       color: Color.Red,
@@ -50,13 +54,13 @@ export class Ball extends Actor {
     this.on("postkill", (_event: PostKillEvent): void => {
       const gameOverScreen = new GameOverScreen(
         engine.drawWidth,
-        engine.drawHeight
+        engine.drawHeight,
       );
       engine.add(gameOverScreen);
 
       const gameOverText = new GameOverText(
         engine.halfDrawWidth,
-        engine.halfDrawHeight
+        engine.halfDrawHeight,
       );
       engine.add(gameOverText);
     });

@@ -1,5 +1,5 @@
 import { Engine, Random } from "excalibur";
-import config from "../config";
+import { config } from "../config";
 import { Bait } from "./bait";
 import { Grid } from "./grid";
 import { Snake } from "./snake";
@@ -10,7 +10,7 @@ export class BaitSpawner {
   constructor(
     private engine: Engine,
     private grid: Grid,
-    private snake: Snake
+    private snake: Snake,
   ) {
     this.rnd = new Random();
   }

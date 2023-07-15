@@ -7,10 +7,10 @@ enum ZDefines {
   screenElement,
 }
 
-export default {
+export const config = {
   TileWidth: 64, // pixels
-  gameWidth: gameWidth, // not pixels when fit screen!!
-  gameHeight: gameHeight, // not pixels when fit screen!!
+  gameWidth, // Not pixels when `DisplayMode.FitScreen` is enable!!
+  gameHeight, // Not pixels when `DisplayMode.FitScreen` is enable!!
   tapAreaX1: gameWidth * 0.25,
   tapAreaX2: gameWidth * 0.75,
   tapAreaY1: gameHeight * 0.25,

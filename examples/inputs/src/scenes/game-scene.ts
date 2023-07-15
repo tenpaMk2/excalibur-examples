@@ -1,6 +1,6 @@
 import { Actor, CollisionType, Color, Engine, Input, Scene } from "excalibur";
 import { KeyEvent } from "excalibur/build/dist/Input/Keyboard";
-import config from "../config";
+import { config } from "../config";
 
 export class GameScene extends Scene {
   onInitialize(engine: Engine): void {
