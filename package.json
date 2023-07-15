@@ -5,6 +5,7 @@
   "author": "tenpaMk2 <wavyroom@gmail.com> (https://github.com/tenpaMk2)",
   "license": "MIT",
   "scripts": {
+    "clean": "git clean -fdx --exclude TODO.md --exclude .vscode",
     "alpha-adjust": "cd examples/alpha-adjust && npm run dev",
     "asteroid": "cd examples/asteroid && npm run dev",
     "bounce": "cd examples/bounce && npm run dev",
