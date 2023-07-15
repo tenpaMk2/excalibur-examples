@@ -1,9 +1,15 @@
 # excaliburjs-examples
 
+This repository is collection of
 [Excalibur.js](https://excaliburjs.com/)
-examples (just demos and demo-games).
+examples.
 
-## How to play
+## Breaking Changes Since 2023-07-15💥
+
+- The repository is now a monorepo.
+- The build environment was changed from Parcel to Vite.
+
+## Get Started🚀
 
 ```shell
 npm run {{foobar}}
@@ -11,91 +17,56 @@ npm run {{foobar}}
 
 See the `scripts` section in the `package.json` about `{{foobar}}` .
 
-## how to debug by VSCode
+## Debug By VSCode🐛
 
 If you want to set the break point on the VSCode,
-See the my
-[template](https://github.com/tenpaMk2/excalibur-parcel2-vscode-debuggable-template)
-repository.
+~~See the my~~
+~~[template](https://github.com/tenpaMk2/excalibur-parcel2-vscode-debuggable-template)~~
+~~repository.~~
 
-You need to copy `.vscode/launch.json` from my
-[template](https://github.com/tenpaMk2/excalibur-parcel2-vscode-debuggable-template)
-to each examples directory.
-And open it by VSCode.
+~~You need to copy `.vscode/launch.json` from my~~
+~~[template](https://github.com/tenpaMk2/excalibur-parcel2-vscode-debuggable-template)~~
+~~to each examples directory.~~
+~~And open it by VSCode.~~
 
-## demos
+Use the following `launch.json` .
 
-### alpha-adjust
+```json
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/foobar-examples/foobar/"
+    }
+  ]
+}
+```
 
-![sample](./imgs/sample-alpha-adjust.png)
+Change port number, `foobar-examples` , and `foobar` as appropriate.
+You can confirm the port number by `npm run {{foobar}}` .
 
-The simple alpha-adjust game.
-When you think the 2 images have same alpha, just tap!!
+## API Examples🍏
 
-Credits are as follows.
-
-| item (description) | author         | URL                                                    |
-| :----------------: | :------------- | :----------------------------------------------------- |
-|  mapchip graphics  | ぴぽや         | <https://pipoya.net/>                                  |
-| original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
-
-### asteroid
-
-![sample](./imgs/sample-asteroid.png)
-
-The asteroid game.
-
-|      control       | description            |
-| :----------------: | :--------------------- |
-|     tap center     | shoot and move forward |
-| tap the right side | turn right             |
-| tap the left side  | turn left              |
-
-Credits are as follows.
-
-| item (description) | author         | URL                                                    |
-| :----------------: | :------------- | :----------------------------------------------------- |
-| original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
+These examples are for testing Excalibur.js API.
 
 ### bounce
 
 ![sample](./imgs/sample-bounce.png)
 
-Demo for `Physics` .
-
-### bowman
-
-![sample](./imgs/sample-bowman.png)
-
-Demo game.
-Drag and drop to shoot the arrow!!
-
-Credits are as follows.
-
-|  item (description)   | author          | URL                                                       |
-| :-------------------: | :-------------- | :-------------------------------------------------------- |
-|    player graphic     | sylvius fischer | <https://opengameart.org/content/fumiko-complete-charset> |
-| bow and arrow graphic | SCaydi          | <https://opengameart.org/content/archer-job-set>          |
-|     enemy graphic     | kenney.nl       | <https://www.kenney.nl/>                                  |
-
-### breakout
-
-![sample](./imgs/sample-breakout.png)
-
-The breakout game.
-Drag to move the bar.
-
-Credits are as follows.
-
-| item (description) | author      | URL                                            |
-| :----------------: | :---------- | :--------------------------------------------- |
-| original examples  | excaliburjs | <https://excaliburjs.com/docs/getting-started> |
+Example for `Physics` .
 
 ### click-reactions
 
 ![sample](./imgs/sample-click-reactions.png)
 
-Demo for `Actions` .
+Example for `Actions` .
 
 Credits are as follows.
 
@@ -103,68 +74,32 @@ Credits are as follows.
 | :----------------: | :----- | :-------------------- |
 | character graphics | ぴぽや | <https://pipoya.net/> |
 
-### clocks
-
-![sample](./imgs/sample-clocks.png)
-
-The simple tapping game which theme is clock.
-
-Credits are as follows.
-
-| item (description) | author         | URL                                                    |
-| :----------------: | :------------- | :----------------------------------------------------- |
-| original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
-
 ### detect-ground
 
 ![sample](./imgs/sample-detect-ground.png)
 
-It shows how to detect ground in some patterns.
+Example for detecting ground in some patterns.
 
 | item (description) | author                       | URL                                                         |
 | :----------------: | :--------------------------- | :---------------------------------------------------------- |
 |   original idea    | excalibur discussions (erik) | <https://github.com/excaliburjs/Excalibur/discussions/2406> |
 
-### doll-stamper
-
-![sample](./imgs/sample-doll-stamper.png)
-
-The application for adding 💗 to your cute dolls!!
-It also the demo for dynamic image uploading.
-
-### dungeon-generator
-
-![sample](./imgs/sample-dungeon-generator.png)
-
-Random dungeon generator for rogue-like games!!
-
-| item (description) | author    | URL                                     |
-| :----------------: | :-------- | :-------------------------------------- |
-|  mapchip graphics  | kenney.nl | <https://www.kenney.nl/assets/bit-pack> |
-
 ### event
 
-Demo for custom events.
+Example for custom events.
 
 ### inputs
 
 ![sample](./imgs/sample-inputs.png)
 
-Demo for keyboard inputs.
-See the sourcecode for controlling.
-
-### lockon
-
-![sample](./imgs/sample-lockon.png)
-
-The simple tapping game.
-After tapping or dragging on enemies, you can launch missiles!!
+Example for keyboard inputs.
+See the sourcecode for controls.
 
 ### mass-physics
 
 ![sample](./imgs/sample-mass-physics.png)
 
-Demo for `Physics` .
+Example for testing performance of `Physics` .
 
 Credits are as follows.
 
@@ -172,27 +107,15 @@ Credits are as follows.
 | :----------------: | :-------- | :----------------------- |
 | character graphics | kenney.nl | <https://www.kenney.nl/> |
 
-### samegame
-
-![sample](./imgs/sample-samegame.png)
-
-The simple samegame.
-
-Credits are as follows.
-
-| item (description) | author          | URL                                         |
-| :----------------: | :-------------- | :------------------------------------------ |
-|    gem graphics    | Clint Bellanger | <https://opengameart.org/content/gem-icons> |
-
 ### scene-change
 
-Demo for scene-change.
+Example for scene-change.
 
 ### scroll-and-score-text
 
 ![sample](./imgs/sample-scroll-and-score.png)
 
-Demo for `ScreenElement` and `Camera` .
+Example for `ScreenElement` and `Camera` .
 
 ### slingshot
 
@@ -206,22 +129,9 @@ Credits are as follows.
 | :----------------: | :-------- | :----------------------- |
 |    box graphics    | kenney.nl | <https://www.kenney.nl/> |
 
-### snake
-
-![sample](./imgs/sample-snake.png)
-
-Simple snake game.
-You can control the snake by tapping on edge of screen.
-
-Credits are as follows.
-
-| item (description) | author    | URL                      |
-| :----------------: | :-------- | :----------------------- |
-|      graphics      | kenney.nl | <https://www.kenney.nl/> |
-
 ### sound
 
-Simple sound demo.
+Example for `Sound` .
 
 Credits are as follows.
 
@@ -233,7 +143,7 @@ Credits are as follows.
 
 ![sample](./imgs/sample-sprite-animations.png)
 
-Demo for `Animations` .
+Example for `Animations` .
 
 Credits are as follows.
 
@@ -241,12 +151,140 @@ Credits are as follows.
 | :----------------: | :----- | :-------------------- |
 | character graphics | ぴぽや | <https://pipoya.net/> |
 
+## Game Examples🍎
+
+These examples are simple games.
+
+### alpha-adjust
+
+![sample](./imgs/sample-alpha-adjust.png)
+
+Just tap when you think the 2 images have same alpha❗
+
+Credits are as follows.
+
+| item (description) | author         | URL                                                    |
+| :----------------: | :------------- | :----------------------------------------------------- |
+|  mapchip graphics  | ぴぽや         | <https://pipoya.net/>                                  |
+| original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
+
+### asteroid
+
+![sample](./imgs/sample-asteroid.png)
+
+Shoot and break the asteroids❗
+
+|      control       | description            |
+| :----------------: | :--------------------- |
+|     tap center     | shoot and move forward |
+| tap the right side | turn right             |
+| tap the left side  | turn left              |
+
+Credits are as follows.
+
+| item (description) | author         | URL                                                    |
+| :----------------: | :------------- | :----------------------------------------------------- |
+| original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
+
+### bowman
+
+![sample](./imgs/sample-bowman.png)
+
+Drag and drop to shoot the arrow❗
+
+Credits are as follows.
+
+|  item (description)   | author          | URL                                                       |
+| :-------------------: | :-------------- | :-------------------------------------------------------- |
+|    player graphic     | sylvius fischer | <https://opengameart.org/content/fumiko-complete-charset> |
+| bow and arrow graphic | SCaydi          | <https://opengameart.org/content/archer-job-set>          |
+|     enemy graphic     | kenney.nl       | <https://www.kenney.nl/>                                  |
+
+### breakout
+
+![sample](./imgs/sample-breakout.png)
+
+Break the blocks❗
+
+Move the mouse to move the bar.
+
+Credits are as follows.
+
+| item (description) | author      | URL                                            |
+| :----------------: | :---------- | :--------------------------------------------- |
+| original examples  | excaliburjs | <https://excaliburjs.com/docs/getting-started> |
+
+### clocks
+
+![sample](./imgs/sample-clocks.png)
+
+Tap when the hands of the clock face the next clock❗
+
+Credits are as follows.
+
+| item (description) | author         | URL                                                    |
+| :----------------: | :------------- | :----------------------------------------------------- |
+| original examples  | digitsensitive | <https://github.com/digitsensitive/phaser3-typescript> |
+
+### doll-stamper
+
+![sample](./imgs/sample-doll-stamper.png)
+
+This is not game but application.
+Adding 💗 to your uploaded cute dolls photographs❗
+
+It is also an example of dynamic image uploading.
+
+### dungeon-generator
+
+![sample](./imgs/sample-dungeon-generator.png)
+
+Random dungeon generator for rogue-like games❗
+
+| item (description) | author    | URL                                     |
+| :----------------: | :-------- | :-------------------------------------- |
+|  mapchip graphics  | kenney.nl | <https://www.kenney.nl/assets/bit-pack> |
+
+### lockon
+
+![sample](./imgs/sample-lockon.png)
+
+Tap and drag the enemy, release, and then fire a missile❗
+
+### samegame
+
+![sample](./imgs/sample-samegame.png)
+
+Tap the same gems and try to clear all gems❗
+
+Credits are as follows.
+
+| item (description) | author          | URL                                         |
+| :----------------: | :-------------- | :------------------------------------------ |
+|    gem graphics    | Clint Bellanger | <https://opengameart.org/content/gem-icons> |
+
+### snake
+
+![sample](./imgs/sample-snake.png)
+
+Gather food and avoid walls and your own body❗
+
+You can control the snake by tapping on edge of screen.
+
+Credits are as follows.
+
+| item (description) | author    | URL                      |
+| :----------------: | :-------- | :----------------------- |
+|      graphics      | kenney.nl | <https://www.kenney.nl/> |
+
 ### tilemap
 
 ![sample](./imgs/sample-tilemap.png)
 
-Demo for `Tilemap` .
-It also implements basic rogue-like component.
+Example of roguelike game.
+It is also an example of `Tilemap` .
+
+You can control the player by tapping on edge of screen.
 
 Credits are as follows.
 
